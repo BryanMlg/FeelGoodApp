@@ -22,10 +22,14 @@ export function AuthPage() {
       }}
     >
       {/* begin::Content */}
-      <div className='d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20'>
+      <div className='d-flex flex-center flex-column flex-column-fluid '>
         {/* begin::Logo */}
         <a href='#'>
-          <img alt='Logo' src={toAbsoluteUrl('/media/logos/feelGoodLogo.png')} className='h-250px' />
+          <img
+            alt='Logo'
+            src={toAbsoluteUrl('/media/logos/feelGoodLogo.png')}
+            className='h-250px'
+          />
         </a>
         {/* end::Logo */}
         {/* begin::Wrapper */}
@@ -42,21 +46,11 @@ export function AuthPage() {
       </div>
       {/* end::Content */}
       {/* begin::Footer */}
-      <div className='d-flex flex-center flex-column-auto p-10'>
-        <div className='d-flex align-items-center fw-bold fs-6'>
-          <a href='#' className='text-muted text-hover-primary px-2'>
-            About
-          </a>
-
-          <a href='#' className='text-muted text-hover-primary px-2'>
-            Contact
-          </a>
-
-          <a href='#' className='text-muted text-hover-primary px-2'>
-            Contact Us
-          </a>
-        </div>
-      </div>
+      {/* <div className='d-flex flex-center flex-column-auto'>
+        <a href='#'>
+          <img alt='Logo' src={toAbsoluteUrl('/media/logos/techDev.png')} className='h-100px' />
+        </a>
+      </div> */}
       {/* end::Footer */}
     </div>
   )

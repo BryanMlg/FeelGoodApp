@@ -10,7 +10,6 @@ import {
   TablesWidget8,
   TablesWidget9,
   TablesWidget10,
-  TablesWidget11,
   TablesWidget12,
   TablesWidget13,
 } from '../../../../_metronic/partials/widgets'
@@ -86,7 +85,7 @@ const Tables: FC = () => {
 
       <TablesWidget10 className='mb-5 mb-xl-8' />
 
-      <TablesWidget11 className='mb-5 mb-xl-8' />
+      {/* <TablesWidget11 className='mb-5 mb-xl-8' /> */}
 
       <TablesWidget12 className='mb-5 mb-xl-8' />
 

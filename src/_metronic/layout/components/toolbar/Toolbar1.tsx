@@ -10,18 +10,14 @@ const Toolbar1: FC = () => {
 
   return (
     <div className='toolbar' id='kt_toolbar'>
-      {/* begin::Container */}
       <div
         id='kt_toolbar_container'
         className={clsx(classes.toolbarContainer.join(' '), 'd-flex flex-stack')}
       >
         <DefaultTitle />
 
-        {/* begin::Actions */}
         <div className='d-flex align-items-center py-1'>
-          {/* begin::Wrapper */}
           <div className='me-4'>
-            {/* begin::Menu */}
             <a
               href='#'
               className='btn btn-sm btn-flex btn-light btn-active-primary fw-bolder'
@@ -35,12 +31,7 @@ const Toolbar1: FC = () => {
               />
               Filter
             </a>
-
-            {/* end::Menu */}
           </div>
-          {/* end::Wrapper */}
-
-          {/* begin::Button */}
 
           <a
             href='#'
@@ -51,11 +42,8 @@ const Toolbar1: FC = () => {
           >
             Create
           </a>
-          {/* end::Button */}
         </div>
-        {/* end::Actions */}
       </div>
-      {/* end::Container */}
     </div>
   )
 }

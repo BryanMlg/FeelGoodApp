@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom'
 import {useFormik} from 'formik'
 import * as auth from '../redux/AuthRedux'
 import {login} from '../redux/AuthCRUD'
-import {toAbsoluteUrl} from '../../../../_metronic/helpers'
+
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()
@@ -171,12 +171,9 @@ export function Login() {
             </span>
           )}
         </button>
-
-        {/* begin::Separator */}
+        {/* 
         <div className='text-center text-muted text-uppercase fw-bolder mb-5'>O</div>
-        {/* end::Separator */}
 
-        {/* begin::Google link */}
         <a href='#' className='btn btn-flex flex-center btn-light btn-lg w-100 mb-5'>
           <img
             alt='Logo'
@@ -185,9 +182,7 @@ export function Login() {
           />
           Continue with Google
         </a>
-        {/* end::Google link */}
 
-        {/* begin::Google link */}
         <a href='#' className='btn btn-flex flex-center btn-light btn-lg w-100 mb-5'>
           <img
             alt='Logo'
@@ -196,9 +191,7 @@ export function Login() {
           />
           Continue with Facebook
         </a>
-        {/* end::Google link */}
 
-        {/* begin::Google link */}
         <a href='#' className='btn btn-flex flex-center btn-light btn-lg w-100'>
           <img
             alt='Logo'
@@ -206,8 +199,7 @@ export function Login() {
             className='h-20px me-3'
           />
           Continue with Apple
-        </a>
-        {/* end::Google link */}
+        </a> */}
       </div>
       {/* end::Action */}
     </form>

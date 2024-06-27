@@ -2,14 +2,13 @@ import React from 'react'
 import {AsideDefault} from './components/aside/AsideDefault'
 import {Footer} from './components/Footer'
 import {HeaderWrapper} from './components/header/HeaderWrapper'
-import {Toolbar} from './components/toolbar/Toolbar'
 import {ScrollTop} from './components/ScrollTop'
 import {Content} from './components/Content'
 import {MasterInit} from './MasterInit'
 import {PageDataProvider} from './core'
 import {
   DrawerMessenger,
-  ExploreMain,
+  // ExploreMain,
   ActivityDrawer,
   Main,
   InviteUsers,
@@ -25,7 +24,7 @@ const MasterLayout: React.FC = ({children}) => {
           <HeaderWrapper />
 
           <div id='kt_content' className='content d-flex flex-column flex-column-fluid'>
-            <Toolbar />
+           
             <div className='post d-flex flex-column-fluid' id='kt_post'>
               <Content>{children}</Content>
             </div>
@@ -36,7 +35,7 @@ const MasterLayout: React.FC = ({children}) => {
 
       {/* begin:: Drawers */}
       <ActivityDrawer />
-      <ExploreMain />
+      {/* <ExploreMain /> */}
       <DrawerMessenger />
       {/* end:: Drawers */}
 

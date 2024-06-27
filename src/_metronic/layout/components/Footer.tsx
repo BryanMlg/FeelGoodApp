@@ -14,7 +14,7 @@ const Footer: FC = () => {
         <div className='text-dark order-2 order-md-1'>
           <span className='text-muted fw-bold me-2'>{new Date().getFullYear()} &copy;</span>
           <a href='#' className='text-gray-800 text-hover-primary'>
-            Keenthemes
+            FeelGoodApp
           </a>
         </div>
         {/* end::Copyright */}
@@ -31,11 +31,11 @@ const Footer: FC = () => {
               Contact
             </a>
           </li>
-          <li className='menu-item'>
+          {/* <li className='menu-item'>
             <a href='#' className='menu-link pe-0'>
               Purchase
             </a>
-          </li>
+          </li> */}
         </ul>
         {/* end::Nav */}
       </div>
