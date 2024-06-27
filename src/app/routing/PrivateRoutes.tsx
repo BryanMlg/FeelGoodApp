@@ -11,12 +11,14 @@ export function PrivateRoutes() {
   const WidgetsPage = lazy(() => import('../modules/widgets/WidgetsPage'))
   const ChatPage = lazy(() => import('../modules/apps/chat/ChatPage'))
   const Sintomas = lazy(() => import('../pages/userViews/sintomas'))
+  const Calendario = lazy(() => import('../pages/userViews/calendario/calendar'))
 
   return (
     <Suspense fallback={<FallbackView />}>
       <Switch>
         <Route path='/dashboard' component={DashboardWrapper} />
         <Route path='/usuario/menu/sintomas' component={Sintomas} />
+        <Route path='/usuario/menu/calendario' component={Calendario} />
         <Route path='/crafted/pages/profile' component={ProfilePage} />
         <Route path='/crafted/pages/wizards' component={WizardsPage} />
         <Route path='/crafted/widgets' component={WidgetsPage} />

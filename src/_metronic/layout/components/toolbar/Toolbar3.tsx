@@ -21,7 +21,7 @@ const Toolbar3: FC<Props> = ({DefaultTitle, pageModal}) => {
           'd-flex flex-stack justify-content-between fw-bolder text-uppercase'
         )}
       >
-        <h3>{DefaultTitle}</h3>
+        <h3 className='font-wh text-white'>{DefaultTitle}</h3>
         {/* begin::Actions */}
         <div className='d-flex align-items-center py-1'>
           {/* begin::Button */}

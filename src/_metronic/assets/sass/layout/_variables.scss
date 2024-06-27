@@ -8,7 +8,7 @@ $root-font-size-lg: 13px; // Root font size for tablet mode
 $root-font-size-md: 12px; // Root font size for mobile mode
 
 // Page bg
-$page-bg: if(isDarkMode(), #151521, $gray-100) !default;
+$page-bg: if(isDarkMode(), #151521, #f2e2e2) !default;
 
 // Content border radius
 $content-border-radius: 1.5rem !default;
@@ -29,7 +29,7 @@ $header-config: (
         desktop: 65px,
         tablet-and-mobile: 55px,
       ),
-      bg-color: if(isDarkMode(), #1e1e2d, $white),
+      bg-color: if(isDarkMode(), #d7a9a9, $white),
     ),
   // Fixed Mode
   fixed:
@@ -39,7 +39,7 @@ $header-config: (
         tablet-and-mobile: 55px,
       ),
       z-index: 100,
-      bg-color: if(isDarkMode(), #1e1e2d, $white),
+      bg-color: if(isDarkMode(), #d7a9a9, #ba7b7c),
       box-shadow: if(isDarkMode(), none, 0px 10px 30px 0px rgba(82, 63, 105, 0.05)),
     )
 ) !default;
@@ -52,9 +52,9 @@ $toolbar-config: (
     tablet-and-mobile: 60px,
   ),
   padding: 0.5rem,
-  bg-color: if(isDarkMode(), darken(#1e1e2d, 2%), $white),
+  bg-color: if(isDarkMode(), darken(#d7a9a9, 2%), #ba7b7c),
   box-shadow: if(isDarkMode(), none, 0px 10px 30px 0px rgba(82, 63, 105, 0.05)),
-  border-top: if(isDarkMode(), 0, 1px solid $border-color),
+  border-top: if(isDarkMode(), 0, 1px solid #F9DCC4),
 ) !default;
 
 // Aside
@@ -65,8 +65,8 @@ $aside-config: (
   // transition speed
   padding-x: 25px,
   menu-indention: 0.75rem,
-  bg-color: #1e1e2d,
-  logo-bg-color: darken(#1e1e2d, 2%),
+  bg-color: #d7a9a9,
+  logo-bg-color: darken(#ba7b7c, 2%),
   scrollbar-color: if(isDarkMode(), $gray-200, #3b3b64),
   scrollbar-hover-color: if(isDarkMode(), $gray-300, lighten(#3b3b64, 3%)),
   width: 265px,
@@ -81,5 +81,5 @@ $aside-config: (
 
 // Footer
 $footer-config: (
-  bg-color: if(isDarkMode(), #1b1b28, $white),
+  bg-color: if(isDarkMode(), #1b1b28, #ba7b7c),
 ) !default;

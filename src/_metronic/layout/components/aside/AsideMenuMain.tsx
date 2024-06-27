@@ -30,6 +30,7 @@ export function AsideMenuMain() {
         icon='/media/icons/duotune/general/gen022.svg'
       >
         <AsideMenuItem to='/usuario/menu/sintomas' title='Sintomas' hasBullet={true} />
+        <AsideMenuItem to='/usuario/menu/calendario' title='Calendario' hasBullet={true} />
       </AsideMenuItemWithSub>
 
       <div className='menu-item'>
