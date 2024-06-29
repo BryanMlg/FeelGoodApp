@@ -1,285 +1,119 @@
-import {TablesWidget11} from '../../../../_metronic/partials/widgets'
+import React from 'react'
+import {TableList} from '../../../../_metronic/partials/widgets'
 
-export default function list() {
-  const data = [
+type ColumnConfig<T> = {
+  header: string
+  accessor: keyof T | ((item: T) => React.ReactNode)
+  width?: string
+  className?: string
+}
+
+type DataItem = {
+  image: string
+  name: string
+  description: string
+  price: string
+  priceStatus: string
+  deposit: string
+  depositStatus: string
+  agent: string
+  agentRole: string
+  status: string
+  statusBadgeClass: string
+}
+
+export default function List() {
+  const data: DataItem[] = [
     {
       image: '/media/stock/600x400/img-1.jpg',
-      name: 'Product A',
-      technologies: 'HTML, CSS, JavaScript',
+      name: 'Dolor Lumbar',
+      description: 'dolor que se siente en la región lumbar o baja de la espalda',
       price: '$1000',
       priceStatus: 'Paid',
       deposit: '$200',
       depositStatus: 'Rejected',
       agent: 'John Doe',
       agentRole: 'Developer',
-      status: 'Approved',
+      status: 'Leve',
       statusBadgeClass: 'badge-light-primary',
     },
     {
-      image: '/media/stock/600x400/img-2.jpg',
-      name: 'Product B',
-      technologies: 'React, TypeScript',
-      price: '$1500',
+      image: '/media/stock/600x400/img-1.jpg',
+      name: 'Dolor Lumbar',
+      description: 'dolor que se siente en la región lumbar o baja de la espalda',
+      price: '$1000',
       priceStatus: 'Paid',
-      deposit: '$300',
-      depositStatus: 'Pending',
-      agent: 'Jane Smith',
-      agentRole: 'Designer',
-      status: 'In Progress',
-      statusBadgeClass: 'badge-light-warning',
-    },
-    {
-      image: '/media/stock/600x400/img-3.jpg',
-      name: 'Product C',
-      technologies: 'Angular, Node.js',
-      price: '$1200',
-      priceStatus: 'Paid',
-      deposit: '$250',
-      depositStatus: 'Paid',
-      agent: 'Mike Johnson',
-      agentRole: 'Manager',
-      status: 'Success',
-      statusBadgeClass: 'badge-light-success',
-    },
-    {
-      image: '/media/stock/600x400/img-4.jpg',
-      name: 'Product D',
-      technologies: 'Vue.js, Laravel',
-      price: '$1800',
-      priceStatus: 'Pending',
-      deposit: '$400',
+      deposit: '$200',
       depositStatus: 'Rejected',
-      agent: 'Sarah Brown',
-      agentRole: 'Admin',
-      status: 'Rejected',
-      statusBadgeClass: 'badge-light-danger',
-    },
-    {
-      image: '/media/stock/600x400/img-5.jpg',
-      name: 'Product E',
-      technologies: 'Python, Django',
-      price: '$1600',
-      priceStatus: 'Paid',
-      deposit: '$350',
-      depositStatus: 'Pending',
-      agent: 'Chris Lee',
+      agent: 'John Doe',
       agentRole: 'Developer',
-      status: 'In Progress',
-      statusBadgeClass: 'badge-light-warning',
+      status: 'Leve',
+      statusBadgeClass: 'badge-light-primary',
     },
     {
-      image: '/media/stock/600x400/img-6.jpg',
-      name: 'Product F',
-      technologies: 'Ruby on Rails',
-      price: '$1300',
+      image: '/media/stock/600x400/img-1.jpg',
+      name: 'Dolor Lumbar',
+      description: 'dolor que se siente en la región lumbar o baja de la espalda',
+      price: '$1000',
       priceStatus: 'Paid',
-      deposit: '$280',
-      depositStatus: 'Paid',
-      agent: 'Emily Taylor',
-      agentRole: 'Designer',
-      status: 'Success',
-      statusBadgeClass: 'badge-light-success',
-    },
-    {
-      image: '/media/stock/600x400/img-7.jpg',
-      name: 'Product G',
-      technologies: 'PHP, MySQL',
-      price: '$1400',
-      priceStatus: 'Pending',
-      deposit: '$320',
+      deposit: '$200',
       depositStatus: 'Rejected',
-      agent: 'David Clark',
-      agentRole: 'Manager',
-      status: 'Rejected',
-      statusBadgeClass: 'badge-light-danger',
-    },
-    {
-      image: '/media/stock/600x400/img-8.jpg',
-      name: 'Product H',
-      technologies: 'Java, Spring Boot',
-      price: '$1700',
-      priceStatus: 'Paid',
-      deposit: '$380',
-      depositStatus: 'Pending',
-      agent: 'Linda White',
-      agentRole: 'Admin',
-      status: 'In Progress',
-      statusBadgeClass: 'badge-light-warning',
-    },
-    {
-      image: '/media/stock/600x400/img-9.jpg',
-      name: 'Product I',
-      technologies: 'C#, ASP.NET',
-      price: '$1900',
-      priceStatus: 'Paid',
-      deposit: '$420',
-      depositStatus: 'Paid',
-      agent: 'Jason Green',
+      agent: 'John Doe',
       agentRole: 'Developer',
-      status: 'Success',
-      statusBadgeClass: 'badge-light-success',
+      status: 'Leve',
+      statusBadgeClass: 'badge-light-primary',
     },
     {
-      image: '/media/stock/600x400/img-10.jpg',
-      name: 'Product J',
-      technologies: 'React Native, Redux',
-      price: '$1100',
-      priceStatus: 'Pending',
-      deposit: '$240',
-      depositStatus: 'Rejected',
-      agent: 'Olivia Miller',
-      agentRole: 'Designer',
-      status: 'Rejected',
-      statusBadgeClass: 'badge-light-danger',
-    },
-    {
-      image: '/media/stock/600x400/img-11.jpg',
-      name: 'Product K',
-      technologies: 'Vue.js, Nuxt.js',
-      price: '$1300',
+      image: '/media/stock/600x400/img-1.jpg',
+      name: 'Dolor Lumbar',
+      description: 'dolor que se siente en la región lumbar o baja de la espalda',
+      price: '$1000',
       priceStatus: 'Paid',
-      deposit: '$280',
-      depositStatus: 'Pending',
-      agent: 'Michael Wilson',
-      agentRole: 'Manager',
-      status: 'In Progress',
-      statusBadgeClass: 'badge-light-warning',
-    },
-    {
-      image: '/media/stock/600x400/img-12.jpg',
-      name: 'Product L',
-      technologies: 'Python, Flask',
-      price: '$1500',
-      priceStatus: 'Paid',
-      deposit: '$300',
-      depositStatus: 'Paid',
-      agent: 'Emma Davis',
-      agentRole: 'Admin',
-      status: 'Success',
-      statusBadgeClass: 'badge-light-success',
-    },
-    {
-      image: '/media/stock/600x400/img-13.jpg',
-      name: 'Product M',
-      technologies: 'PHP, Laravel',
-      price: '$1200',
-      priceStatus: 'Pending',
-      deposit: '$250',
+      deposit: '$200',
       depositStatus: 'Rejected',
-      agent: 'Andrew Thomas',
+      agent: 'John Doe',
       agentRole: 'Developer',
-      status: 'Rejected',
-      statusBadgeClass: 'badge-light-danger',
+      status: 'Leve',
+      statusBadgeClass: 'badge-light-primary',
     },
+  ]
+
+  const columns: ColumnConfig<DataItem>[] = [
     {
-      image: '/media/stock/600x400/img-14.jpg',
-      name: 'Product N',
-      technologies: 'Java, Hibernate',
-      price: '$1800',
-      priceStatus: 'Paid',
-      deposit: '$400',
-      depositStatus: 'Pending',
-      agent: 'Sophia Martinez',
-      agentRole: 'Designer',
-      status: 'In Progress',
-      statusBadgeClass: 'badge-light-warning',
+      header: 'Product',
+      accessor: (item: DataItem) => (
+        <div className='d-flex align-items-center'>
+          <div className='symbol symbol-50px me-5'>
+            <img src={item.image} alt={item.name} />
+          </div>
+          <div className='d-flex justify-content-start flex-column'>
+            <a href='*' className='text-dark fw-bolder text-hover-primary mb-1 fs-6'>
+              {item.name}
+            </a>
+            <span className='text-muted fw-bold text-muted d-block fs-7'>{item.description}</span>
+          </div>
+        </div>
+      ),
+      width: '325px',
     },
+    {header: 'Price', accessor: 'price', width: '125px'},
+    {header: 'Price Status', accessor: 'priceStatus', width: '125px'},
+    {header: 'Deposit', accessor: 'deposit', width: '125px'},
+    {header: 'Deposit Status', accessor: 'depositStatus', width: '125px'},
+    {header: 'Agent', accessor: 'agent', width: '200px'},
+    {header: 'Agent Role', accessor: 'agentRole', width: '150px'},
     {
-      image: '/media/stock/600x400/img-15.jpg',
-      name: 'Product O',
-      technologies: 'Ruby on Rails, PostgreSQL',
-      price: '$1600',
-      priceStatus: 'Paid',
-      deposit: '$350',
-      depositStatus: 'Paid',
-      agent: 'James Rodriguez',
-      agentRole: 'Manager',
-      status: 'Success',
-      statusBadgeClass: 'badge-light-success',
-    },
-    {
-      image: '/media/stock/600x400/img-16.jpg',
-      name: 'Product P',
-      technologies: 'C++, Qt',
-      price: '$1400',
-      priceStatus: 'Pending',
-      deposit: '$320',
-      depositStatus: 'Rejected',
-      agent: 'Isabella Garcia',
-      agentRole: 'Admin',
-      status: 'Rejected',
-      statusBadgeClass: 'badge-light-danger',
-    },
-    {
-      image: '/media/stock/600x400/img-17.jpg',
-      name: 'Product Q',
-      technologies: 'React Native, Expo',
-      price: '$1700',
-      priceStatus: 'Paid',
-      deposit: '$380',
-      depositStatus: 'Pending',
-      agent: 'Daniel Brown',
-      agentRole: 'Developer',
-      status: 'In Progress',
-      statusBadgeClass: 'badge-light-warning',
-    },
-    {
-      image: '/media/stock/600x400/img-18.jpg',
-      name: 'Product R',
-      technologies: 'Vue.js, Vuex',
-      price: '$1900',
-      priceStatus: 'Paid',
-      deposit: '$420',
-      depositStatus: 'Paid',
-      agent: 'Ella Thompson',
-      agentRole: 'Designer',
-      status: 'Success',
-      statusBadgeClass: 'badge-light-success',
-    },
-    {
-      image: '/media/stock/600x400/img-19.jpg',
-      name: 'Product S',
-      technologies: 'Python, Django Rest Framework',
-      price: '$1100',
-      priceStatus: 'Pending',
-      deposit: '$240',
-      depositStatus: 'Rejected',
-      agent: 'Noah Clark',
-      agentRole: 'Manager',
-      status: 'Rejected',
-      statusBadgeClass: 'badge-light-danger',
-    },
-    {
-      image: '/media/stock/600x400/img-20.jpg',
-      name: 'Product T',
-      technologies: 'PHP, Symfony',
-      price: '$1300',
-      priceStatus: 'Paid',
-      deposit: '$280',
-      depositStatus: 'Pending',
-      agent: 'Ava Walker',
-      agentRole: 'Admin',
-      status: 'In Progress',
-      statusBadgeClass: 'badge-light-warning',
-    },
-    {
-      image: '/media/stock/600x400/img-21.jpg',
-      name: 'Product U',
-      technologies: 'Java, Spring MVC',
-      price: '$1500',
-      priceStatus: 'Paid',
-      deposit: '$300',
-      depositStatus: 'Paid',
-      agent: 'Logan Perez',
-      agentRole: 'Developer',
-      status: 'Success',
-      statusBadgeClass: 'badge-light-success',
+      header: 'Estado',
+      accessor: (item: DataItem) => (
+        <span className={`badge ${item.statusBadgeClass} fs-7 fw-bold`}>{item.status}</span>
+      ),
+      width: '150px',
     },
   ]
 
   return (
     <>
-      <TablesWidget11 className='mb-5 mb-xl-8' data={data} />
+      <TableList className='mb-5 mb-xl-6' data={data} columns={columns} />
     </>
   )
 }
