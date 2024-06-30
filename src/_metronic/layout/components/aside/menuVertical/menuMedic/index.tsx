@@ -19,6 +19,10 @@ export function MenuMedic() {
         icon='/media/icons/duotune/communication/com012.svg'
       >
         <AsideMenuItem to='/medico/sintomas' title='Sintomas' hasBullet={true} />
+        <AsideMenuItem to='/medico/departamentos' title='Departamentos' hasBullet={true} />
+        <AsideMenuItem to='/medico/municipios' title='Municipios' hasBullet={true} />
+        <AsideMenuItem to='/medico/roles' title='Roles' hasBullet={true} />
+        <AsideMenuItem to='/medico/registro-personal' title='Registro Personal' hasBullet={true} />
       </AsideMenuItemWithSub>
       <div className='menu-item'>
         <div className='menu-content'>

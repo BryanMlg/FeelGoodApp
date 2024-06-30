@@ -30,7 +30,7 @@ const TableList = <T extends {}>({className = '', data, columns, itemsPerPage = 
     <div className={`card ${className} mt-3`}>
       <div className='card-body py-3'>
         <div className='table-responsive'>
-          <table className='table align-middle gs-0 gy-4'>
+          <table className='table align-middle gs-4 gy-4'>
             <thead>
               <tr className='fw-bolder text-muted bg-light'>
                 {columns.map((column, index) => (

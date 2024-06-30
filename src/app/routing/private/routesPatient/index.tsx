@@ -2,7 +2,7 @@ import {lazy} from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 
 export function RoutesPatient(props: any) {
-  const Calendario = lazy(() => import('../../../pages/userViews/calendario/calendar'))
+  const Calendario = lazy(() => import('../../../pages/patientViews/calendario/calendar'))
 
   return (
     <Switch>
