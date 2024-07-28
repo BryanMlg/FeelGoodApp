@@ -5,8 +5,7 @@ import {Formik, Field, Form as FormikForm} from 'formik'
 import * as Yup from 'yup'
 import CustomCloseButton from '../../../modules/utility/modal/customCloseButton'
 const validationSchema = Yup.object().shape({
-  symptom: Yup.string().required('Este campo es obligatorio'),
-  description: Yup.string().required('Este campo es obligatorio'),
+  enfermedad: Yup.string().required('Este campo es obligatorio'),
 })
 
 export const Formulario = () => {
@@ -32,12 +31,12 @@ export const Formulario = () => {
         keyboard={false}
       >
         <Modal.Header>
-          <Modal.Title className='text-uppercase h1'>Síntomas</Modal.Title>
+          <Modal.Title className='text-uppercase h1'>Registro Enfermedades</Modal.Title>
           <CustomCloseButton onClick={() => toggleModal && toggleModal(0)} />
         </Modal.Header>
         <Modal.Body>
           <Formik
-            initialValues={{symptom: '', description: ''}}
+            initialValues={{enfermedad: ''}}
             validationSchema={validationSchema}
             onSubmit={(values, {resetForm}) => {
               console.log('Formulario enviado:', values)
@@ -49,18 +48,10 @@ export const Formulario = () => {
             {({errors, touched}) => (
               <FormikForm>
                 <Form.Group controlId='formSymptom'>
-                  <Form.Label>Síntoma</Form.Label>
-                  <Field name='symptom' className='form-control' />
-                  {errors.symptom && touched.symptom ? (
-                    <div className='text-danger'>{errors.symptom}</div>
-                  ) : null}
-                </Form.Group>
-
-                <Form.Group controlId='formDescription' className='mt-3'>
-                  <Form.Label>Descripción</Form.Label>
-                  <Field as='textarea' name='description' className='form-control' />
-                  {errors.description && touched.description ? (
-                    <div className='text-danger'>{errors.description}</div>
+                  <Form.Label>Nombre de la Enfermedad</Form.Label>
+                  <Field name='enfermedad' className='form-control' />
+                  {errors.enfermedad && touched.enfermedad ? (
+                    <div className='text-danger'>{errors.enfermedad}</div>
                   ) : null}
                 </Form.Group>
 

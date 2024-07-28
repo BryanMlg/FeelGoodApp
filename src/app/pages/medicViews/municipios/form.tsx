@@ -3,7 +3,7 @@ import {Button, Modal, Form} from 'react-bootstrap-v5'
 import {ContentContext} from './context'
 import {Formik, Field, Form as FormikForm} from 'formik'
 import * as Yup from 'yup'
-import CustomCloseButton from '../../../modules/modal/customCloseButton'
+import CustomCloseButton from '../../../modules/utility/modal/customCloseButton'
 const validationSchema = Yup.object().shape({
   municipio: Yup.string().required('Este campo es obligatorio'),
 })
