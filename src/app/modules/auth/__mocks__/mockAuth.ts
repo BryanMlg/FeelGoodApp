@@ -18,8 +18,8 @@ export function mockAuth(mock: MockAdapter) {
       )
 
       if (user) {
-        const auth = user.auth
-        return [200, {...auth, password: undefined}]
+        console.log('existe', user)
+        return [200, {...user.auth, password: undefined}]
       }
     }
 

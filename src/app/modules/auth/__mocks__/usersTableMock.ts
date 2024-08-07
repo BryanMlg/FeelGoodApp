@@ -5,9 +5,9 @@ export class UsersTableMock {
   public static table: Array<UserModel> = [
     {
       id: 1,
-      username: 'admin',
+      username: 'Medico',
       password: 'demo',
-      email: 'admin@demo.com',
+      email: 'medico@demo.com',
       auth: {
         accessToken: 'access-token-8f3ae836da744329a6f93bf20594b5cc',
         refreshToken: 'access-token-f8c137a2c98743f48b643e71161d90aa',
@@ -15,7 +15,7 @@ export class UsersTableMock {
       roles: [1], // Administrator
       pic: toAbsoluteUrl('/media/avatars/150-2.jpg'),
       fullname: 'Sean S',
-      firstname: 'Sean',
+      firstname: 'Medico',
       lastname: 'Stark',
       occupation: 'CEO',
       companyName: 'Keenthemes',
@@ -62,9 +62,9 @@ export class UsersTableMock {
     },
     {
       id: 2,
-      username: 'user',
+      username: 'Paciente',
       password: 'demo',
-      email: 'user@demo.com',
+      email: 'paciente@demo.com',
       auth: {
         accessToken: 'access-token-6829bba69dd3421d8762-991e9e806dbf',
         refreshToken: 'access-token-f8e4c61a318e4d618b6c199ef96b9e55',
@@ -72,7 +72,7 @@ export class UsersTableMock {
       roles: [2], // Manager
       pic: toAbsoluteUrl('/media/avatars/150-1.jpg'),
       fullname: 'Megan F',
-      firstname: 'Megan',
+      firstname: 'Paciente',
       lastname: 'Fox',
       occupation: 'Deputy Head of Keenthemes in New York office',
       companyName: 'Keenthemes',
@@ -116,61 +116,6 @@ export class UsersTableMock {
         instagram: 'https://instagram.com/user',
       },
     },
-    {
-      id: 3,
-      username: 'guest',
-      password: 'demo',
-      email: 'guest@demo.com',
-      auth: {
-        accessToken: 'access-token-d2dff7b82f784de584b60964abbe45b9',
-        refreshToken: 'access-token-c999ccfe74aa40d0aa1a64c5e620c1a5',
-      },
-      roles: [3], // Guest
-      pic: toAbsoluteUrl('/media/avatars/150-5.jpg'),
-      fullname: 'Manu G',
-      firstname: 'Manu',
-      lastname: 'Ginobili',
-      occupation: 'CFO',
-      companyName: 'Keenthemes',
-      phone: '456669067892',
-      language: 'en',
-      timeZone: 'International Date Line West',
-      communication: {
-        email: true,
-        sms: true,
-        phone: false,
-      },
-      emailSettings: {
-        emailNotification: true,
-        sendCopyToPersonalEmail: false,
-        activityRelatesEmail: {
-          youHaveNewNotifications: false,
-          youAreSentADirectMessage: false,
-          someoneAddsYouAsAsAConnection: true,
-          uponNewOrder: false,
-          newMembershipApproval: false,
-          memberRegistration: true,
-        },
-        updatesFromKeenthemes: {
-          newsAboutKeenthemesProductsAndFeatureUpdates: false,
-          tipsOnGettingMoreOutOfKeen: false,
-          thingsYouMissedSindeYouLastLoggedIntoKeen: true,
-          newsAboutStartOnPartnerProductsAndOtherServices: true,
-          tipsOnStartBusinessProducts: true,
-        },
-      },
-      address: {
-        addressLine: '1467  Griffin Street',
-        city: 'Phoenix',
-        state: 'Arizona',
-        postCode: '85012',
-      },
-      socialNetworks: {
-        linkedIn: 'https://linkedin.com/guest',
-        facebook: 'https://facebook.com/guest',
-        twitter: 'https://twitter.com/guest',
-        instagram: 'https://instagram.com/guest',
-      },
-    },
+ 
   ]
 }

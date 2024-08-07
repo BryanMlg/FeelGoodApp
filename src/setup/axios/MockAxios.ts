@@ -5,5 +5,6 @@ import {mockAuth} from '../../app/modules/auth'
 export default function mockAxios(axios: AxiosInstance) {
   const mock = new MockAdapter(axios, {delayResponse: 300})
   mockAuth(mock)
+  console.log('log', mockAuth(mock))
   return mock
 }

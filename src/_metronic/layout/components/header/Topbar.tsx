@@ -3,28 +3,30 @@ import {FC} from 'react'
 import {KTSVG, toAbsoluteUrl} from '../../../helpers'
 import {HeaderUserMenu} from '../../../partials'
 import {useLayout} from '../../core'
-
+import {useSelector} from 'react-redux'
+import {RootState} from '../../../../setup'
 const toolbarButtonMarginClass = 'ms-1 ms-lg-3',
   toolbarButtonHeightClass = 'w-30px h-30px w-md-40px h-md-40px',
   toolbarUserAvatarHeightClass = 'symbol-30px symbol-md-40px'
-  // toolbarButtonIconSizeClass = 'svg-icon-1'
+// toolbarButtonIconSizeClass = 'svg-icon-1'
 
 const Topbar: FC = () => {
   const {config} = useLayout()
-
+  const user = useSelector((state: RootState) => state.auth.user)
+  console.log('datos', user)
   return (
     <div className='d-flex align-items-stretch flex-shrink-0'>
       {/* Search */}
 
       {/* Activities */}
-      <div className={clsx('d-flex align-items-center', toolbarButtonMarginClass)}>
+      {/* <div className={clsx('d-flex align-items-center', toolbarButtonMarginClass)}>
         <div
           className={clsx('btn btn-icon btn-active-light-primary', toolbarButtonHeightClass)}
           id='kt_activities_toggle'
         >
-          <span>USER</span>
+          Activity
         </div>
-      </div>
+      </div> */}
       {/* Quick links */}
       {/* <div className={clsx('d-flex align-items-center', toolbarButtonMarginClass)}>
         
@@ -87,10 +89,14 @@ const Topbar: FC = () => {
       </div> */}
 
       {/* begin::User */}
+
       <div
         className={clsx('d-flex align-items-center', toolbarButtonMarginClass)}
         id='kt_header_user_menu_toggle'
       >
+        <h6 className='text-center mt-3 me-5 text-white'>
+          {user?.firstname} {user?.lastname}
+        </h6>
         {/* begin::Toggle */}
         <div
           className={clsx('cursor-pointer symbol', toolbarUserAvatarHeightClass)}
@@ -99,7 +105,7 @@ const Topbar: FC = () => {
           data-kt-menu-placement='bottom-end'
           data-kt-menu-flip='bottom'
         >
-          <img src={toAbsoluteUrl('/media/avatars/150-2.jpg')} alt='metronic' />
+          <img src={user?.pic} alt='metronic' />
         </div>
         <HeaderUserMenu />
         {/* end::Toggle */}

@@ -8,7 +8,6 @@ import {useFormik} from 'formik'
 import * as auth from '../redux/AuthRedux'
 import {login} from '../redux/AuthCRUD'
 
-
 const loginSchema = Yup.object().shape({
   email: Yup.string()
     .email('Wrong email format')
@@ -22,7 +21,7 @@ const loginSchema = Yup.object().shape({
 })
 
 const initialValues = {
-  email: 'admin@demo.com',
+  email: 'medico@demo.com',
   password: 'demo',
 }
 
@@ -82,7 +81,7 @@ export function Login() {
       ) : (
         <div className='mb-10 bg-light-info p-8 rounded'>
           <div className='text-info'>
-            Utiliza la cuenta <strong>techdev@demo.com</strong> y la contraseña{' '}
+            Utiliza la cuenta <strong>medico@demo.com o paciente@demo.com</strong> y la contraseña{' '}
             <strong>demo</strong> para continuar.
           </div>
         </div>
