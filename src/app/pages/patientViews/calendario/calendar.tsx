@@ -1,42 +1,59 @@
-import React from 'react';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import { DateSelectArg, EventClickArg } from '@fullcalendar/core';
+import React, {useContext} from 'react'
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin from '@fullcalendar/interaction'
+import {DateSelectArg, EventClickArg} from '@fullcalendar/core'
+import {ContentContext} from './context'
 
 const MyCalendar: React.FC = () => {
+  const {data, toggleModal, setSelectedItem, setSelectedFecha} = useContext(ContentContext)
+
+  // Mapea los datos al formato que FullCalendar espera
+  const events = data?.map((item) => ({
+    title: item.actividadFisica,
+    start: item.fecha,
+    extendedProps: {
+      horasSueno: item.horasSueno,
+      consumeAlcohol: item.consumeAlcohol,
+      consumeTabaco: item.consumeTabaco,
+      horasActividadFisica: item.horasActividadFisica,
+      fecha: item?.fecha,
+      id: item?.id,
+      actividadFisica: item?.actividadFisica,
+    },
+  }))
+
   const handleDateSelect = (selectInfo: DateSelectArg) => {
-    console.log('Fecha seleccionada:', selectInfo.startStr); // Accede a la fecha seleccionada
-  };
+    setSelectedFecha(selectInfo?.start)
+    toggleModal(0)
+  }
 
   const handleEventClick = (clickInfo: EventClickArg) => {
-    alert(`Evento: ${clickInfo.event.title}, Fecha: ${clickInfo.event.start}`);
-  };
+    const {extendedProps} = clickInfo.event
+    setSelectedItem(extendedProps)
+    toggleModal(1)
+  }
 
   return (
     <div className='card shadow-sm'>
       <div className='card-body p-0 py-5 px-5'>
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
-          initialView='dayGridMonth' // Mostrar solo los meses
+          initialView='dayGridMonth'
           selectable={true}
-          events={[
-            { title: 'Evento 1', start: '2024-06-28' },
-            { title: 'Evento 2', start: '2024-06-29' },
-          ]}
+          events={events}
           select={handleDateSelect}
           eventClick={handleEventClick}
           headerToolbar={{
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            right: 'dayGridMonth,timeGridWeek,timeGridDay',
           }}
-          
           contentHeight='630px'
         />
       </div>
     </div>
-  );
+  )
 }
 
-export default MyCalendar;
+export default MyCalendar

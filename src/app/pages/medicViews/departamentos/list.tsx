@@ -1,6 +1,7 @@
-import React from 'react'
+import {useContext} from 'react'
 import {TableList} from '../../../../_metronic/partials/widgets'
-
+import {ContentContext} from './context'
+import {Departamento} from './models/models'
 type ColumnConfig<T> = {
   header: string
   accessor: keyof T | ((item: T) => React.ReactNode)
@@ -8,45 +9,22 @@ type ColumnConfig<T> = {
   className?: string
 }
 
-type departamentoType = {
-  nombre: string
-  id: number
-  estado: number
-}
-
 export default function List() {
-  const data: departamentoType[] = [
-    {
-      nombre: 'Quetzaltenango',
-      id: 1,
-      estado: 1,
-    },
-    {
-      nombre: 'Guatemala',
-      id: 2,
-      estado: 0,
-    },
-    {
-      nombre: 'Izabal',
-      id: 3,
-      estado: 1,
-    },
-    {
-      nombre: 'San Marcos',
-      id: 4,
-      estado: 1,
-    },
-  ]
-
-  const columns: ColumnConfig<departamentoType>[] = [
+  const {data, toggleModal, setSelectedItem, Status} = useContext(ContentContext)
+  const handleEdit = (item: any) => {
+    setSelectedItem(item)
+    toggleModal(1)
+  }
+  const handleStatus = (item: any) => {
+    Status(item?.id, item?.estado)
+  }
+  const columns: ColumnConfig<Departamento>[] = [
     {
       header: 'Departamento',
-      accessor: (item: departamentoType) => (
+      accessor: (item: Departamento) => (
         <div className='d-flex align-items-center'>
           <div className='d-flex justify-content-start flex-column'>
-            <a href='*' className='text-dark fw-bolder text-hover-primary mb-1 fs-6'>
-              {item.nombre}
-            </a>
+            <div className='text-dark fw-bolder text-hover-primary mb-1 fs-6'>{item.nombre}</div>
           </div>
         </div>
       ),
@@ -55,15 +33,13 @@ export default function List() {
 
     {
       header: 'Estado',
-      accessor: (item: departamentoType) => (
-        
+      accessor: (item: Departamento) => (
         <span
           className={`badge ${
             item.estado === 1 ? 'badge-light-success' : 'badge-light-danger'
           } fs-7 fw-bold`}
         >
           {item.estado === 1 ? 'Activo' : 'Desactivado'}
-          {console.log(item)}
         </span>
       ),
       width: '150px',
@@ -72,7 +48,13 @@ export default function List() {
 
   return (
     <>
-      <TableList className='mb-5 mb-xl-6' data={data} columns={columns} />
+      <TableList
+        className='mb-5 mb-xl-6'
+        data={data ?? []}
+        columns={columns}
+        onEdit={handleEdit}
+        onEstatus={handleStatus}
+      />
     </>
   )
 }

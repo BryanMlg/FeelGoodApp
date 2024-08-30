@@ -9,8 +9,8 @@ const validationSchema = Yup.object().shape({
 })
 
 export const Formulario = () => {
-  const {toggleModal, show} = useContext(ContentContext)
-
+  const {toggleModal, show, createUpdate, selectedItem, opcion} = useContext(ContentContext)
+  
   return (
     <>
       <Button
@@ -18,7 +18,7 @@ export const Formulario = () => {
         size='sm'
         data-for='crear'
         data-tip='Crear'
-        onClick={() => toggleModal && toggleModal(1)}
+        onClick={() => toggleModal && toggleModal(0)}
       >
         Agregar
       </Button>
@@ -31,16 +31,16 @@ export const Formulario = () => {
         keyboard={false}
       >
         <Modal.Header>
-          <Modal.Title className='text-uppercase h1'>Registro Roles</Modal.Title>
+          <Modal.Title className='text-uppercase h1'>Registro Departamentos</Modal.Title>
           <CustomCloseButton onClick={() => toggleModal && toggleModal(0)} />
         </Modal.Header>
         <Modal.Body>
           <Formik
-            initialValues={{rol: ''}}
+            initialValues={{rol: selectedItem?.nombre || ''}}
             validationSchema={validationSchema}
             onSubmit={(values, {resetForm}) => {
-              console.log('Formulario enviado:', values)
-              // Aquí puedes manejar el envío del formulario, por ejemplo, guardando los datos
+              createUpdate(values?.rol, selectedItem?.id)
+
               resetForm()
               toggleModal && toggleModal(0)
             }}
@@ -56,7 +56,7 @@ export const Formulario = () => {
                 </Form.Group>
 
                 <Button type='submit' variant='primary' className='mt-3'>
-                  Enviar
+                  {opcion === 1 ? 'Actualizar' : 'Crear'}
                 </Button>
               </FormikForm>
             )}

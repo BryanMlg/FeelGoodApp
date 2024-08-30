@@ -1,6 +1,8 @@
-import React from 'react'
+import {useContext} from 'react'
 import {TableList} from '../../../../_metronic/partials/widgets'
-
+import {Persona} from './models/models'
+import {ContentContext} from './context'
+import {toAbsoluteUrl} from '../../../../_metronic/helpers'
 type ColumnConfig<T> = {
   header: string
   accessor: keyof T | ((item: T) => React.ReactNode)
@@ -8,103 +10,50 @@ type ColumnConfig<T> = {
   className?: string
 }
 
-type personalType = {
-  primerNombre: string
-  segundoNombre: string
-  tercerNombre: string
-  primerApellido: string
-  segundoApellido: string
-  apellidoCasada: string
-  departamento: string
-  municipio: string
-  rol: string
-  id: number
-  image: string
-  estado: number
-  dpi: string
-}
-
 export default function List() {
-  const data: personalType[] = [
+  const {data, toggleModal, setSelectedItem, Status} = useContext(ContentContext)
+  const handleEdit = (item: any) => {
+    setSelectedItem(item)
+    toggleModal(1)
+  }
+  const handleStatus = (item: any) => {
+    Status(item?.id, item?.estado)
+  }
+  const handleSaludGeneral = (item: any) => {
+    setSelectedItem(item)
+    toggleModal(3)
+  }
+  const columns: ColumnConfig<Persona>[] = [
     {
-      id: 1,
-      primerNombre: 'Juan',
-      segundoNombre: 'Carlos',
-      tercerNombre: '',
-      primerApellido: 'Pérez',
-      segundoApellido: 'García',
-      apellidoCasada: '',
-      departamento: 'Guatemala',
-      municipio: 'Ciudad de Guatemala',
-      rol: 'Admin',
-      image: 'https://via.placeholder.com/50',
-      dpi: '1234 56789 0123',
-      estado: 1,
-    },
-    {
-      id: 2,
-      primerNombre: 'María',
-      segundoNombre: 'Luisa',
-      tercerNombre: '',
-      primerApellido: 'Ramírez',
-      segundoApellido: 'Hernández',
-      apellidoCasada: 'de López',
-      departamento: 'Guatemala',
-      municipio: 'Mixco',
-      rol: 'User',
-      image: 'https://via.placeholder.com/50',
-      dpi: '9876 54321 6789',
-      estado: 0,
-    },
-    {
-      id: 3,
-      primerNombre: 'Ana',
-      segundoNombre: 'Beatriz',
-      tercerNombre: 'Sofía',
-      primerApellido: 'López',
-      segundoApellido: 'Martínez',
-      apellidoCasada: '',
-      departamento: 'Guatemala',
-      municipio: 'Villa Nueva',
-      rol: 'Editor',
-      image: 'https://via.placeholder.com/50',
-      dpi: '4567 89012 3456',
-      estado: 1,
-    },
-  ]
-
-  const columns: ColumnConfig<personalType>[] = [
-    {
-      header: 'Municipio',
-      accessor: (item: personalType) => (
+      header: 'Persona',
+      accessor: (item: Persona) => (
         <div className='d-flex align-items-center'>
-          <div className='symbol symbol-50px me-5'>
-            <img src={item.image} alt={item.primerNombre} />
-          </div>
+          {/* <div className='symbol symbol-50px me-5'>
+            <img src={''} alt={''} />
+          </div> */}
           <div className='d-flex justify-content-start flex-column'>
-            <a href='*' className='text-dark fw-bolder text-hover-primary mb-1 fs-6'>
-              {item.primerNombre} {item.segundoNombre} {item.tercerNombre} {item.primerApellido}{' '}
-              {item.apellidoCasada}
-            </a>
+            <div className='text-dark fw-bolder text-hover-primary mb-1 fs-6'>
+              {item.primerNombres} {item.segundoNombre} {item.tercerNombre} {item.primerApellido}{' '}
+            </div>
             <span className='text-muted fw-bold text-muted d-block fs-7'>{item.rol}</span>
           </div>
         </div>
       ),
       width: '325px',
     },
-    {header: 'Departamento', accessor: 'departamento', width: '125px'},
-    {header: 'Municipio', accessor: 'municipio', width: '125px'},
+    {header: 'Departamento', accessor: 'municipioId', width: '125px'},
+    {header: 'Municipio', accessor: 'departamentoId', width: '125px'},
     {header: 'DPI', accessor: 'dpi', width: '125px'},
+    {header: 'Edad', accessor: 'edad', width: '75px'},
     {
       header: 'Estado',
-      accessor: (item: personalType) => (
+      accessor: (item: Persona) => (
         <span
           className={`badge ${
             item.estado === 1 ? 'badge-light-success' : 'badge-light-danger'
           } fs-7 fw-bold`}
         >
           {item.estado === 1 ? 'Activo' : 'Desactivado'}
-          {console.log(item)}
         </span>
       ),
       width: '150px',
@@ -113,7 +62,19 @@ export default function List() {
 
   return (
     <>
-      <TableList className='mb-5 mb-xl-6' data={data} columns={columns} />
+      <TableList
+        className='mb-5 mb-xl-6'
+        data={data ?? []}
+        columns={columns}
+        onEdit={handleEdit}
+        onEstatus={handleStatus}
+        actionButtons={[
+          {
+            iconPath: toAbsoluteUrl('/media/icons/duotune/medicine/med001.svg'),
+            onClick: (item) => {handleSaludGeneral(item)},
+          },
+        ]}
+      />
     </>
   )
 }

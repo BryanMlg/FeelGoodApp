@@ -1,16 +1,26 @@
-import {useContext} from 'react'
-import {Button, Modal, Form} from 'react-bootstrap-v5'
-import {ContentContext} from './context'
-import {Formik, Field, Form as FormikForm} from 'formik'
-import * as Yup from 'yup'
-import CustomCloseButton from '../../../modules/utility/modal/customCloseButton'
+import React, { useState, useContext, useEffect } from 'react';
+import { Button, Modal, Form } from 'react-bootstrap-v5';
+import { ContentContext } from './context';
+import { Formik, Field, Form as FormikForm } from 'formik';
+import * as Yup from 'yup';
+import CustomCloseButton from '../../../modules/utility/modal/customCloseButton';
+
 const validationSchema = Yup.object().shape({
-  municipio: Yup.string().required('Este campo es obligatorio'),
-})
+  municipio: Yup.string().required('Debe Llenar El Campo'),
+  selectField: Yup.string(),
+});
 
 export const Formulario = () => {
-  const {toggleModal, show} = useContext(ContentContext)
-
+  const { toggleModal, show, labelDepartamento, createUpdate, selectedItem, opcion } = useContext(ContentContext);
+  const [selectedOption, setSelectedOption] = useState<any>();
+  useEffect(() => {
+    if (opcion === 1) {
+      const departamento = labelDepartamento?.find((dept) => dept.id === selectedItem.departamentoId)
+      setSelectedOption(departamento)
+    }else{
+      setSelectedOption(null)
+    }
+  }, [selectedItem, labelDepartamento, opcion])
   return (
     <>
       <Button
@@ -18,7 +28,7 @@ export const Formulario = () => {
         size='sm'
         data-for='crear'
         data-tip='Crear'
-        onClick={() => toggleModal && toggleModal(1)}
+        onClick={() => toggleModal && toggleModal(0)}
       >
         Agregar
       </Button>
@@ -36,24 +46,50 @@ export const Formulario = () => {
         </Modal.Header>
         <Modal.Body>
           <Formik
-            initialValues={{municipio: ''}}
+            initialValues={{ municipio: selectedItem?.nombre, selectField: selectedOption?.id }}
             validationSchema={validationSchema}
-            onSubmit={(values, {resetForm}) => {
-              console.log('Formulario enviado:', values)
-              // Aquí puedes manejar el envío del formulario, por ejemplo, guardando los datos
-              resetForm()
-              toggleModal && toggleModal(0)
+            onSubmit={(values, { resetForm }) => {
+              createUpdate(selectedOption?.id || selectedOption, values?.municipio, selectedItem?.id)
+              resetForm();
+              toggleModal && toggleModal(0);
             }}
           >
-            {({errors, touched}) => (
+            {({ errors, touched, setFieldValue }) => (
               <FormikForm>
-                <Form.Group controlId='formSymptom'>
-                  <Form.Label>Nombre del Municipio</Form.Label>
-                  <Field name='municipio' className='form-control' />
-                  {errors.municipio && touched.municipio ? (
-                    <div className='text-danger'>{errors.municipio}</div>
+                
+                <>{opcion === 0 ? <Form.Group controlId='formSelect'>
+                  <Form.Label>Seleccione Un Departamento</Form.Label>
+                  <Field
+                    as='select'
+                    name='selectField'
+                    className='form-control'
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                      const value = e.target.value;
+                      setFieldValue('selectField', value);
+                      setSelectedOption(value);
+                    }}
+                  >
+                    <option value=''>Seleccione...</option>
+                    {labelDepartamento?.map((option) => (
+                      <option key={option.id} value={option.id}>
+                        {option.nombre}
+                      </option>
+                    ))}
+                  </Field>
+                  {errors.selectField && touched.selectField ? (
+                    <div className='text-danger'>{errors.selectField}</div>
                   ) : null}
-                </Form.Group>
+                </Form.Group> : <Form.Label>Departamento - {selectedOption?.nombre}</Form.Label>}</>
+
+                {selectedOption && (
+                  <Form.Group controlId='formMunicipio' className='mt-5'>
+                    <Form.Label>Nombre del Municipio</Form.Label>
+                    <Field name='municipio' className='form-control' />
+                    {errors.municipio && touched.municipio ? (
+                      <div className='text-danger'>{errors.municipio}</div>
+                    ) : null}
+                  </Form.Group>
+                )}
 
                 <Button type='submit' variant='primary' className='mt-3'>
                   Enviar
@@ -64,7 +100,7 @@ export const Formulario = () => {
         </Modal.Body>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default Formulario
+export default Formulario;

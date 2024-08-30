@@ -1,6 +1,7 @@
-import React from 'react'
+import {useContext} from 'react'
 import {TableList} from '../../../../_metronic/partials/widgets'
-
+import {ContentContext} from './context'
+import {Municipio} from './models/models'
 type ColumnConfig<T> = {
   header: string
   accessor: keyof T | ((item: T) => React.ReactNode)
@@ -8,45 +9,22 @@ type ColumnConfig<T> = {
   className?: string
 }
 
-type municipiosType = {
-  nombre: string
-  id: number
-  estado: number
-}
-
 export default function List() {
-  const data: municipiosType[] = [
-    {
-      nombre: 'Ayutla',
-      id: 1,
-      estado: 1,
-    },
-    {
-      nombre: 'Mazatenango',
-      id: 2,
-      estado: 0,
-    },
-    {
-      nombre: 'Acatenango',
-      id: 3,
-      estado: 1,
-    },
-    {
-      nombre: 'Zaragoza',
-      id: 4,
-      estado: 1,
-    },
-  ]
-
-  const columns: ColumnConfig<municipiosType>[] = [
+  const {data, toggleModal, setSelectedItem, Status} = useContext(ContentContext)
+  const handleEdit = (item: any) => {
+    setSelectedItem(item)
+    toggleModal(1)
+  }
+  const handleStatus = (item: any) => {
+    Status(item?.id, item?.estado)
+  }
+  const columns: ColumnConfig<Municipio>[] = [
     {
       header: 'Municipio',
-      accessor: (item: municipiosType) => (
+      accessor: (item: Municipio) => (
         <div className='d-flex align-items-center'>
           <div className='d-flex justify-content-start flex-column'>
-            <a href='*' className='text-dark fw-bolder text-hover-primary mb-1 fs-6'>
-              {item.nombre}
-            </a>
+            <div className='text-dark fw-bolder text-hover-primary mb-1 fs-6'>{item.nombre}</div>
           </div>
         </div>
       ),
@@ -55,14 +33,13 @@ export default function List() {
 
     {
       header: 'Estado',
-      accessor: (item: municipiosType) => (
+      accessor: (item: Municipio) => (
         <span
           className={`badge ${
             item.estado === 1 ? 'badge-light-success' : 'badge-light-danger'
           } fs-7 fw-bold`}
         >
           {item.estado === 1 ? 'Activo' : 'Desactivado'}
-          {console.log(item)}
         </span>
       ),
       width: '150px',
@@ -71,7 +48,13 @@ export default function List() {
 
   return (
     <>
-      <TableList className='mb-5 mb-xl-6' data={data} columns={columns} />
+      <TableList
+        className='mb-5 mb-xl-6'
+        data={data ?? []}
+        columns={columns}
+        onEdit={handleEdit}
+        onEstatus={handleStatus}
+      />
     </>
   )
 }

@@ -62,7 +62,6 @@ export default function List() {
           } fs-7 fw-bold`}
         >
           {item.estado === 1 ? 'Activo' : 'Desactivado'}
-          {console.log(item)}
         </span>
       ),
       width: '150px',

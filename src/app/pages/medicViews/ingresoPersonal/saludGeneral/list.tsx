@@ -1,7 +1,7 @@
 import {useContext} from 'react'
-import {TableList} from '../../../../_metronic/partials/widgets'
+import {TableList} from '../../../../../_metronic/partials/widgets'
+import {ParametrosSaludGeneral} from './models/models'
 import {ContentContext} from './context'
-import {Enfermedad} from './models/models'
 type ColumnConfig<T> = {
   header: string
   accessor: keyof T | ((item: T) => React.ReactNode)
@@ -10,30 +10,36 @@ type ColumnConfig<T> = {
 }
 
 export default function List() {
-  const {data, toggleModal, setSelectedItem, Status} = useContext(ContentContext)
+  const {data, Status, setSelectedItem, setEditar} = useContext(ContentContext)
   const handleEdit = (item: any) => {
     setSelectedItem(item)
-    toggleModal(1)
+    setEditar(true)
   }
   const handleStatus = (item: any) => {
     Status(item?.id, item?.estado)
   }
-  const columns: ColumnConfig<Enfermedad>[] = [
+  const columns: ColumnConfig<ParametrosSaludGeneral>[] = [
     {
-      header: 'Sintoma',
-      accessor: (item: Enfermedad) => (
+      header: 'Peso',
+      accessor: (item: ParametrosSaludGeneral) => (
         <div className='d-flex align-items-center'>
+          {/* <div className='symbol symbol-50px me-5'>
+            <img src={''} alt={''} />
+          </div> */}
           <div className='d-flex justify-content-start flex-column'>
-            <div className='text-dark fw-bolder text-hover-primary mb-1 fs-6'>{item.nombre}</div>
+            <div className='text-dark fw-bolder text-hover-primary mb-1 fs-6'>{item.peso}</div>
           </div>
         </div>
       ),
-      width: '325px',
+      width: '100px',
     },
-
+    {header: 'Altura', accessor: 'altura', width: '125px'},
+    {header: 'Glucosa en Sangre', accessor: 'glucosaSangre', width: '175px'},
+    {header: 'Nivel Colesterol', accessor: 'nivelesColesterol', width: '175px'},
+    {header: 'Prueba Hormonal', accessor: 'pruebasHormonales', width: '175px'},
     {
       header: 'Estado',
-      accessor: (item: Enfermedad) => (
+      accessor: (item: ParametrosSaludGeneral) => (
         <span
           className={`badge ${
             item.estado === 1 ? 'badge-light-success' : 'badge-light-danger'

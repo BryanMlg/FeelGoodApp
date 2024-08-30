@@ -1,7 +1,7 @@
 import {useContext} from 'react'
-import {TableList} from '../../../../_metronic/partials/widgets'
+import {TableList} from '../../../../../_metronic/partials/widgets'
+import {Sintoma} from './models/models'
 import {ContentContext} from './context'
-import {Enfermedad} from './models/models'
 type ColumnConfig<T> = {
   header: string
   accessor: keyof T | ((item: T) => React.ReactNode)
@@ -10,30 +10,20 @@ type ColumnConfig<T> = {
 }
 
 export default function List() {
-  const {data, toggleModal, setSelectedItem, Status} = useContext(ContentContext)
+  const {data, Status, setSelectedItem, setEditar} = useContext(ContentContext)
   const handleEdit = (item: any) => {
     setSelectedItem(item)
-    toggleModal(1)
+    setEditar(true)
   }
   const handleStatus = (item: any) => {
     Status(item?.id, item?.estado)
   }
-  const columns: ColumnConfig<Enfermedad>[] = [
-    {
-      header: 'Sintoma',
-      accessor: (item: Enfermedad) => (
-        <div className='d-flex align-items-center'>
-          <div className='d-flex justify-content-start flex-column'>
-            <div className='text-dark fw-bolder text-hover-primary mb-1 fs-6'>{item.nombre}</div>
-          </div>
-        </div>
-      ),
-      width: '325px',
-    },
-
+  const columns: ColumnConfig<Sintoma>[] = [
+    {header: 'Sintoma', accessor: 'idSintoma', width: '125px'},
+    {header: 'Descripción', accessor: 'descripcion', width: '300px'},
     {
       header: 'Estado',
-      accessor: (item: Enfermedad) => (
+      accessor: (item: Sintoma) => (
         <span
           className={`badge ${
             item.estado === 1 ? 'badge-light-success' : 'badge-light-danger'

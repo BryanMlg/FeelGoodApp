@@ -1,11 +1,10 @@
-import {useContext, useState} from 'react'
+import {useContext} from 'react'
 import {Button, Modal, Form, Row, Col} from 'react-bootstrap-v5'
 import {ContentContext} from './context'
 import {Formik, Field, Form as FormikForm} from 'formik'
 import * as Yup from 'yup'
 import CustomCloseButton from '../../../modules/utility/modal/customCloseButton'
-import CustomSelect from '../../../modules/utility/customSelect/customSelect'
-
+import SaludGeneral from './saludGeneral/index'
 const validationSchema = Yup.object().shape({
   departamento: Yup.string().required('Este campo es obligatorio'),
   municipio: Yup.string().required('Este campo es obligatorio'),
@@ -17,14 +16,23 @@ const validationSchema = Yup.object().shape({
   segundoApellido: Yup.string().required('Este campo es obligatorio'),
   dpi: Yup.string().required('Este campo es obligatorio'),
   edad: Yup.string().required('Este campo es obligatorio'),
-  apellidoDeCasada: Yup.string(),
-  enfermedades: Yup.string().required('Este campo es obligatorio'),
-  descripcionEnfermedad: Yup.string().required('Este campo es obligatorio'),
+  email: Yup.string()
+    .email('Debe ser un correo electrónico válido')
+    .required('Este campo es obligatorio'),
+  fechaNacimiento: Yup.date().required('Este campo es obligatorio').nullable(),
 })
 
 export const Formulario = () => {
-  const {toggleModal, show, enfermedades} = useContext(ContentContext)
-  const [selectedEnfermedad, setSelectedEnfermedad] = useState<string>('')
+  const {
+    toggleModal,
+    show,
+    labelDepartamento,
+    labelMunicipio,
+    labelRol,
+    createUpdate,
+    selectedItem,
+    opcion,
+  } = useContext(ContentContext)
 
   return (
     <>
@@ -33,7 +41,7 @@ export const Formulario = () => {
         size='sm'
         data-for='crear'
         data-tip='Crear'
-        onClick={() => toggleModal && toggleModal(1)}
+        onClick={() => toggleModal && toggleModal(0)}
       >
         Agregar
       </Button>
@@ -51,75 +59,99 @@ export const Formulario = () => {
           <CustomCloseButton onClick={() => toggleModal && toggleModal(0)} />
         </Modal.Header>
         <Modal.Body>
-          <Formik
-            initialValues={{
-              departamento: '',
-              municipio: '',
-              rol: '',
-              primerNombre: '',
-              segundoNombre: '',
-              tercerNombre: '',
-              primerApellido: '',
-              segundoApellido: '',
-              dpi: '',
-              apellidoDeCasada: '',
-              edad: '',
-              enfermedades: '',
-              descripcionEnfermedad: '',
-            }}
-            validationSchema={validationSchema}
-            onSubmit={(values, {resetForm}) => {
-              console.log('Formulario enviado:', values)
-              // Aquí puedes manejar el envío del formulario, por ejemplo, guardando los datos
-              resetForm()
-              toggleModal && toggleModal(0)
-            }}
-          >
-            {({errors, touched}) => (
-              <FormikForm>
-                <Row className='mb-4'>
-                  <Col xs={12} md={6} className='px-xl-15 px-lg-10'>
+          {opcion !== 3 ? (
+            <Formik
+              initialValues={{
+                departamento: selectedItem?.departamentoId || '',
+                municipio: selectedItem?.municipioId || '',
+                rol: selectedItem?.rolId || '',
+                primerNombre: selectedItem?.primerNombres || '',
+                segundoNombre: selectedItem?.segundoNombre || '',
+                tercerNombre: selectedItem?.tercerNombre || '',
+                primerApellido: selectedItem?.primerApellido || '',
+                segundoApellido: selectedItem?.segundoApellido || '',
+                dpi: selectedItem?.dpi || '',
+                edad: selectedItem?.edad || '',
+                email: selectedItem?.email || '',
+                fechaNacimiento: selectedItem?.fechaNacimiento || null,
+              }}
+              validationSchema={validationSchema}
+              onSubmit={(values, {resetForm}) => {
+                createUpdate({
+                  primerNombres: values?.primerNombre,
+                  segundoNombre: values?.segundoNombre,
+                  tercerNombre: values?.tercerNombre,
+                  primerApellido: values?.primerApellido,
+                  segundoApellido: values?.segundoApellido,
+                  dpi: values?.dpi,
+                  edad: values?.edad,
+                  fechaNacimiento: values?.fechaNacimiento,
+                  rolId: values?.rol,
+                  municipioId: values?.municipio,
+                  departamentoId: values?.departamento,
+                  creadoPor: 1,
+                  estado: 1,
+                  email: values?.email,
+                  id: selectedItem?.id,
+                })
+                resetForm()
+                toggleModal && toggleModal(0)
+              }}
+            >
+              {({errors, touched}) => (
+                <FormikForm>
+                  <Row className='mb-4 px-20'>
                     <h4 className='text-center mb-4'>Datos Personales</h4>
                     <hr className='mb-4' />
                     <Row>
-                      <Col xs={12} md={12} lg={6}>
+                      <Col xs={12} md={12} lg={4} className='mt-4'>
                         <Form.Group controlId='formDepartamento'>
                           <Form.Label>
                             Departamento <span className='text-danger'>*</span>
                           </Form.Label>
                           <Field as='select' name='departamento' className='form-control'>
                             <option value=''>Seleccione un departamento</option>
-                            {/* Agregar opciones de departamento aquí */}
+                            {labelDepartamento?.map((option) => (
+                              <option key={option.id} value={option.id}>
+                                {option.nombre}
+                              </option>
+                            ))}
                           </Field>
                           {errors.departamento && touched.departamento ? (
                             <div className='text-danger'>{errors.departamento}</div>
                           ) : null}
                         </Form.Group>
                       </Col>
-                      <Col xs={12} md={12} lg={6}>
+                      <Col xs={12} md={12} lg={4} className='mt-4'>
                         <Form.Group controlId='formMunicipio'>
                           <Form.Label>
                             Municipio <span className='text-danger'>*</span>
                           </Form.Label>
                           <Field as='select' name='municipio' className='form-control'>
                             <option value=''>Seleccione un municipio</option>
-                            {/* Agregar opciones de municipio aquí */}
+                            {labelMunicipio?.map((option) => (
+                              <option key={option.id} value={option.id}>
+                                {option.nombre}
+                              </option>
+                            ))}
                           </Field>
                           {errors.municipio && touched.municipio ? (
                             <div className='text-danger'>{errors.municipio}</div>
                           ) : null}
                         </Form.Group>
                       </Col>
-                    </Row>
-                    <Row className='mt-4'>
-                      <Col xs={12} md={12}>
+                      <Col xs={12} md={12} lg={4} className='mt-4'>
                         <Form.Group controlId='formRol'>
                           <Form.Label>
                             Rol <span className='text-danger'>*</span>
                           </Form.Label>
                           <Field as='select' name='rol' className='form-control'>
                             <option value=''>Seleccione un rol</option>
-                            {/* Agregar opciones de rol aquí */}
+                            {labelRol?.map((option) => (
+                              <option key={option.id} value={option.id}>
+                                {option.nombre}
+                              </option>
+                            ))}
                           </Field>
                           {errors.rol && touched.rol ? (
                             <div className='text-danger'>{errors.rol}</div>
@@ -127,8 +159,9 @@ export const Formulario = () => {
                         </Form.Group>
                       </Col>
                     </Row>
+
                     <Row className='mt-4'>
-                      <Col xs={12} md={6}>
+                      <Col xs={12} md={6} lg={4}>
                         <Form.Group controlId='formPrimerNombre'>
                           <Form.Label>
                             Primer Nombre <span className='text-danger'>*</span>
@@ -139,23 +172,22 @@ export const Formulario = () => {
                           ) : null}
                         </Form.Group>
                       </Col>
-                      <Col xs={12} md={6}>
+                      <Col xs={12} md={6} lg={4}>
                         <Form.Group controlId='formSegundoNombre'>
                           <Form.Label>Segundo Nombre</Form.Label>
                           <Field name='segundoNombre' className='form-control' />
                         </Form.Group>
                       </Col>
-                    </Row>
-                    <Row className='mt-4'>
-                      <Col xs={12} md={6}>
+                      <Col xs={12} md={12} lg={4}>
                         <Form.Group controlId='formTercerNombre'>
                           <Form.Label>Tercer Nombre</Form.Label>
                           <Field name='tercerNombre' className='form-control' />
                         </Form.Group>
                       </Col>
                     </Row>
+
                     <Row className='mt-4'>
-                      <Col xs={12} md={6}>
+                      <Col xs={12} md={6} lg={4}>
                         <Form.Group controlId='formPrimerApellido'>
                           <Form.Label>
                             Primer Apellido <span className='text-danger'>*</span>
@@ -166,7 +198,7 @@ export const Formulario = () => {
                           ) : null}
                         </Form.Group>
                       </Col>
-                      <Col xs={12} md={6}>
+                      <Col xs={12} md={6} lg={4}>
                         <Form.Group controlId='formSegundoApellido'>
                           <Form.Label>
                             Segundo Apellido <span className='text-danger'>*</span>
@@ -177,9 +209,20 @@ export const Formulario = () => {
                           ) : null}
                         </Form.Group>
                       </Col>
+                      <Col xs={12} md={6} lg={4}>
+                        <Form.Group controlId='formEmail'>
+                          <Form.Label>
+                            Email <span className='text-danger'>*</span> {/* Nuevo campo */}
+                          </Form.Label>
+                          <Field name='email' type='email' className='form-control' />
+                          {errors.email && touched.email ? (
+                            <div className='text-danger'>{errors.email}</div>
+                          ) : null}
+                        </Form.Group>
+                      </Col>
                     </Row>
                     <Row className='mt-4'>
-                      <Col xs={12} md={12} lg={6}>
+                      <Col xs={12} md={6} lg={2}>
                         <Form.Group controlId='formDpi'>
                           <Form.Label>
                             DPI <span className='text-danger'>*</span>
@@ -190,15 +233,7 @@ export const Formulario = () => {
                           ) : null}
                         </Form.Group>
                       </Col>
-                      <Col xs={12} md={12} lg={6}>
-                        <Form.Group controlId='formApellidoDeCasada'>
-                          <Form.Label>Apellido de Casada</Form.Label>
-                          <Field name='apellidoDeCasada' className='form-control' />
-                        </Form.Group>
-                      </Col>
-                    </Row>
-                    <Row className='mt-4'>
-                      <Col xs={12} md={6}>
+                      <Col xs={12} md={6} lg={2} className='mb-4'>
                         <Form.Group controlId='formEdad'>
                           <Form.Label>
                             Edad <span className='text-danger'>*</span>
@@ -209,55 +244,32 @@ export const Formulario = () => {
                           ) : null}
                         </Form.Group>
                       </Col>
-                    </Row>
-                  </Col>
-                  <Col xs={12} md={6} className='px-xl-15 px-lg-10'>
-                    <h4 className='text-center mb-4'>Enfermedades</h4>
-                    <hr className='mb-4' />
-                    <Row>
-                      <Col xs={12} md={12}>
-                        <CustomSelect
-                          fieldName='enfermedades'
-                          label='Enfermedades'
-                          options={enfermedades}
-                          onChange={(value) => setSelectedEnfermedad(value)} // Actualizamos el estado
-                          required
-                        />
-                        {errors.enfermedades && touched.enfermedades ? (
-                          <div className='text-danger'>{errors.enfermedades}</div>
-                        ) : null}
+                      <Col xs={12} md={12} lg={4}>
+                        <Form.Group controlId='formFechaNacimiento'>
+                          <Form.Label>
+                            Fecha de Nacimiento <span className='text-danger'>*</span>
+                          </Form.Label>
+                          <Field name='fechaNacimiento' type='date' className='form-control' />
+                          {errors.fechaNacimiento && touched.fechaNacimiento ? (
+                            <div className='text-danger'>{errors.fechaNacimiento}</div>
+                          ) : null}
+                        </Form.Group>
                       </Col>
                     </Row>
-                    <Row className='mt-4'>
-                      <Col xs={12}>
-                        {selectedEnfermedad && (
-                          <Form.Group controlId='formEnfermedadDescripcion'>
-                            <Form.Label>Descripción de la Enfermedad</Form.Label>
-                            <Field
-                              as='textarea'
-                              name='descripcionEnfermedad'
-                              className='form-control'
-                              rows={3}
-                            />
-                            {errors.descripcionEnfermedad && touched.descripcionEnfermedad ? (
-                              <div className='text-danger'>{errors.descripcionEnfermedad}</div>
-                            ) : null}
-                          </Form.Group>
-                        )}
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-                <Row className='mt-4'>
-                  <Col className='d-flex justify-content-end'>
-                    <Button type='submit' variant='primary'>
-                      Enviar
-                    </Button>
-                  </Col>
-                </Row>
-              </FormikForm>
-            )}
-          </Formik>
+                  </Row>
+                  <Row className='mt-4'>
+                    <Col className='d-flex justify-content-end'>
+                      <Button type='submit' variant='primary'>
+                        Enviar
+                      </Button>
+                    </Col>
+                  </Row>
+                </FormikForm>
+              )}
+            </Formik>
+          ) : (
+            <SaludGeneral />
+          )}
         </Modal.Body>
       </Modal>
     </>

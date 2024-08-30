@@ -5,12 +5,12 @@ import {Formik, Field, Form as FormikForm} from 'formik'
 import * as Yup from 'yup'
 import CustomCloseButton from '../../../modules/utility/modal/customCloseButton'
 const validationSchema = Yup.object().shape({
-  symptom: Yup.string().required('Este campo es obligatorio'),
-  description: Yup.string().required('Este campo es obligatorio'),
+  sintoma: Yup.string().required('Este campo es obligatorio'),
 })
 
 export const Formulario = () => {
-  const {toggleModal, show} = useContext(ContentContext)
+  const {toggleModal, show, createUpdate, selectedItem, opcion} = useContext(ContentContext)
+ 
 
   return (
     <>
@@ -19,7 +19,7 @@ export const Formulario = () => {
         size='sm'
         data-for='crear'
         data-tip='Crear'
-        onClick={() => toggleModal && toggleModal(1)}
+        onClick={() => toggleModal && toggleModal(0)}
       >
         Agregar
       </Button>
@@ -32,16 +32,16 @@ export const Formulario = () => {
         keyboard={false}
       >
         <Modal.Header>
-          <Modal.Title className='text-uppercase h1'>Síntomas</Modal.Title>
+          <Modal.Title className='text-uppercase h1'>Registro Departamentos</Modal.Title>
           <CustomCloseButton onClick={() => toggleModal && toggleModal(0)} />
         </Modal.Header>
         <Modal.Body>
           <Formik
-            initialValues={{symptom: '', description: ''}}
+            initialValues={{sintoma: selectedItem?.nombre || ''}}
             validationSchema={validationSchema}
             onSubmit={(values, {resetForm}) => {
-              console.log('Formulario enviado:', values)
-              // Aquí puedes manejar el envío del formulario, por ejemplo, guardando los datos
+              createUpdate(values?.sintoma, selectedItem?.id)
+
               resetForm()
               toggleModal && toggleModal(0)
             }}
@@ -49,23 +49,15 @@ export const Formulario = () => {
             {({errors, touched}) => (
               <FormikForm>
                 <Form.Group controlId='formSymptom'>
-                  <Form.Label>Síntoma</Form.Label>
-                  <Field name='symptom' className='form-control' />
-                  {errors.symptom && touched.symptom ? (
-                    <div className='text-danger'>{errors.symptom}</div>
-                  ) : null}
-                </Form.Group>
-
-                <Form.Group controlId='formDescription' className='mt-3'>
-                  <Form.Label>Descripción</Form.Label>
-                  <Field as='textarea' name='description' className='form-control' />
-                  {errors.description && touched.description ? (
-                    <div className='text-danger'>{errors.description}</div>
+                  <Form.Label>Nombre de la Enfermedad</Form.Label>
+                  <Field name='sintoma' className='form-control' />
+                  {errors.sintoma && touched.sintoma ? (
+                    <div className='text-danger'>{errors.sintoma}</div>
                   ) : null}
                 </Form.Group>
 
                 <Button type='submit' variant='primary' className='mt-3'>
-                  Enviar
+                  {opcion === 1 ? 'Actualizar' : 'Crear'}
                 </Button>
               </FormikForm>
             )}
