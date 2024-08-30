@@ -1,8 +1,9 @@
 import MockAdapter from 'axios-mock-adapter'
 import {UserModel} from '../models/UserModel'
+import { decodeJWT } from './jwt/decode'
 import {
   LOGIN_URL,
-  GET_USER_BY_ACCESSTOKEN_URL,
+  // GET_USER_BY_ACCESSTOKEN_URL,
   REGISTER_URL,
   REQUEST_PASSWORD_URL,
 } from '../redux/AuthCRUD'
@@ -70,15 +71,15 @@ export function mockAuth(mock: MockAdapter) {
     return [400]
   })
 
-  mock.onGet(GET_USER_BY_ACCESSTOKEN_URL).reply(({headers: {Authorization}}) => {
+  mock.onGet().reply(({headers: {Authorization}}) => {
     const accessToken =
       Authorization && Authorization.startsWith('Bearer ') && Authorization.slice('Bearer '.length)
 
     if (accessToken) {
-      const user = UsersTableMock.table.find((x) => x.auth?.accessToken === accessToken)
-
-      if (user) {
-        return [200, {...user, password: undefined}]
+      const decoded = decodeJWT(accessToken);
+      
+      if (decoded) {
+        return [200, decoded]
       }
     }
 

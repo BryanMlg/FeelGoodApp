@@ -1,13 +1,37 @@
 import axios from 'axios'
 import {AuthModel} from '../models/AuthModel'
 import {UserModel} from '../models/UserModel'
+import {createClient} from '@supabase/supabase-js'
 
 const API_URL = process.env.REACT_APP_API_URL || 'api'
 
-export const GET_USER_BY_ACCESSTOKEN_URL = `${API_URL}/auth/get-user`
 export const LOGIN_URL = `${API_URL}/auth/login`
 export const REGISTER_URL = `${API_URL}/auth/register`
 export const REQUEST_PASSWORD_URL = `${API_URL}/auth/forgot-password`
+
+// Inicializar el cliente de Supabase
+const supabase = createClient(
+  process.env.REACT_APP_SUPA_BASE_URL || '',
+  process.env.REACT_APP_SUPA_BASE_KEY || ''
+)
+
+export async function loginWithSupabase(email: string, password: string) {
+  const {data, error} = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  })
+
+  if (error) {
+    console.error('Error en el login:', error.message)
+    return {error: error.message} // Retorna un objeto con el error
+  }
+
+  if (data.session) {
+    return {session: data.session, user: data.user}
+  } else {
+    return {error: 'No se obtuvo una sesión válida'} // Manejo de casos sin sesión
+  }
+}
 
 // Server should return AuthModel
 export function login(email: string, password: string) {
@@ -32,5 +56,5 @@ export function requestPassword(email: string) {
 export function getUserByToken() {
   // Authorization head should be fulfilled in interceptor.
   // Check common redux folder => setupAxios
-  return axios.get<UserModel>(GET_USER_BY_ACCESSTOKEN_URL)
+  return axios.get<UserModel>('')
 }

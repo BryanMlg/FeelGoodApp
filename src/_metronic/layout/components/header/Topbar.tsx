@@ -95,7 +95,7 @@ const Topbar: FC = () => {
         id='kt_header_user_menu_toggle'
       >
         <h6 className='text-center mt-3 me-5 text-white'>
-          {user?.firstname} {user?.lastname}
+          {user?.firstname} {user?.email}
         </h6>
         {/* begin::Toggle */}
         <div
@@ -105,7 +105,7 @@ const Topbar: FC = () => {
           data-kt-menu-placement='bottom-end'
           data-kt-menu-flip='bottom'
         >
-          <img src={user?.pic} alt='metronic' />
+          <img src={'https://toppng.com/public/uploads/preview/user-font-awesome-nuevo-usuario-icono-11563566658mjtfvilgcs.png'} alt='metronic' />
         </div>
         <HeaderUserMenu />
         {/* end::Toggle */}
