@@ -1,32 +1,23 @@
-import React, {createContext, useState, useEffect} from 'react'
-import {fetchData} from '../../../services/useRequest'
-import {
-  Persona,
-  ContentContextType,
-  labelDepartamento,
-  labelMunicipio,
-  labelRol,
-} from './models/models'
-
+import React, {createContext, useState, useEffect, useContext} from 'react'
+import {fetchData} from '../../../../services/useRequest'
+import {Medico, ContentContextType, labelMedicos} from './models/models'
+import {ContentContext as ContextPrincipal} from '../context'
 export const ContentContext = createContext<ContentContextType>({} as ContentContextType)
 
 export const ContentProvider: React.FC = ({children}) => {
+  const {selectedItem: selectedItemPrincipal} = useContext(ContextPrincipal)
   const [show, setShow] = useState<boolean>(false)
   const [opcion, setOpcion] = useState<number>(0)
-  const [data, setData] = useState<Persona[] | null>(null)
+  const [data, setData] = useState<Medico[] | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [selectedItem, setSelectedItem] = useState<any>(null)
-  const [labelDepartamento, setLabelDepartamento] = useState<labelDepartamento[] | null>(null)
-  const [labelMunicipio, setLabelMunicipio] = useState<labelMunicipio[] | null>(null)
-  const [labelRol, setLabelRol] = useState<labelRol[] | null>(null)
-  const [search, setSearch] = useState<number | null>(0)
-  const endPoint = 'persona'
-  const fetchPersonas = async () => {
-    const result = await fetchData<Persona[]>({
-      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}?select=*${
-        search && `&rolId=eq.${search}`
-      }`,
+  const [editar, setEditar] = useState<boolean>(false)
+  const [labelMedicos, setLabelMedicos] = useState<labelMedicos[] | null>(null)
+  const endPoint = 'medicoPaciente'
+  const fetchMedicos = async () => {
+    const result = await fetchData<Medico[]>({
+      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}?select=*`,
       method: 'GET',
       headers: {
         Authorization:
@@ -46,15 +37,12 @@ export const ContentProvider: React.FC = ({children}) => {
     setError(null)
 
     try {
-      const result = await fetchData<Persona>({
-        url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}${
-          opcion === 1 ? `?id=eq.${data?.id}` : ''
-        }`,
-        method: opcion === 1 ? 'PATCH' : 'POST',
-        body:
-          opcion === 1
-            ? {...data, actualizadoPor: 1, actualizado: new Date()} //Update
-            : {...data, estado: estado || 1}, //Create
+      const result = await fetchData<Medico>({
+        url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}${editar ? `?id=eq.${data?.id}` : ''}`,
+        method: editar ? 'PATCH' : 'POST',
+        body: editar
+          ? {...data, actualizadoPor: 1, actualizado: new Date()} //Update
+          : {...data, estado: estado || 1, idPersona: selectedItemPrincipal?.id, creadoPor: 1}, //Create
         headers: {
           Authorization:
             'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanJsaXFsdHJwZWRycGx1a21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5ODQ4MjEsImV4cCI6MjAzODU2MDgyMX0.LZto_niKIkJAaBvwl5u9_yed3vtc_F81C1Q_4193qIw',
@@ -71,7 +59,7 @@ export const ContentProvider: React.FC = ({children}) => {
         err instanceof Error ? err.message : 'An error occurred while creating the department.'
       )
     } finally {
-      await fetchPersonas()
+      await fetchMedicos()
       setLoading(false)
     }
   }
@@ -81,7 +69,7 @@ export const ContentProvider: React.FC = ({children}) => {
     setError(null)
 
     try {
-      const result = await fetchData<Persona>({
+      const result = await fetchData<Medico>({
         url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}${`?id=eq.${id}`}`,
         method: 'PATCH',
         body: {estado: estado === 1 ? 0 : 1},
@@ -101,14 +89,14 @@ export const ContentProvider: React.FC = ({children}) => {
         err instanceof Error ? err.message : 'An error occurred while creating the department.'
       )
     } finally {
-      await fetchPersonas()
+      await fetchMedicos()
       setLoading(false)
     }
   }
 
-  const getDepartamentos = async () => {
-    const result = await fetchData<labelDepartamento[]>({
-      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/departamento?select=id,nombre`,
+  const getMedicos = async () => {
+    const result = await fetchData<any>({
+      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/persona?select=id,rolId,primerNombres,primerApellido&&rolId=eq.3`,
       method: 'GET',
       headers: {
         Authorization:
@@ -118,37 +106,7 @@ export const ContentProvider: React.FC = ({children}) => {
       },
     })
 
-    setLabelDepartamento(result?.data)
-  }
-
-  const getMunicipios = async () => {
-    const result = await fetchData<labelMunicipio[]>({
-      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/municipio?select=id,nombre`,
-      method: 'GET',
-      headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanJsaXFsdHJwZWRycGx1a21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5ODQ4MjEsImV4cCI6MjAzODU2MDgyMX0.LZto_niKIkJAaBvwl5u9_yed3vtc_F81C1Q_4193qIw',
-        apikey:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanJsaXFsdHJwZWRycGx1a21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5ODQ4MjEsImV4cCI6MjAzODU2MDgyMX0.LZto_niKIkJAaBvwl5u9_yed3vtc_F81C1Q_4193qIw',
-      },
-    })
-
-    setLabelMunicipio(result?.data)
-  }
-
-  const getRol = async () => {
-    const result = await fetchData<labelRol[]>({
-      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/rol?select=id,nombre`,
-      method: 'GET',
-      headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanJsaXFsdHJwZWRycGx1a21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5ODQ4MjEsImV4cCI6MjAzODU2MDgyMX0.LZto_niKIkJAaBvwl5u9_yed3vtc_F81C1Q_4193qIw',
-        apikey:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanJsaXFsdHJwZWRycGx1a21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5ODQ4MjEsImV4cCI6MjAzODU2MDgyMX0.LZto_niKIkJAaBvwl5u9_yed3vtc_F81C1Q_4193qIw',
-      },
-    })
-
-    setLabelRol(result?.data)
+    setLabelMedicos(result?.data)
   }
 
   const toggleModal = (opcion?: number) => {
@@ -165,29 +123,22 @@ export const ContentProvider: React.FC = ({children}) => {
     data,
     error,
     loading,
-    createUpdate,
     selectedItem,
     setSelectedItem,
     opcion,
     setOpcion,
+    createUpdate,
     Status,
-    labelDepartamento,
-    labelMunicipio,
-    labelRol,
-    search,
-    setSearch,
+    setEditar,
+    editar,
+    selectedItemPrincipal,
+    labelMedicos,
   }
 
   useEffect(() => {
-    fetchPersonas()
-    getDepartamentos()
-    getMunicipios()
-    getRol()
+    fetchMedicos()
+    getMedicos()
   }, [])
-
-  useEffect(() => {
-    fetchPersonas()
-  }, [search])
 
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>
 }

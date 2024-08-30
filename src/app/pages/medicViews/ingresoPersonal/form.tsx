@@ -5,6 +5,7 @@ import {Formik, Field, Form as FormikForm} from 'formik'
 import * as Yup from 'yup'
 import CustomCloseButton from '../../../modules/utility/modal/customCloseButton'
 import SaludGeneral from './saludGeneral/index'
+import AsignarMedico from './asignarMedico/index'
 const validationSchema = Yup.object().shape({
   departamento: Yup.string().required('Este campo es obligatorio'),
   municipio: Yup.string().required('Este campo es obligatorio'),
@@ -59,7 +60,7 @@ export const Formulario = () => {
           <CustomCloseButton onClick={() => toggleModal && toggleModal(0)} />
         </Modal.Header>
         <Modal.Body>
-          {opcion !== 3 ? (
+          {opcion <= 1 ? (
             <Formik
               initialValues={{
                 departamento: selectedItem?.departamentoId || '',
@@ -267,8 +268,10 @@ export const Formulario = () => {
                 </FormikForm>
               )}
             </Formik>
-          ) : (
+          ) : opcion === 3 ? (
             <SaludGeneral />
+          ) : (
+            opcion === 4 && <AsignarMedico />
           )}
         </Modal.Body>
       </Modal>

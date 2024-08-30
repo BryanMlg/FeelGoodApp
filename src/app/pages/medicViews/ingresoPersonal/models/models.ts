@@ -48,4 +48,6 @@ export interface ContentContextType {
   labelDepartamento: labelDepartamento[] | null
   labelMunicipio: labelMunicipio[] | null
   labelRol: labelRol[] | null
+  search: number | null
+  setSearch: React.Dispatch<React.SetStateAction<number | null>> 
 }

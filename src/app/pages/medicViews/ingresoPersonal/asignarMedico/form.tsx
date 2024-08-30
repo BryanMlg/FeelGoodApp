@@ -4,13 +4,14 @@ import {ContentContext} from './context'
 import {Formik, Field, Form as FormikForm} from 'formik'
 import * as Yup from 'yup'
 
+
+
 const validationSchema = Yup.object().shape({
-  sintoma: Yup.string().required('Este campo es obligatorio'),
-  descripcion: Yup.string().required('Este campo es obligatorio'),
+  medico: Yup.string().required('Este campo es obligatorio'),
 })
 
 export const Formulario = () => {
-  const {createUpdate, selectedItem, editar, setEditar, setSelectedItem, labelSintomas} =
+  const {createUpdate, selectedItem, editar, setEditar, setSelectedItem, labelMedicos} =
     useContext(ContentContext)
   const handleReset = () => {
     setSelectedItem(null)
@@ -20,15 +21,14 @@ export const Formulario = () => {
     <>
       <Formik
         initialValues={{
-          sintoma: selectedItem?.idSintoma || '',
-          descripcion: selectedItem?.descripcion || '',
+          medico: selectedItem?.idMedico || '',
+        
         }}
         validationSchema={validationSchema}
         enableReinitialize={true}
         onSubmit={(values, {resetForm}) => {
           createUpdate({
-            idSintoma: values?.sintoma,
-            descripcion: values?.descripcion,
+            idMedico: values?.medico,
             id: selectedItem?.id,
           })
           setSelectedItem(null)
@@ -40,37 +40,25 @@ export const Formulario = () => {
           <FormikForm>
             <Row className='mt-4'>
               <Col xs={12} md={12} lg={12} className='mt-4'>
-                <Form.Group controlId='sintoma'>
+                <Form.Group controlId='medico'>
                   <Form.Label>
-                    Sintoma <span className='text-danger'>*</span>
+                    Medico <span className='text-danger'>*</span>
                   </Form.Label>
-                  <Field as='select' name='sintoma' className='form-control'>
-                    <option value=''>Seleccione un Sintoma</option>
-                    {labelSintomas?.map((option) => (
+                  <Field as='select' name='medico' className='form-control'>
+                    <option value=''>Seleccione un Medico</option>
+                    {labelMedicos?.map((option) => (
                       <option key={option.id} value={option.id}>
-                        {option.nombre}
+                        {option.primerNombres + ' ' + option.primerApellido}
                       </option>
                     ))}
                   </Field>
-                  {errors.sintoma && touched.sintoma ? (
-                    <div className='text-danger'>{errors.sintoma}</div>
+                  {errors.medico && touched.medico ? (
+                    <div className='text-danger'>{errors.medico}</div>
                   ) : null}
                 </Form.Group>
               </Col>
             </Row>
-            <Row>
-              <Col xs={12} md={12} lg={12} className='mb-4 mt-4'>
-                <Form.Group>
-                  <Form.Label>
-                    Descripción <span className='text-danger'>*</span>
-                  </Form.Label>
-                  <Field name='descripcion' className='form-control' />
-                  {errors.descripcion && touched.descripcion ? (
-                    <div className='text-danger'>{errors.descripcion}</div>
-                  ) : null}
-                </Form.Group>
-              </Col>
-            </Row>
+          
 
             <Row className='mt-4'>
               <Col className='d-flex justify-content-center'>
