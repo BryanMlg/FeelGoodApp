@@ -20,8 +20,8 @@ export function MenuPatient() {
         icon='/media/icons/duotune/general/gen022.svg'
       >
         <AsideMenuItem to='/paciente/calendario' title='Calendario' hasBullet={true} />
-        <AsideMenuItem to='/paciente/enfermedades' title='Enfermedades' hasBullet={true} />
-        <AsideMenuItem to='/paciente/sintomas' title='Sintomas' hasBullet={true} />
+        {/* <AsideMenuItem to='/paciente/enfermedades' title='Enfermedades' hasBullet={true} />
+        <AsideMenuItem to='/paciente/sintomas' title='Sintomas' hasBullet={true} /> */}
       </AsideMenuItemWithSub>
 
       <div className='menu-item'>
