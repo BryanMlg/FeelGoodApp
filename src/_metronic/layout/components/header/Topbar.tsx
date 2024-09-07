@@ -12,7 +12,7 @@ const toolbarButtonMarginClass = 'ms-1 ms-lg-3',
 
 const Topbar: FC = () => {
   const {config} = useLayout()
-  const user = useSelector((state: RootState) => state.auth.user)
+  const user = useSelector((state: RootState) => state?.auth)
   console.log('datos', user)
   return (
     <div className='d-flex align-items-stretch flex-shrink-0'>
@@ -95,7 +95,7 @@ const Topbar: FC = () => {
         id='kt_header_user_menu_toggle'
       >
         <h6 className='text-center mt-3 me-5 text-white'>
-          {user?.firstname} {user?.lastname}
+          {/* {user?.primerNombres} {user?.primerApellido} */}
         </h6>
         {/* begin::Toggle */}
         <div
@@ -105,7 +105,7 @@ const Topbar: FC = () => {
           data-kt-menu-placement='bottom-end'
           data-kt-menu-flip='bottom'
         >
-          <img src={user?.pic} alt='metronic' />
+          <img src={''} alt='metronic' />
         </div>
         <HeaderUserMenu />
         {/* end::Toggle */}

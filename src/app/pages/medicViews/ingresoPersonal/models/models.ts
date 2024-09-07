@@ -42,7 +42,7 @@ export interface ContentContextType {
   createUpdate: (data: any, estado?: number) => Promise<void>
   selectedItem: any
   setSelectedItem: React.Dispatch<React.SetStateAction<Persona[] | null>>
-  opcion: number
+  opcion: number 
   setOpcion: React.Dispatch<React.SetStateAction<number>> 
   Status: (id: number, estado: number) => Promise<void>
   labelDepartamento: labelDepartamento[] | null
@@ -50,4 +50,5 @@ export interface ContentContextType {
   labelRol: labelRol[] | null
   search: number | null
   setSearch: React.Dispatch<React.SetStateAction<number | null>> 
+  getMunicipios: (idDepartamento: number | string) => Promise<void>;
 }

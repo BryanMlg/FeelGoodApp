@@ -21,25 +21,27 @@ export const actionTypes = {
 const initialAuthState: IAuthState = {
   user: undefined,
   accessToken: undefined,
+  dataUser: [],
 }
 
 export interface IAuthState {
   user?: UserModel
   accessToken?: string
+  dataUser: any
 }
 
 export const reducer = persistReducer(
-  {storage, key: 'v100-demo1-auth', whitelist: ['user', 'accessToken']},
+  {storage, key: 'v100-demo1-auth', whitelist: ['user', 'accessToken', 'dataUser']},
   (state: IAuthState = initialAuthState, action: ActionWithPayload<IAuthState>) => {
     switch (action.type) {
       case actionTypes.Login: {
         const accessToken = action.payload?.accessToken
-        return {accessToken, user: undefined}
+        return {...state, accessToken, user: undefined}
       }
 
       case actionTypes.Register: {
         const accessToken = action.payload?.accessToken
-        return {accessToken, user: undefined}
+        return {...state, accessToken, user: undefined}
       }
 
       case actionTypes.Logout: {
@@ -56,8 +58,8 @@ export const reducer = persistReducer(
       }
 
       case actionTypes.SetUser: {
-        const user = action.payload?.user
-        return {...state, user}
+        const dataUser = action.payload?.dataUser
+        return {...state, dataUser}
       }
 
       default:
@@ -77,7 +79,7 @@ export const actions = {
     type: actionTypes.UserRequested,
   }),
   fulfillUser: (user: UserModel) => ({type: actionTypes.UserLoaded, payload: {user}}),
-  setUser: (user: UserModel) => ({type: actionTypes.SetUser, payload: {user}}),
+  setUser: (dataUser: any) => ({type: actionTypes.SetUser, payload: {dataUser}}),
 }
 
 export function* saga() {

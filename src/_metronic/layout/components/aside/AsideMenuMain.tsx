@@ -9,8 +9,9 @@ import {MenuMedic} from './menuVertical/menuMedic'
 
 export function AsideMenuMain() {
   const intl = useIntl()
-  const user = useSelector((state: RootState) => state.auth.user)
-  const isMedic = user?.roles?.includes(1)
+  const user = useSelector((state: RootState) => state.auth.dataUser)
+  console.log('aside', user?.rolId)
+  const isMedic = [1, 3].includes(user?.rolId)
   return (
     <>
       <AsideMenuItem

@@ -15,7 +15,7 @@ export const ContentProvider: React.FC = ({children}) => {
   const endPoint = 'saludGeneral'
   const fetchSaludGeneral = async () => {
     const result = await fetchData<ParametrosSaludGeneral[]>({
-      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}?select=*`,
+      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}?idPersona=eq.${selectedItemPrincipal?.id}&select=*`,
       method: 'GET',
       headers: {
         Authorization:

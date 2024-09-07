@@ -6,7 +6,7 @@ import clsx from 'clsx'
 import {Link} from 'react-router-dom'
 import {useFormik} from 'formik'
 import * as auth from '../redux/AuthRedux'
-import {login} from '../redux/AuthCRUD'
+import {loginWithSupabase} from '../redux/AuthCRUD'
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()
@@ -21,9 +21,16 @@ const loginSchema = Yup.object().shape({
 })
 
 const initialValues = {
-  email: 'medico@demo.com',
-  password: 'demo',
+  email: 'cparedesm2@miumg.edu.gt',
+  password: 'secreto123+',
 }
+
+//Local
+
+// const initialValues = {
+//   email: 'medico@demo.com',
+//   password: 'demo',
+// }
 
 /*
   Formik+YUP+Typescript:
@@ -34,26 +41,68 @@ const initialValues = {
 export function Login() {
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
+
   const formik = useFormik({
     initialValues,
     validationSchema: loginSchema,
-    onSubmit: (values, {setStatus, setSubmitting}) => {
+    onSubmit: async (values, {setStatus, setSubmitting}) => {
       setLoading(true)
-      setTimeout(() => {
-        login(values.email, values.password)
-          .then(({data: {accessToken}}) => {
+
+      try {
+        const data = await loginWithSupabase(values.email, values.password)
+
+        if (data) {
+          const {session, dataUser} = data
+
+          // Verificar si existe el token de acceso en la sesión
+          if (session?.access_token) {
             setLoading(false)
-            console.log(accessToken, values)
-            dispatch(auth.actions.login(accessToken))
-          })
-          .catch(() => {
-            setLoading(false)
-            setSubmitting(false)
-            setStatus('The login detail is incorrect')
-          })
-      }, 1000)
+            
+
+            // Despachar la acción de login con el token de acceso
+            dispatch(auth.actions.login(session.access_token))
+            console.log('login', dataUser)
+            dispatch(auth.actions.setUser(dataUser)) 
+          } else {
+            throw new Error('No se encontró el token de acceso')
+          }
+        } else {
+          throw new Error('Los detalles de inicio de sesión son incorrectos')
+        }
+      } catch (error) {
+        setLoading(false)
+        setSubmitting(false)
+
+        if (error instanceof Error) {
+          setStatus(error.message)
+        } else {
+          setStatus('Ha ocurrido un error en el inicio de sesión')
+        }
+      }
     },
   })
+
+  //Local
+  // const formik = useFormik({
+  //   initialValues,
+  //   validationSchema: loginSchema,
+  //   onSubmit: (values, {setStatus, setSubmitting}) => {
+  //     setLoading(true)
+  //     setTimeout(() => {
+  //       login(values.email, values.password)
+  //         .then(({data: {accessToken}}) => {
+  //           setLoading(false)
+  //           console.log(accessToken, values)
+  //           dispatch(auth.actions.login(accessToken))
+  //         })
+  //         .catch(() => {
+  //           setLoading(false)
+  //           setSubmitting(false)
+  //           setStatus('The login detail is incorrect')
+  //         })
+  //     }, 1000)
+  //   },
+  // })
 
   return (
     <form

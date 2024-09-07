@@ -2,12 +2,12 @@ import MockAdapter from 'axios-mock-adapter'
 import {UserModel} from '../models/UserModel'
 import {
   LOGIN_URL,
-  GET_USER_BY_ACCESSTOKEN_URL,
+  // GET_USER_BY_ACCESSTOKEN_URL,
   REGISTER_URL,
   REQUEST_PASSWORD_URL,
 } from '../redux/AuthCRUD'
 import {UsersTableMock} from './usersTableMock'
-
+import { decodeJWT } from '../jwt/decode'
 export function mockAuth(mock: MockAdapter) {
   mock.onPost(LOGIN_URL).reply(({data}) => {
     const {email, password} = JSON.parse(data)
@@ -70,20 +70,38 @@ export function mockAuth(mock: MockAdapter) {
     return [400]
   })
 
-  mock.onGet(GET_USER_BY_ACCESSTOKEN_URL).reply(({headers: {Authorization}}) => {
+
+  mock.onGet().reply(({headers: {Authorization}}) => {
     const accessToken =
       Authorization && Authorization.startsWith('Bearer ') && Authorization.slice('Bearer '.length)
 
     if (accessToken) {
-      const user = UsersTableMock.table.find((x) => x.auth?.accessToken === accessToken)
-
-      if (user) {
-        return [200, {...user, password: undefined}]
+      const decoded = decodeJWT(accessToken);
+      
+      if (decoded) {
+        return [200, decoded]
       }
     }
 
     return [401]
   })
+
+  //Local
+
+  // mock.onGet(GET_USER_BY_ACCESSTOKEN_URL).reply(({headers: {Authorization}}) => {
+  //   const accessToken =
+  //     Authorization && Authorization.startsWith('Bearer ') && Authorization.slice('Bearer '.length)
+
+  //   if (accessToken) {
+  //     const user = UsersTableMock.table.find((x) => x.auth?.accessToken === accessToken)
+
+  //     if (user) {
+  //       return [200, {...user, password: undefined}]
+  //     }
+  //   }
+
+  //   return [401]
+  // })
 
   function generateUserId(): number {
     const ids = UsersTableMock.table.map((el) => el.id)

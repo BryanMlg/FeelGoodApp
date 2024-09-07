@@ -1,4 +1,4 @@
-import {useContext} from 'react'
+import {useContext, useEffect} from 'react'
 import {Button, Modal, Form, Row, Col} from 'react-bootstrap-v5'
 import {ContentContext} from './context'
 import {Formik, Field, Form as FormikForm} from 'formik'
@@ -33,7 +33,27 @@ export const Formulario = () => {
     createUpdate,
     selectedItem,
     opcion,
+    getMunicipios,
   } = useContext(ContentContext)
+
+  const handleDepartamentoChange = async (
+    event: React.ChangeEvent<HTMLSelectElement>,
+    setFieldValue: (field: string, value: any) => void
+  ) => {
+    const departamentoId = event.target.value
+    setFieldValue('departamento', departamentoId)
+    if (departamentoId) {
+      try {
+        await getMunicipios(event?.target?.value)
+      } catch (error) {
+        console.error('Error al obtener municipios:', error)
+      }
+    }
+  }
+
+  useEffect(() => {
+    getMunicipios(selectedItem?.departamentoId)
+  }, [selectedItem])
 
   return (
     <>
@@ -96,10 +116,9 @@ export const Formulario = () => {
                   id: selectedItem?.id,
                 })
                 resetForm()
-                toggleModal && toggleModal(0)
               }}
             >
-              {({errors, touched}) => (
+              {({errors, touched, setFieldValue}) => (
                 <FormikForm>
                   <Row className='mb-4 px-20'>
                     <h4 className='text-center mb-4'>Datos Personales</h4>
@@ -110,7 +129,12 @@ export const Formulario = () => {
                           <Form.Label>
                             Departamento <span className='text-danger'>*</span>
                           </Form.Label>
-                          <Field as='select' name='departamento' className='form-control'>
+                          <Field
+                            as='select'
+                            name='departamento'
+                            className='form-control'
+                            onChange={(e: any) => handleDepartamentoChange(e, setFieldValue)}
+                          >
                             <option value=''>Seleccione un departamento</option>
                             {labelDepartamento?.map((option) => (
                               <option key={option.id} value={option.id}>
