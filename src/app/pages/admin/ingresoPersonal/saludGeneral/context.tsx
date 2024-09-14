@@ -2,10 +2,11 @@ import React, {createContext, useState, useEffect, useContext} from 'react'
 import {fetchData} from '../../../../services/useRequest'
 import {ContentContext as ContextPrincipal} from '../context'
 import {ParametrosSaludGeneral, ContentContextType} from './models/models'
-
+import {useAuthHeaders} from '../../../../modules/utility/hooks/useAuthHeathers'
 export const ContentContext = createContext<ContentContextType>({} as ContentContextType)
 
 export const ContentProvider: React.FC = ({children}) => {
+  const {Authorization, apikey} = useAuthHeaders()
   const {toggleModal, selectedItem: selectedItemPrincipal} = useContext(ContextPrincipal)
   const [data, setData] = useState<ParametrosSaludGeneral[] | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -18,10 +19,8 @@ export const ContentProvider: React.FC = ({children}) => {
       url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}?idPersona=eq.${selectedItemPrincipal?.id}&select=*`,
       method: 'GET',
       headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanJsaXFsdHJwZWRycGx1a21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5ODQ4MjEsImV4cCI6MjAzODU2MDgyMX0.LZto_niKIkJAaBvwl5u9_yed3vtc_F81C1Q_4193qIw',
-        apikey:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanJsaXFsdHJwZWRycGx1a21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5ODQ4MjEsImV4cCI6MjAzODU2MDgyMX0.LZto_niKIkJAaBvwl5u9_yed3vtc_F81C1Q_4193qIw',
+        Authorization: Authorization,
+        apikey: apikey,
       },
     })
 
@@ -44,10 +43,8 @@ export const ContentProvider: React.FC = ({children}) => {
           ? {...data, actualizadoPor: 1, actualizado: new Date()} //Update
           : {...data, estado: estado || 1}, //Create
         headers: {
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanJsaXFsdHJwZWRycGx1a21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5ODQ4MjEsImV4cCI6MjAzODU2MDgyMX0.LZto_niKIkJAaBvwl5u9_yed3vtc_F81C1Q_4193qIw',
-          apikey:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanJsaXFsdHJwZWRycGx1a21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5ODQ4MjEsImV4cCI6MjAzODU2MDgyMX0.LZto_niKIkJAaBvwl5u9_yed3vtc_F81C1Q_4193qIw',
+          Authorization: Authorization,
+          apikey: apikey,
         },
       })
 
@@ -74,10 +71,8 @@ export const ContentProvider: React.FC = ({children}) => {
         method: 'PATCH',
         body: {estado: estado === 1 ? 0 : 1},
         headers: {
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanJsaXFsdHJwZWRycGx1a21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5ODQ4MjEsImV4cCI6MjAzODU2MDgyMX0.LZto_niKIkJAaBvwl5u9_yed3vtc_F81C1Q_4193qIw',
-          apikey:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanJsaXFsdHJwZWRycGx1a21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5ODQ4MjEsImV4cCI6MjAzODU2MDgyMX0.LZto_niKIkJAaBvwl5u9_yed3vtc_F81C1Q_4193qIw',
+          Authorization: Authorization,
+          apikey: apikey,
         },
       })
 

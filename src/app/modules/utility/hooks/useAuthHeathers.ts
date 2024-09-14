@@ -8,5 +8,6 @@ export const useAuthHeaders = () => {
   return {
     Authorization: `Bearer ${auth.accessToken}`,
     apikey: process.env.REACT_APP_SUPA_BASE_KEY || '', // Asegúrate de que esta variable esté definida
+    dataUser: auth?.dataUser
   };
 };

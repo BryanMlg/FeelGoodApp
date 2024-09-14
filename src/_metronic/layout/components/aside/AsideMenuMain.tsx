@@ -6,12 +6,14 @@ import {RootState} from '../../../../setup'
 import {AsideMenuItem} from './AsideMenuItem'
 import {MenuPatient} from './menuVertical/menuPatient'
 import {MenuMedic} from './menuVertical/menuMedic'
-
+import { MenuAdmin } from './menuVertical/menuAdmin'
 export function AsideMenuMain() {
   const intl = useIntl()
   const user = useSelector((state: RootState) => state.auth.dataUser)
   console.log('aside', user?.rolId)
-  const isMedic = [1, 3].includes(user?.rolId)
+  const isMedic = [3].includes(user?.rolId)
+  const isPatient = [2].includes(user?.rolId)
+  const isAdmin = [1].includes(user?.rolId)
   return (
     <>
       <AsideMenuItem
@@ -21,7 +23,8 @@ export function AsideMenuMain() {
         fontIcon='bi-app-indicator'
       />
       {isMedic && <MenuMedic />}
-      {!isMedic && <MenuPatient />}
+      {isPatient && <MenuPatient />}
+      {isAdmin && <MenuAdmin />}
     </>
   )
 }

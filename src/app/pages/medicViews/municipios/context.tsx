@@ -1,10 +1,11 @@
 import React, {createContext, useState, useEffect} from 'react'
 import {fetchData} from '../../../services/useRequest'
 import {Municipio, ContentContextType, labelDepartamento} from './models/models'
-
+import {useAuthHeaders} from '../../../modules/utility/hooks/useAuthHeathers'
 export const ContentContext = createContext<ContentContextType>({} as ContentContextType)
 
 export const ContentProvider: React.FC = ({children}) => {
+  const {Authorization, apikey} = useAuthHeaders()
   const [show, setShow] = useState<boolean>(false)
   const [opcion, setOpcion] = useState<number>(0)
   const [data, setData] = useState<Municipio[] | null>(null)
@@ -18,10 +19,8 @@ export const ContentProvider: React.FC = ({children}) => {
       url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}?select=*`,
       method: 'GET',
       headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanJsaXFsdHJwZWRycGx1a21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5ODQ4MjEsImV4cCI6MjAzODU2MDgyMX0.LZto_niKIkJAaBvwl5u9_yed3vtc_F81C1Q_4193qIw',
-        apikey:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanJsaXFsdHJwZWRycGx1a21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5ODQ4MjEsImV4cCI6MjAzODU2MDgyMX0.LZto_niKIkJAaBvwl5u9_yed3vtc_F81C1Q_4193qIw',
+        Authorization: Authorization,
+        apikey: apikey,
       },
     })
 
@@ -30,7 +29,12 @@ export const ContentProvider: React.FC = ({children}) => {
     setLoading(result.loading)
   }
 
-  const createUpdate = async (departamentoId?: number, nombre?: string, id?: number, estado?: number) => {
+  const createUpdate = async (
+    departamentoId?: number,
+    nombre?: string,
+    id?: number,
+    estado?: number
+  ) => {
     setLoading(true)
     setError(null)
 
@@ -43,12 +47,10 @@ export const ContentProvider: React.FC = ({children}) => {
         body:
           opcion === 1
             ? {nombre, actualizadoPor: 1, actualizado: new Date()} //Update
-            : {departamentoId: departamentoId , nombre, estado: estado || 1, creadoPor: 1}, //Create
+            : {departamentoId: departamentoId, nombre, estado: estado || 1, creadoPor: 1}, //Create
         headers: {
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanJsaXFsdHJwZWRycGx1a21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5ODQ4MjEsImV4cCI6MjAzODU2MDgyMX0.LZto_niKIkJAaBvwl5u9_yed3vtc_F81C1Q_4193qIw',
-          apikey:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanJsaXFsdHJwZWRycGx1a21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5ODQ4MjEsImV4cCI6MjAzODU2MDgyMX0.LZto_niKIkJAaBvwl5u9_yed3vtc_F81C1Q_4193qIw',
+          Authorization: Authorization,
+          apikey: apikey,
         },
       })
 
@@ -75,10 +77,8 @@ export const ContentProvider: React.FC = ({children}) => {
         method: 'PATCH',
         body: {estado: estado === 1 ? 0 : 1},
         headers: {
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanJsaXFsdHJwZWRycGx1a21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5ODQ4MjEsImV4cCI6MjAzODU2MDgyMX0.LZto_niKIkJAaBvwl5u9_yed3vtc_F81C1Q_4193qIw',
-          apikey:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanJsaXFsdHJwZWRycGx1a21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5ODQ4MjEsImV4cCI6MjAzODU2MDgyMX0.LZto_niKIkJAaBvwl5u9_yed3vtc_F81C1Q_4193qIw',
+          Authorization: Authorization,
+          apikey: apikey,
         },
       })
 
@@ -100,10 +100,8 @@ export const ContentProvider: React.FC = ({children}) => {
       url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/departamento?select=id,nombre`,
       method: 'GET',
       headers: {
-        Authorization:
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanJsaXFsdHJwZWRycGx1a21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5ODQ4MjEsImV4cCI6MjAzODU2MDgyMX0.LZto_niKIkJAaBvwl5u9_yed3vtc_F81C1Q_4193qIw',
-        apikey:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanJsaXFsdHJwZWRycGx1a21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5ODQ4MjEsImV4cCI6MjAzODU2MDgyMX0.LZto_niKIkJAaBvwl5u9_yed3vtc_F81C1Q_4193qIw',
+        Authorization: Authorization,
+        apikey: apikey,
       },
     })
 
@@ -130,7 +128,7 @@ export const ContentProvider: React.FC = ({children}) => {
     opcion,
     setOpcion,
     Status,
-    labelDepartamento
+    labelDepartamento,
   }
 
   useEffect(() => {

@@ -1,19 +1,21 @@
 import clsx from 'clsx'
 import {FC} from 'react'
-import {KTSVG, toAbsoluteUrl} from '../../../helpers'
+import {
+  KTSVG,
+  // toAbsoluteUrl
+} from '../../../helpers'
 import {HeaderUserMenu} from '../../../partials'
 import {useLayout} from '../../core'
 import {useSelector} from 'react-redux'
 import {RootState} from '../../../../setup'
 const toolbarButtonMarginClass = 'ms-1 ms-lg-3',
-  toolbarButtonHeightClass = 'w-30px h-30px w-md-40px h-md-40px',
+  // toolbarButtonHeightClass = 'w-30px h-30px w-md-40px h-md-40px',
   toolbarUserAvatarHeightClass = 'symbol-30px symbol-md-40px'
 // toolbarButtonIconSizeClass = 'svg-icon-1'
 
 const Topbar: FC = () => {
   const {config} = useLayout()
   const user = useSelector((state: RootState) => state?.auth)
-  console.log('datos', user)
   return (
     <div className='d-flex align-items-stretch flex-shrink-0'>
       {/* Search */}
@@ -95,7 +97,7 @@ const Topbar: FC = () => {
         id='kt_header_user_menu_toggle'
       >
         <h6 className='text-center mt-3 me-5 text-white'>
-          {/* {user?.primerNombres} {user?.primerApellido} */}
+          {user?.dataUser?.primerNombres} {user?.dataUser?.segundoApellido}
         </h6>
         {/* begin::Toggle */}
         <div
@@ -105,7 +107,10 @@ const Topbar: FC = () => {
           data-kt-menu-placement='bottom-end'
           data-kt-menu-flip='bottom'
         >
-          <img src={''} alt='metronic' />
+          <img
+            src={'https://th.bing.com/th/id/OIP.y5eaUQRP8dcHIIJlwI9D9gAAAA?rs=1&pid=ImgDetMain'}
+            alt='foto'
+          />
         </div>
         <HeaderUserMenu />
         {/* end::Toggle */}

@@ -22,7 +22,7 @@ export function MenuMedic() {
         <AsideMenuItem to='/medico/departamentos' title='Registro Departamentos' hasBullet={true} />
         <AsideMenuItem to='/medico/municipios' title='Registro Municipios' hasBullet={true} />
         <AsideMenuItem to='/medico/roles' title='Registro Roles' hasBullet={true} />
-        <AsideMenuItem to='/medico/registro-personal' title='Registro Personal' hasBullet={true} />
+        <AsideMenuItem to='/medico/pacientes' title='Pacientes' hasBullet={true} />
         <AsideMenuItem to='/medico/enfermedades' title='Registro Enfermedades' hasBullet={true} />
       </AsideMenuItemWithSub>
       <div className='menu-item'>

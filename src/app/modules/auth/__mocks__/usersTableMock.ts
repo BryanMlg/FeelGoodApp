@@ -1,8 +1,8 @@
 import {toAbsoluteUrl} from '../../../../_metronic/helpers'
-import {UserModel} from '../models/UserModel'
+// import {UserModel} from '../models/UserModel'
 
 export class UsersTableMock {
-  public static table: Array<UserModel> = [
+  public static table: Array<any> = [
     {
       id: 1,
       username: 'Medico',
