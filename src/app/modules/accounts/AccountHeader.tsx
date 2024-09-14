@@ -1,20 +1,26 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
-import {KTSVG, toAbsoluteUrl} from '../../../_metronic/helpers'
+import {
+  KTSVG,
+  // toAbsoluteUrl
+} from '../../../_metronic/helpers'
 import {Link} from 'react-router-dom'
-import {Dropdown1} from '../../../_metronic/partials'
+// import {Dropdown1} from '../../../_metronic/partials'
 import {useLocation} from 'react-router'
-
+import {useAuthHeaders} from '../utility/hooks/useAuthHeathers'
 const AccountHeader: React.FC = () => {
   const location = useLocation()
-
+  const {dataUser} = useAuthHeaders()
   return (
     <div className='card mb-5 mb-xl-10'>
       <div className='card-body pt-9 pb-0'>
         <div className='d-flex flex-wrap flex-sm-nowrap mb-3'>
           <div className='me-7 mb-4'>
             <div className='symbol symbol-100px symbol-lg-160px symbol-fixed position-relative'>
-              <img src={toAbsoluteUrl('/media/avatars/150-2.jpg')} alt='Metronic' />
+              <img
+                src={'https://th.bing.com/th/id/OIP.y5eaUQRP8dcHIIJlwI9D9gAAAA?rs=1&pid=ImgDetMain'}
+                alt='foto'
+              />
               <div className='position-absolute translate-middle bottom-0 start-100 mb-6 bg-success rounded-circle border border-4 border-white h-20px w-20px'></div>
             </div>
           </div>
@@ -24,7 +30,7 @@ const AccountHeader: React.FC = () => {
               <div className='d-flex flex-column'>
                 <div className='d-flex align-items-center mb-2'>
                   <a href='#' className='text-gray-800 text-hover-primary fs-2 fw-bolder me-1'>
-                    Max Smith
+                    {dataUser?.primerNombres} {dataUser?.primerApellido}
                   </a>
                   <a href='#'>
                     <KTSVG
@@ -32,14 +38,14 @@ const AccountHeader: React.FC = () => {
                       className='svg-icon-1 svg-icon-primary'
                     />
                   </a>
-                  <a
+                  {/* <a
                     href='#'
                     className='btn btn-sm btn-light-success fw-bolder ms-2 fs-8 py-1 px-3'
                     data-bs-toggle='modal'
                     data-bs-target='#kt_modal_upgrade_plan'
                   >
                     Upgrade to Pro
-                  </a>
+                  </a> */}
                 </div>
 
                 <div className='d-flex flex-wrap fw-bold fs-6 mb-4 pe-2'>
@@ -51,9 +57,13 @@ const AccountHeader: React.FC = () => {
                       path='/media/icons/duotune/communication/com006.svg'
                       className='svg-icon-4 me-1'
                     />
-                    Developer
+                    {dataUser?.rolId === 1
+                      ? 'Administrador'
+                      : dataUser?.rolId === 2
+                      ? 'Paciente'
+                      : 'Medico'}
                   </a>
-                  <a
+                  {/* <a
                     href='#'
                     className='d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2'
                   >
@@ -61,8 +71,8 @@ const AccountHeader: React.FC = () => {
                       path='/media/icons/duotune/general/gen018.svg'
                       className='svg-icon-4 me-1'
                     />
-                    SF, Bay Area
-                  </a>
+                    {dataUser?.departamento}, {dataUser?.municipio}
+                  </a> */}
                   <a
                     href='#'
                     className='d-flex align-items-center text-gray-400 text-hover-primary mb-2'
@@ -71,12 +81,12 @@ const AccountHeader: React.FC = () => {
                       path='/media/icons/duotune/communication/com011.svg'
                       className='svg-icon-4 me-1'
                     />
-                    max@kt.com
+                    {dataUser?.email}
                   </a>
                 </div>
               </div>
 
-              <div className='d-flex my-4'>
+              {/* <div className='d-flex my-4'>
                 <a href='#' className='btn btn-sm btn-light me-2' id='kt_user_follow_button'>
                   <KTSVG
                     path='/media/icons/duotune/arrows/arr012.svg'
@@ -108,11 +118,11 @@ const AccountHeader: React.FC = () => {
                   </button>
                   <Dropdown1 />
                 </div>
-              </div>
+              </div> */}
             </div>
 
             <div className='d-flex flex-wrap flex-stack'>
-              <div className='d-flex flex-column flex-grow-1 pe-8'>
+              {/* <div className='d-flex flex-column flex-grow-1 pe-8'>
                 <div className='d-flex flex-wrap'>
                   <div className='border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3'>
                     <div className='d-flex align-items-center'>
@@ -150,9 +160,9 @@ const AccountHeader: React.FC = () => {
                     <div className='fw-bold fs-6 text-gray-400'>Success Rate</div>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
-              <div className='d-flex align-items-center w-200px w-sm-300px flex-column mt-3'>
+              {/* <div className='d-flex align-items-center w-200px w-sm-300px flex-column mt-3'>
                 <div className='d-flex justify-content-between w-100 mt-auto mb-2'>
                   <span className='fw-bold fs-6 text-gray-400'>Profile Compleation</span>
                   <span className='fw-bolder fs-6'>50%</span>
@@ -164,7 +174,7 @@ const AccountHeader: React.FC = () => {
                     style={{width: '50%'}}
                   ></div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -179,10 +189,10 @@ const AccountHeader: React.FC = () => {
                 }
                 to='/crafted/account/overview'
               >
-                Overview
+                Perfil
               </Link>
             </li>
-            <li className='nav-item'>
+            {/* <li className='nav-item'>
               <Link
                 className={
                   `nav-link text-active-primary me-6 ` +
@@ -190,9 +200,9 @@ const AccountHeader: React.FC = () => {
                 }
                 to='/crafted/account/settings'
               >
-                Settings
+                Opciones
               </Link>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

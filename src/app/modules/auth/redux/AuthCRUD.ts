@@ -56,6 +56,19 @@ export async function signUp(email: string, password: string) {
   }
 }
 
+export const sendPasswordResetEmail = async (email: string) => {
+  const { error } = await supabase.auth.resetPasswordForEmail(email);
+
+  if (error) {
+    localStorage.setItem('passwordResetError', 'true');
+    window.location.href = '/reset/email-error';
+  } else {
+    localStorage.removeItem('passwordResetError');
+    window.location.href = '/reset/email';
+  }
+}
+
+
 // Server should return AuthModel - Local
 // export function login(email: string, password: string) {
 //   return axios.post(LOGIN_URL, {email, password})

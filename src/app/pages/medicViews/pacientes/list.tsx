@@ -12,7 +12,7 @@ type ColumnConfig<T> = {
 }
 
 export default function List() {
-  const {data, toggleModal, setSelectedItem, Status, setSearch, search} = useContext(ContentContext)
+  const {data, toggleModal, setSelectedItem, Status} = useContext(ContentContext)
   const handleEdit = (item: any) => {
     setSelectedItem(item)
     toggleModal(1)
@@ -25,10 +25,6 @@ export default function List() {
     toggleModal(3)
   }
 
-  const handleAsignarMedico = (item: any) => {
-    setSelectedItem(item)
-    toggleModal(4)
-  }
   const columns: ColumnConfig<Persona>[] = [
     {
       header: 'Persona',
@@ -72,33 +68,10 @@ export default function List() {
         handleSaludGeneral(item)
       },
     },
-    ...(search === 2
-      ? [
-          {
-            iconPath: toAbsoluteUrl('/media/icons/duotune/general/gen003.svg'),
-            onClick: (item: any) => {
-              handleAsignarMedico(item)
-            },
-          },
-        ]
-      : []),
   ]
 
   return (
     <>
-      <Row className='mb-4'>
-        <Col>
-          <Badge bg='primary' className='me-2 fs-5 cursor-pointer' onClick={() => setSearch(3)}>
-            Médico
-          </Badge>
-          <Badge bg='secondary' className='fs-5 cursor-pointer' onClick={() => setSearch(2)}>
-            Paciente
-          </Badge>
-          <Badge bg='dark' className='ms-2 fs-5 cursor-pointer' onClick={() => setSearch(null)}>
-            Todos
-          </Badge>
-        </Col>
-      </Row>
       <TableList
         className='mb-5 mb-xl-6'
         data={data ?? []}

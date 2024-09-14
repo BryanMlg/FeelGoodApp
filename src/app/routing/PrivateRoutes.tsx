@@ -5,6 +5,7 @@ import {DashboardWrapper} from '../pages/dashboard/DashboardWrapper'
 import {RoutesPatient} from './private/routesPatient'
 import { RoutesMedic } from './private/routesMedic'
 import { RoutesAdmin } from './private/routesAdmin'
+import { RoutesProcess } from './private/profile'
 export function PrivateRoutes() {
   const AccountPage = lazy(() => import('../modules/accounts/AccountPage'))
 
@@ -16,7 +17,7 @@ export function PrivateRoutes() {
         <Route path='/medico' component={RoutesMedic} />
         <Route path='/admin' component={RoutesAdmin} />
         <Route path='/crafted/account' component={AccountPage} />
-
+        <Route path='/reset' component={RoutesProcess} />
         <Redirect from='/auth' to='/dashboard' />
         <Redirect exact from='/' to='/dashboard' />
         <Redirect to='/error/404' />

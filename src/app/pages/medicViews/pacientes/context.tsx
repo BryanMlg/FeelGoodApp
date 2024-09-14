@@ -14,7 +14,7 @@ import {
 export const ContentContext = createContext<ContentContextType>({} as ContentContextType)
 
 export const ContentProvider: React.FC = ({children}) => {
-  const {Authorization, apikey} = useAuthHeaders()
+  const {Authorization, apikey, dataUser} = useAuthHeaders()
   const [show, setShow] = useState<boolean>(false)
   const [opcion, setOpcion] = useState<number>(0)
   const [data, setData] = useState<Persona[] | null>(null)
@@ -24,13 +24,11 @@ export const ContentProvider: React.FC = ({children}) => {
   const [labelDepartamento, setLabelDepartamento] = useState<labelDepartamento[] | null>(null)
   const [labelMunicipio, setLabelMunicipio] = useState<labelMunicipio[] | null>(null)
   const [labelRol, setLabelRol] = useState<labelRol[] | null>(null)
-  const [search, setSearch] = useState<number | null>(0)
+
   const endPoint = 'persona'
   const fetchPersonas = async () => {
     const result = await fetchData<Persona[]>({
-      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}?select=*${
-        search && `&rolId=eq.${search}`
-      }`,
+      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}?select=*&medicoPaciente!inner.idMedico=eq.${dataUser?.id}`,
       method: 'GET',
       headers: {
         Authorization: Authorization,
@@ -174,8 +172,6 @@ export const ContentProvider: React.FC = ({children}) => {
     labelDepartamento,
     labelMunicipio,
     labelRol,
-    search,
-    setSearch,
     getMunicipios,
   }
 
@@ -187,7 +183,7 @@ export const ContentProvider: React.FC = ({children}) => {
 
   useEffect(() => {
     fetchPersonas()
-  }, [search])
+  }, [])
 
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>
 }
