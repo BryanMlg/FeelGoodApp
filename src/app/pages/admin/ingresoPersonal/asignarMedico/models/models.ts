@@ -1,6 +1,7 @@
 // models/models.ts
 export interface Medico {
-  idMedico: number,
+  idmedico: number
+  medico_nombre: string
   estado: number
 }
 
@@ -15,14 +16,12 @@ export interface labelMedicos {
 export interface ContentContextType {
   toggleModal: (data?: number) => void
   show: boolean
-  data: Medico[] | null
+  allData: Medico[] | null
   error: string | null
   loading: boolean
-  selectedItem: any
-  setSelectedItem: React.Dispatch<React.SetStateAction<any>>
   opcion: number
   setOpcion: React.Dispatch<React.SetStateAction<number>> 
-  createUpdate: (data: any, estado?: number) => Promise<void>
+  asignarMedico: (data: any, estado?: number) => Promise<void>
   Status: (id: number, estado: number) => Promise<void>
   editar?: boolean
   setEditar: React.Dispatch<React.SetStateAction<boolean>>;

@@ -1,10 +1,9 @@
 // models/models.ts
 export interface Sintoma {
-  idSintoma: number,
-  idRegistro: number,
+  sintoma_id: number,
+  sintoma_nombre: string,
   descripcion: string
   estado: number
-  sintoma_nombre: string
 }
 
 export interface labelSintomas {

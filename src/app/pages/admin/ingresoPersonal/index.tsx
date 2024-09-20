@@ -7,7 +7,7 @@ import {ContentProvider} from './context'
 const usuarioPage: React.FC = () => {
   return (
     <ContentProvider>
-      <Toolbar3 DefaultTitle={'Registro Personal'} pageModal={<Formulario />} />
+      <Toolbar3 DefaultTitle={'Registro Usuario'} pageModal={<Formulario />} />
       <Row>
         <Col>
           <List />

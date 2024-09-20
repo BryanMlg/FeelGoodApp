@@ -19,7 +19,7 @@ export default function List() {
     Status(item?.id, item?.estado)
   }
   const columns: ColumnConfig<Sintoma>[] = [
-    {header: 'Sintoma', accessor: 'idSintoma', width: '125px'},
+    {header: 'Sintoma', accessor: 'sintoma_nombre', width: '125px'},
     {header: 'Descripción', accessor: 'descripcion', width: '300px'},
     {
       header: 'Estado',

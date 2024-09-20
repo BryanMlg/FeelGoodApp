@@ -24,7 +24,7 @@ export const ContentProvider: React.FC = ({children}) => {
   const [labelDepartamento, setLabelDepartamento] = useState<labelDepartamento[] | null>(null)
   const [labelMunicipio, setLabelMunicipio] = useState<labelMunicipio[] | null>(null)
   const [labelRol, setLabelRol] = useState<labelRol[] | null>(null)
-  const [search, setSearch] = useState<number | null>(0)
+  const [search, setSearch] = useState<number | null>(null)
   const endPoint = 'persona'
   const fetchPersonas = async () => {
     const result = await fetchData<Persona[]>({

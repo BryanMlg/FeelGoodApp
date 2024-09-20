@@ -19,7 +19,7 @@ export function MenuAdmin() {
         fontIcon='bi-archive'
         icon='/media/icons/duotune/general/gen022.svg'
       >
-        <AsideMenuItem to='/admin/ingreso-persona' title='Ingreso Persona' hasBullet={true} />
+        <AsideMenuItem to='/admin/ingreso-persona' title='Registro Usuarios' hasBullet={true} />
       </AsideMenuItemWithSub>
 
       <div className='menu-item'>

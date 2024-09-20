@@ -14,11 +14,11 @@ export function MenuMedic() {
       </div>
       <AsideMenuItemWithSub
         to='/medico'
-        title='Menu'
+        title='Menú'
         fontIcon='bi-chat-left'
         icon='/media/icons/duotune/communication/com012.svg'
       >
-        <AsideMenuItem to='/medico/sintomas' title='Registro Sintomas' hasBullet={true} />
+        <AsideMenuItem to='/medico/sintomas' title='Registro Síntomas' hasBullet={true} />
         <AsideMenuItem to='/medico/departamentos' title='Registro Departamentos' hasBullet={true} />
         <AsideMenuItem to='/medico/municipios' title='Registro Municipios' hasBullet={true} />
         <AsideMenuItem to='/medico/roles' title='Registro Roles' hasBullet={true} />

@@ -1,20 +1,16 @@
 // models/models.ts
 export interface Persona {
-  id: number
-  nombre: string
+  persona_id: number
+  persona_nombre: string
   estado: number
-  departamentoId: string | number
-  municipioId: string | number
-  rol: string
-  primerNombres: string
-  segundoNombre?: string
-  tercerNombre?: string
-  primerApellido: string
-  segundoApellido: string
+  departamentoid: string | number
+  municipioid: string | number
   dpi: string
-  edad: string
+  edad: number
   email: string
-  fechaNacimiento: Date | null
+  fecha_nacimiento: Date | null
+  departamento_nombre: string
+  municipio_nombre: string
 }
 
 export interface labelDepartamento {
@@ -32,7 +28,6 @@ export interface labelRol {
   nombre: string
 }
 
-
 export interface ContentContextType {
   toggleModal: (data?: number) => void
   show: boolean
@@ -42,13 +37,12 @@ export interface ContentContextType {
   createUpdate: (data: any, estado?: number) => Promise<void>
   selectedItem: any
   setSelectedItem: React.Dispatch<React.SetStateAction<Persona[] | null>>
-  opcion: number 
-  setOpcion: React.Dispatch<React.SetStateAction<number>> 
+  opcion: number
+  setOpcion: React.Dispatch<React.SetStateAction<number>>
   Status: (id: number, estado: number) => Promise<void>
   labelDepartamento: labelDepartamento[] | null
   labelMunicipio: labelMunicipio[] | null
   labelRol: labelRol[] | null
 
- 
-  getMunicipios: (idDepartamento: number | string) => Promise<void>;
+  getMunicipios: (idDepartamento: number | string) => Promise<void>
 }

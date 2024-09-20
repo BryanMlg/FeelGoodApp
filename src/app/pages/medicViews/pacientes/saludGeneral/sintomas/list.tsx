@@ -1,9 +1,7 @@
 import {useContext} from 'react'
-import {TableList} from '../../../../../_metronic/partials/widgets'
-import {Medico} from './models/models'
+import {TableList} from '../../../../../../_metronic/partials/widgets'
+import {Sintoma} from './models/models'
 import {ContentContext} from './context'
-import Formulario from './form'
-
 type ColumnConfig<T> = {
   header: string
   accessor: keyof T | ((item: T) => React.ReactNode)
@@ -12,20 +10,20 @@ type ColumnConfig<T> = {
 }
 
 export default function List() {
-  const {allData, Status} = useContext(ContentContext)
-
-  const handleStatus = (item: any) => {
-    Status(item?.id, item?.estado)
+  const {data, Status, setSelectedItem, setEditar} = useContext(ContentContext)
+  const handleEdit = (item: any) => {
+    setSelectedItem(item)
+    setEditar(true)
   }
-
-  // Filtrar si ya existe algún registro con estado 1
-  const hasActiveRecord = allData?.some((item: Medico) => item.estado === 1)
-
-  const columns: ColumnConfig<Medico>[] = [
-    {header: 'Nombre', accessor: 'medico_nombre', width: '125px'},
+  const handleStatus = (item: any) => {
+    Status(item?.sintoma_paciente_id, item?.estado)
+  }
+  const columns: ColumnConfig<Sintoma>[] = [
+    {header: 'Síntoma', accessor: 'sintoma_nombre', width: '150px'},
+    {header: 'Descripción', accessor: 'descripcion', width: '300px'},
     {
       header: 'Estado',
-      accessor: (item: Medico) => (
+      accessor: (item: Sintoma) => (
         <span
           className={`badge ${
             item.estado === 1 ? 'badge-light-success' : 'badge-light-danger'
@@ -34,19 +32,20 @@ export default function List() {
           {item.estado === 1 ? 'Activo' : 'Desactivado'}
         </span>
       ),
+      width: '150px',
     },
   ]
 
   return (
     <>
-      {/* Mostrar el formulario solo si no existe un registro activo */}
-      {!hasActiveRecord && <Formulario />}
       <TableList
         className='mb-5 mb-xl-6'
-        data={allData ?? []}
+        data={data ?? []}
         columns={columns}
+        onEdit={handleEdit}
         onEstatus={handleStatus}
         showEditButton={false}
+        showStatusButton={false}
       />
     </>
   )

@@ -5,27 +5,33 @@ import {Formik, Field, Form as FormikForm} from 'formik'
 import * as Yup from 'yup'
 
 const validationSchema = Yup.object().shape({
-  medico: Yup.string().required('Este campo es obligatorio'),
+  sintoma: Yup.string().required('Este campo es obligatorio'),
+  descripcion: Yup.string().required('Este campo es obligatorio'),
 })
 
 export const Formulario = () => {
-  const {asignarMedico, editar, setEditar, labelMedicos} = useContext(ContentContext)
+  const {createUpdate, selectedItem, editar, setEditar, setSelectedItem, labelSintomas} =
+    useContext(ContentContext)
   const handleReset = () => {
+    setSelectedItem(null)
     setEditar(false)
   }
   return (
     <>
       <Formik
         initialValues={{
-          medico: '',
+          sintoma: selectedItem?.idSintoma || '',
+          descripcion: selectedItem?.descripcion || '',
         }}
         validationSchema={validationSchema}
         enableReinitialize={true}
         onSubmit={(values, {resetForm}) => {
-          asignarMedico({
-            idMedico: values?.medico,
+          createUpdate({
+            idSintoma: values?.sintoma,
+            descripcion: values?.descripcion,
+            id: selectedItem?.id,
           })
-
+          setSelectedItem(null)
           setEditar(false)
           resetForm()
         }}
@@ -34,20 +40,33 @@ export const Formulario = () => {
           <FormikForm>
             <Row className='mt-4'>
               <Col xs={12} md={12} lg={12} className='mt-4'>
-                <Form.Group controlId='medico'>
+                <Form.Group controlId='sintoma'>
                   <Form.Label>
-                    Medico <span className='text-danger'>*</span>
+                    Sintoma <span className='text-danger'>*</span>
                   </Form.Label>
-                  <Field as='select' name='medico' className='form-control'>
-                    <option value=''>Seleccione un Medico</option>
-                    {labelMedicos?.map((option) => (
+                  <Field as='select' name='sintoma' className='form-control'>
+                    <option value=''>Seleccione un Sintoma</option>
+                    {labelSintomas?.map((option) => (
                       <option key={option.id} value={option.id}>
-                        {option.primerNombres + ' ' + option.primerApellido}
+                        {option.nombre}
                       </option>
                     ))}
                   </Field>
-                  {errors.medico && touched.medico ? (
-                    <div className='text-danger'>{errors.medico}</div>
+                  {errors.sintoma && touched.sintoma ? (
+                    <div className='text-danger'>{errors.sintoma}</div>
+                  ) : null}
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={12} md={12} lg={12} className='mb-4 mt-4'>
+                <Form.Group>
+                  <Form.Label>
+                    Descripción <span className='text-danger'>*</span>
+                  </Form.Label>
+                  <Field name='descripcion' className='form-control' />
+                  {errors.descripcion && touched.descripcion ? (
+                    <div className='text-danger'>{errors.descripcion}</div>
                   ) : null}
                 </Form.Group>
               </Col>

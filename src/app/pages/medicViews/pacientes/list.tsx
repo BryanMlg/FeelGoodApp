@@ -3,7 +3,6 @@ import {TableList} from '../../../../_metronic/partials/widgets'
 import {Persona} from './models/models'
 import {ContentContext} from './context'
 import {toAbsoluteUrl} from '../../../../_metronic/helpers'
-import {Badge, Row, Col} from 'react-bootstrap-v5'
 type ColumnConfig<T> = {
   header: string
   accessor: keyof T | ((item: T) => React.ReactNode)
@@ -35,16 +34,16 @@ export default function List() {
           </div> */}
           <div className='d-flex justify-content-start flex-column'>
             <div className='text-dark fw-bolder text-hover-primary mb-1 fs-6'>
-              {item.primerNombres} {item.segundoNombre} {item.tercerNombre} {item.primerApellido}{' '}
+              {item.persona_nombre}
             </div>
-            <span className='text-muted fw-bold text-muted d-block fs-7'>{item.rol}</span>
+           
           </div>
         </div>
       ),
       width: '325px',
     },
-    {header: 'Departamento', accessor: 'municipioId', width: '125px'},
-    {header: 'Municipio', accessor: 'departamentoId', width: '125px'},
+    {header: 'Departamento', accessor: 'departamento_nombre', width: '125px'},
+    {header: 'Municipio', accessor: 'municipio_nombre', width: '125px'},
     {header: 'DPI', accessor: 'dpi', width: '125px'},
     {header: 'Edad', accessor: 'edad', width: '75px'},
     {

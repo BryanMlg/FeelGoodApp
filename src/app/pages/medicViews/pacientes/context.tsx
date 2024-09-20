@@ -28,8 +28,9 @@ export const ContentProvider: React.FC = ({children}) => {
   const endPoint = 'persona'
   const fetchPersonas = async () => {
     const result = await fetchData<Persona[]>({
-      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}?select=*&medicoPaciente!inner.idMedico=eq.${dataUser?.id}`,
-      method: 'GET',
+      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/rpc/obtener_personas_por_medico`,
+      method: 'POST',
+      body: {medicoid: dataUser?.id},
       headers: {
         Authorization: Authorization,
         apikey: apikey,
@@ -48,7 +49,7 @@ export const ContentProvider: React.FC = ({children}) => {
     try {
       const result = await fetchData({
         url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}${
-          opcion === 1 ? `?id=eq.${data?.id}` : ''
+          opcion === 1 ? `?id=eq.${data?.persona_id}` : ''
         }`,
         method: opcion === 1 ? 'PATCH' : 'POST',
         body:

@@ -1,13 +1,13 @@
 import React, {createContext, useState, useEffect, useContext} from 'react'
-import {fetchData} from '../../../../services/useRequest'
+import {fetchData} from '../../../../../services/useRequest'
 import {Sintoma, ContentContextType, labelSintomas} from './models/models'
 import {ContentContext as ContextPrincipal} from '../context'
-import {useAuthHeaders} from '../../../../modules/utility/hooks/useAuthHeathers'
+import {useAuthHeaders} from '../../../../../modules/utility/hooks/useAuthHeathers'
 export const ContentContext = createContext<ContentContextType>({} as ContentContextType)
 
 export const ContentProvider: React.FC = ({children}) => {
-  const {Authorization, apikey, dataUser} = useAuthHeaders()
-  const {selectedItem: selectedItemPrincipal} = useContext(ContextPrincipal)
+  const {Authorization, apikey} = useAuthHeaders()
+  const {selectedItemPrincipal} = useContext(ContextPrincipal)
   const [show, setShow] = useState<boolean>(false)
   const [opcion, setOpcion] = useState<number>(0)
   const [data, setData] = useState<Sintoma[] | null>(null)
@@ -16,12 +16,12 @@ export const ContentProvider: React.FC = ({children}) => {
   const [selectedItem, setSelectedItem] = useState<any>(null)
   const [editar, setEditar] = useState<boolean>(false)
   const [labelSintomas, setLabelSintomas] = useState<labelSintomas[] | null>(null)
-  const endPoint = 'sintomasPaciente'
+  const endPoint = 'parametrosPaciente'
   const fetchSintomas = async () => {
     const result = await fetchData<Sintoma[]>({
-      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/rpc/obtener_sintomas_por_registro`,
+      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/rpc/obtener_nivel_menopausia_por_persona`,
       method: 'POST',
-      body:{idregistro: selectedItemPrincipal?.id},
+      body: {idpersona: selectedItemPrincipal?.id},
       headers: {
         Authorization: Authorization,
         apikey: apikey,
@@ -36,7 +36,7 @@ export const ContentProvider: React.FC = ({children}) => {
   const createUpdate = async (data?: any, estado?: number) => {
     setLoading(true)
     setError(null)
-    console.log('')
+    console.log('selectedItemPrincipal', selectedItemPrincipal)
     try {
       const result = await fetchData<Sintoma>({
         url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}${
@@ -45,7 +45,7 @@ export const ContentProvider: React.FC = ({children}) => {
         method: editar ? 'PATCH' : 'POST',
         body: editar
           ? {...data, actualizadoPor: 1, actualizado: new Date()} //Update
-          : {...data, estado: estado || 1, idPersona: dataUser?.id, creadoPor: 1, idRegistro: selectedItemPrincipal?.id}, //Create
+          : {...data, estado: estado || 1, idPersona: selectedItemPrincipal?.id, creadoPor: 1}, //Create
         headers: {
           Authorization: Authorization,
           apikey: apikey,
@@ -95,7 +95,7 @@ export const ContentProvider: React.FC = ({children}) => {
 
   const getSintomas = async () => {
     const result = await fetchData<any>({
-      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/sintomas?select=id,nombre`,
+      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/nivelMenopausia?select=id,nombre`,
       method: 'GET',
       headers: {
         Authorization: Authorization,

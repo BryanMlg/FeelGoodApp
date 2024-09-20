@@ -3,6 +3,7 @@ import {fetchData} from '../../../../services/useRequest'
 import {Medico, ContentContextType, labelMedicos} from './models/models'
 import {ContentContext as ContextPrincipal} from '../context'
 import {useAuthHeaders} from '../../../../modules/utility/hooks/useAuthHeathers'
+import {showErrorAlert, showSuccessAlert} from '../../../../services/alertServices'
 export const ContentContext = createContext<ContentContextType>({} as ContentContextType)
 
 export const ContentProvider: React.FC = ({children}) => {
@@ -10,57 +11,67 @@ export const ContentProvider: React.FC = ({children}) => {
   const {selectedItem: selectedItemPrincipal} = useContext(ContextPrincipal)
   const [show, setShow] = useState<boolean>(false)
   const [opcion, setOpcion] = useState<number>(0)
-  const [data, setData] = useState<Medico[] | null>(null)
+  const [allData, setAllData] = useState<Medico[] | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
-  const [selectedItem, setSelectedItem] = useState<any>(null)
   const [editar, setEditar] = useState<boolean>(false)
   const [labelMedicos, setLabelMedicos] = useState<labelMedicos[] | null>(null)
   const endPoint = 'medicoPaciente'
   const fetchMedicos = async () => {
     const result = await fetchData<Medico[]>({
-      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}?select=*`,
-      method: 'GET',
+      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/rpc/obtener_medico_paciente_por_persona`,
+      method: 'POST',
+      body: {idpersona: selectedItemPrincipal?.id},
       headers: {
         Authorization: Authorization,
         apikey: apikey,
       },
     })
 
-    setData(result.data)
+    setAllData(result.data)
     setError(result.error)
     setLoading(result.loading)
   }
 
-  const createUpdate = async (data?: any, estado?: number) => {
-    setLoading(true)
-    setError(null)
+  const asignarMedico = async (data?: any, estado?: number) => {
+    const medicoExistente = allData?.find(
+      (medico: Medico) => medico.idmedico.toString() === data?.idMedico.toString()
+    )
 
-    try {
-      const result = await fetchData<Medico>({
-        url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}${
-          editar ? `?id=eq.${data?.id}` : ''
-        }`,
-        method: editar ? 'PATCH' : 'POST',
-        body: editar
-          ? {...data, actualizadoPor: 1, actualizado: new Date()} //Update
-          : {...data, estado: estado || 1, idPersona: selectedItemPrincipal?.id, creadoPor: 1}, //Create
-        headers: {
-          Authorization: Authorization,
-          apikey: apikey,
-        },
-      })
+    if (medicoExistente) {
+      showErrorAlert('Ya se asigno este medico.', `${medicoExistente?.medico_nombre}`)
+    } else {
+      setLoading(true)
+      setError(null)
+      try {
+        const result = await fetchData<Medico>({
+          url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}${
+            editar ? `?id=eq.${data?.id}` : ''
+          }`,
+          method: editar ? 'PATCH' : 'POST',
+          body: editar
+            ? {...data, actualizadoPor: 1, actualizado: new Date()} // Update
+            : {...data, estado: estado || 1, idPersona: selectedItemPrincipal?.id, creadoPor: 1}, // Create
+          headers: {
+            Authorization: Authorization,
+            apikey: apikey,
+          },
+        })
 
-      if (result.error) {
-        throw new Error(result.error)
+        if (result.status !== null && result.status >= 200 && result.status < 300) {
+          showSuccessAlert('Proceso Realizado con Éxito', '')
+          toggleModal(0)
+        } else {
+          showErrorAlert('Error', '')
+        }
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : 'An error occurred while creating the department.'
+        )
+      } finally {
+        await fetchMedicos()
+        setLoading(false)
       }
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'An error occurred while creating the department.'
-      )
-    } finally {
-      await fetchMedicos()
-      setLoading(false)
     }
   }
 
@@ -107,23 +118,19 @@ export const ContentProvider: React.FC = ({children}) => {
 
   const toggleModal = (opcion?: number) => {
     setOpcion(opcion ?? 0)
-    if (opcion === 0) {
-      setSelectedItem(null)
-    }
+
     setShow((prevShow) => !prevShow)
   }
 
   const value: ContentContextType = {
     toggleModal,
     show,
-    data,
+    allData,
     error,
     loading,
-    selectedItem,
-    setSelectedItem,
     opcion,
     setOpcion,
-    createUpdate,
+    asignarMedico,
     Status,
     setEditar,
     editar,

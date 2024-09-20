@@ -1,6 +1,6 @@
 import {useContext} from 'react'
-import {TableList} from '../../../../../_metronic/partials/widgets'
-import {Medico} from './models/models'
+import {TableList} from '../../../../../../_metronic/partials/widgets'
+import {Sintoma} from './models/models'
 import {ContentContext} from './context'
 type ColumnConfig<T> = {
   header: string
@@ -18,11 +18,11 @@ export default function List() {
   const handleStatus = (item: any) => {
     Status(item?.id, item?.estado)
   }
-  const columns: ColumnConfig<Medico>[] = [
-    {header: 'Medico', accessor: 'idMedico', width: '125px'},
+  const columns: ColumnConfig<Sintoma>[] = [
+    {header: 'Menopáusia', accessor: 'nombre_nivel_menopausia', width: '125px'},
     {
       header: 'Estado',
-      accessor: (item: Medico) => (
+      accessor: (item: Sintoma) => (
         <span
           className={`badge ${
             item.estado === 1 ? 'badge-light-success' : 'badge-light-danger'

@@ -55,13 +55,13 @@ export const Formulario = () => {
           setEditar(false)
         }}
       >
-        {({errors, touched, resetForm}) => (
+        {({errors, touched}) => (
           <FormikForm>
             <Row className='mb-4 px-20'>
               <h4 className='text-center mb-4'>Salud General</h4>
               <hr className='mb-4' />
               <Row>
-                <Col xs={12} md={6} lg={2}>
+                <Col xs={12} md={6} lg={6}>
                   <Form.Group controlId='formPeso'>
                     <Form.Label>
                       Peso <span className='text-danger'>*</span>
@@ -72,7 +72,7 @@ export const Formulario = () => {
                     ) : null}
                   </Form.Group>
                 </Col>
-                <Col xs={12} md={6} lg={2}>
+                <Col xs={12} md={6} lg={6}>
                   <Form.Group controlId='formAltura'>
                     <Form.Label>
                       Altura <span className='text-danger'>*</span>
@@ -83,7 +83,7 @@ export const Formulario = () => {
                     ) : null}
                   </Form.Group>
                 </Col>
-                <Col xs={12} md={6} lg={4}>
+                <Col xs={12} md={6} lg={4} className='mt-3'>
                   <Form.Group controlId='formPruebaHormonal'>
                     <Form.Label>
                       Prueba Hormonal <span className='text-danger'>*</span>
@@ -94,7 +94,7 @@ export const Formulario = () => {
                     ) : null}
                   </Form.Group>
                 </Col>
-                <Col xs={12} md={6} lg={2}>
+                <Col xs={12} md={6} lg={4} className='mt-3'>
                   <Form.Group controlId='formNivelColesterol'>
                     <Form.Label>
                       Nivel Colesterol <span className='text-danger'>*</span>
@@ -105,7 +105,7 @@ export const Formulario = () => {
                     ) : null}
                   </Form.Group>
                 </Col>
-                <Col xs={12} md={6} lg={2}>
+                <Col className='mt-3'>
                   <Form.Group controlId='formGlucosaSangre'>
                     <Form.Label>
                       Glucosa Sangre <span className='text-danger'>*</span>

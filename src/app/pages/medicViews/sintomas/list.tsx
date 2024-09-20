@@ -20,7 +20,7 @@ export default function List() {
   }
   const columns: ColumnConfig<Enfermedad>[] = [
     {
-      header: 'Sintoma',
+      header: 'Síntoma',
       accessor: (item: Enfermedad) => (
         <div className='d-flex align-items-center'>
           <div className='d-flex justify-content-start flex-column'>

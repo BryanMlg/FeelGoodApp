@@ -4,14 +4,12 @@ import {ContentContext} from './context'
 import {Formik, Field, Form as FormikForm} from 'formik'
 import * as Yup from 'yup'
 
-
-
 const validationSchema = Yup.object().shape({
-  medico: Yup.string().required('Este campo es obligatorio'),
+  menopausia: Yup.string().required('Este campo es obligatorio'),
 })
 
 export const Formulario = () => {
-  const {createUpdate, selectedItem, editar, setEditar, setSelectedItem, labelMedicos} =
+  const {createUpdate, selectedItem, editar, setEditar, setSelectedItem, labelSintomas} =
     useContext(ContentContext)
   const handleReset = () => {
     setSelectedItem(null)
@@ -21,15 +19,14 @@ export const Formulario = () => {
     <>
       <Formik
         initialValues={{
-          medico: selectedItem?.idMedico || '',
-        
+          menopausia: selectedItem?.nivel_menopausia_id || '',
         }}
         validationSchema={validationSchema}
         enableReinitialize={true}
         onSubmit={(values, {resetForm}) => {
           createUpdate({
-            idMedico: values?.medico,
-            id: selectedItem?.id,
+            nivelMenopausiaId: values?.menopausia,
+            id: selectedItem?.id
           })
           setSelectedItem(null)
           setEditar(false)
@@ -40,25 +37,24 @@ export const Formulario = () => {
           <FormikForm>
             <Row className='mt-4'>
               <Col xs={12} md={12} lg={12} className='mt-4'>
-                <Form.Group controlId='medico'>
+                <Form.Group controlId='sintoma'>
                   <Form.Label>
-                    Medico <span className='text-danger'>*</span>
+                    Menopausia <span className='text-danger'>*</span>
                   </Form.Label>
-                  <Field as='select' name='medico' className='form-control'>
-                    <option value=''>Seleccione un Medico</option>
-                    {labelMedicos?.map((option) => (
+                  <Field as='select' name='menopausia' className='form-control'>
+                    <option value=''>Seleccione una opción</option>
+                    {labelSintomas?.map((option) => (
                       <option key={option.id} value={option.id}>
-                        {option.primerNombres + ' ' + option.primerApellido}
+                        {option.nombre}
                       </option>
                     ))}
                   </Field>
-                  {errors.medico && touched.medico ? (
-                    <div className='text-danger'>{errors.medico}</div>
+                  {errors.menopausia && touched.menopausia ? (
+                    <div className='text-danger'>{errors.menopausia}</div>
                   ) : null}
                 </Form.Group>
               </Col>
             </Row>
-          
 
             <Row className='mt-4'>
               <Col className='d-flex justify-content-center'>

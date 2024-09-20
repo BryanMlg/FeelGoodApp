@@ -6,7 +6,6 @@ import * as Yup from 'yup'
 
 const validationSchema = Yup.object().shape({
   sintoma: Yup.string().required('Este campo es obligatorio'),
-  descripcion: Yup.string().required('Este campo es obligatorio'),
 })
 
 export const Formulario = () => {
@@ -20,7 +19,7 @@ export const Formulario = () => {
     <>
       <Formik
         initialValues={{
-          sintoma: selectedItem?.idSintoma || '',
+          sintoma: selectedItem?.idsintoma || '',
           descripcion: selectedItem?.descripcion || '',
         }}
         validationSchema={validationSchema}
@@ -62,7 +61,7 @@ export const Formulario = () => {
               <Col xs={12} md={12} lg={12} className='mb-4 mt-4'>
                 <Form.Group>
                   <Form.Label>
-                    Descripción <span className='text-danger'>*</span>
+                    Descripción 
                   </Form.Label>
                   <Field name='descripcion' className='form-control' />
                   {errors.descripcion && touched.descripcion ? (
