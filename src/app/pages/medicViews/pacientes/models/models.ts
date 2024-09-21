@@ -32,17 +32,10 @@ export interface ContentContextType {
   toggleModal: (data?: number) => void
   show: boolean
   data: Persona[] | null
-  error: string | null
   loading: boolean
-  createUpdate: (data: any, estado?: number) => Promise<void>
   selectedItem: any
   setSelectedItem: React.Dispatch<React.SetStateAction<Persona[] | null>>
   opcion: number
   setOpcion: React.Dispatch<React.SetStateAction<number>>
   Status: (id: number, estado: number) => Promise<void>
-  labelDepartamento: labelDepartamento[] | null
-  labelMunicipio: labelMunicipio[] | null
-  labelRol: labelRol[] | null
-
-  getMunicipios: (idDepartamento: number | string) => Promise<void>
 }

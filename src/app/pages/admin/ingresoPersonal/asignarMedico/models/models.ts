@@ -17,7 +17,6 @@ export interface ContentContextType {
   toggleModal: (data?: number) => void
   show: boolean
   allData: Medico[] | null
-  error: string | null
   loading: boolean
   opcion: number
   setOpcion: React.Dispatch<React.SetStateAction<number>> 

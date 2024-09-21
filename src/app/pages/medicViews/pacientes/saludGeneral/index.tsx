@@ -2,8 +2,9 @@ import React, {useState} from 'react'
 import {Row, Col, Tabs, Tab} from 'react-bootstrap-v5'
 import List from './list'
 import Formulario from './form'
-import Sintomas from './sintomas/index'
+import Sintomas from './sintomas'
 import Menopausia from './menopausia'
+import Receta from './receta'
 import {ContentProvider} from './context'
 
 const UsuarioPage: React.FC = () => {
@@ -40,6 +41,13 @@ const UsuarioPage: React.FC = () => {
           <Row className='mt-4'>
             <Col>
               <Menopausia />
+            </Col>
+          </Row>
+        </Tab>
+        <Tab eventKey='receta' title='Recetas'>
+          <Row className='mt-4'>
+            <Col>
+              <Receta />
             </Col>
           </Row>
         </Tab>

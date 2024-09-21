@@ -16,7 +16,6 @@ export interface ContentContextType {
   show: boolean
   data: Municipio[] | null
   labelDepartamento: labelDepartamento[] | null
-  error: string | null
   loading: boolean
   createUpdate: (departamentoId: number, nombre: string, id?: number, estado?: number) => Promise<void>
   selectedItem: any

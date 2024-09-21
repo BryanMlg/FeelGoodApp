@@ -11,7 +11,7 @@ type ColumnConfig<T> = {
 }
 
 export default function List() {
-  const {data, toggleModal, setSelectedItem, Status} = useContext(ContentContext)
+  const {data, toggleModal, setSelectedItem, Status, loading} = useContext(ContentContext)
   const handleEdit = (item: any) => {
     setSelectedItem(item)
     toggleModal(1)
@@ -36,7 +36,6 @@ export default function List() {
             <div className='text-dark fw-bolder text-hover-primary mb-1 fs-6'>
               {item.persona_nombre}
             </div>
-           
           </div>
         </div>
       ),
@@ -78,6 +77,8 @@ export default function List() {
         onEdit={handleEdit}
         onEstatus={handleStatus}
         actionButtons={actionButtons}
+        loading={loading}
+        editIcon='/media/icons/duotune/text/txt001.svg'
       />
     </>
   )

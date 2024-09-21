@@ -10,7 +10,6 @@ const validationSchema = Yup.object().shape({
 
 export const Formulario = () => {
   const {toggleModal, show, createUpdate, selectedItem, opcion} = useContext(ContentContext)
- 
 
   return (
     <>
@@ -41,9 +40,7 @@ export const Formulario = () => {
             validationSchema={validationSchema}
             onSubmit={(values, {resetForm}) => {
               createUpdate(values?.departamento, selectedItem?.id)
-
               resetForm()
-              toggleModal && toggleModal(0)
             }}
           >
             {({errors, touched}) => (

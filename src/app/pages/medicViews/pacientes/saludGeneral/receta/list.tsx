@@ -1,6 +1,6 @@
 import {useContext} from 'react'
 import {TableList} from '../../../../../../_metronic/partials/widgets'
-import {Sintoma} from './models/models'
+import {Receta} from './models/models'
 import {ContentContext} from './context'
 type ColumnConfig<T> = {
   header: string
@@ -10,14 +10,19 @@ type ColumnConfig<T> = {
 }
 
 export default function List() {
-  const {data, loading} = useContext(ContentContext)
-
-  const columns: ColumnConfig<Sintoma>[] = [
-    {header: 'Síntoma', accessor: 'sintoma_nombre', width: '150px'},
-    {header: 'Descripción', accessor: 'descripcion', width: '300px'},
+  const {data, Status, setSelectedItem, setEditar,loading} = useContext(ContentContext)
+  const handleEdit = (item: any) => {
+    setSelectedItem(item)
+    setEditar(true)
+  }
+  const handleStatus = (item: any) => {
+    Status(item?.id, item?.estado)
+  }
+  const columns: ColumnConfig<Receta>[] = [
+    {header: 'Descripción', accessor: 'descripcion', width: '125px'},
     {
       header: 'Estado',
-      accessor: (item: Sintoma) => (
+      accessor: (item: Receta) => (
         <span
           className={`badge ${
             item.estado === 1 ? 'badge-light-success' : 'badge-light-danger'
@@ -36,8 +41,8 @@ export default function List() {
         className='mb-5 mb-xl-6'
         data={data ?? []}
         columns={columns}
-        showEditButton={false}
-        showStatusButton={false}
+        onEdit={handleEdit}
+        onEstatus={handleStatus}
         loading={loading}
       />
     </>

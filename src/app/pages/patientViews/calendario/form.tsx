@@ -5,6 +5,7 @@ import {Formik, Field, Form as FormikForm} from 'formik'
 import * as Yup from 'yup'
 import CustomCloseButton from '../../../modules/utility/modal/customCloseButton'
 import FormularioSintomas from './sintomas/index'
+import {showNotification} from '../../../services/alertServices'
 const formatDate = (date: any) => {
   if (!date) return ''
   const d = new Date(date)
@@ -24,9 +25,10 @@ const validationSchema = Yup.object().shape({
 })
 
 export const Formulario = () => {
-  const {toggleModal, show, selectedItem, opcion, createUpdate, selectedFecha} =
+  const {toggleModal, show, selectedItem, opcion, createUpdate, selectedFecha, data} =
     useContext(ContentContext)
   const [key, setKey] = useState('form1')
+
   return (
     <>
       <Modal
@@ -55,6 +57,21 @@ export const Formulario = () => {
                 validationSchema={validationSchema}
                 enableReinitialize={true}
                 onSubmit={(values, {resetForm}) => {
+                  // Validación personalizada para evitar duplicados de fecha
+                  const fechaYaExiste = data?.some(
+                    (item) => item.fecha === values.fecha && item.id !== selectedItem?.id
+                  )
+
+                  if (fechaYaExiste) {
+                    showNotification(
+                      5,
+                      'Fecha No Disponible',
+                      'Ya existe un registro en esta fecha. Elija otra fecha.'
+                    )
+                    return
+                  }
+
+                  // Si no existe la fecha, entonces se puede crear o actualizar
                   createUpdate({
                     fecha: values?.fecha,
                     horasSueno: values?.horasSueno,
@@ -65,8 +82,8 @@ export const Formulario = () => {
                     idPersona: 3,
                     id: selectedItem?.id,
                   })
+
                   resetForm()
-                  toggleModal && toggleModal(0)
                 }}
               >
                 {({errors, touched}) => (

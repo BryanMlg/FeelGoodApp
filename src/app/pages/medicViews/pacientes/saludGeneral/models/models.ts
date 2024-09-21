@@ -30,7 +30,6 @@ export interface ContentContextType {
   toggleModal: (data?: number) => void
   show?: boolean
   data: ParametrosSaludGeneral[] | null
-  error: string | null
   loading: boolean
   createUpdate: (data: any, estado?: number) => Promise<void>
   selectedItem: any

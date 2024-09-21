@@ -3,6 +3,7 @@ import {fetchData} from '../../../../../services/useRequest'
 import {Sintoma, ContentContextType, labelSintomas} from './models/models'
 import {ContentContext as ContextPrincipal} from '../context'
 import {useAuthHeaders} from '../../../../../modules/utility/hooks/useAuthHeathers'
+import {showNotification} from '../../../../../services/alertServices'
 export const ContentContext = createContext<ContentContextType>({} as ContentContextType)
 
 export const ContentProvider: React.FC = ({children}) => {
@@ -11,7 +12,6 @@ export const ContentProvider: React.FC = ({children}) => {
   const [show, setShow] = useState<boolean>(false)
   const [opcion, setOpcion] = useState<number>(0)
   const [data, setData] = useState<Sintoma[] | null>(null)
-  const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [selectedItem, setSelectedItem] = useState<any>(null)
   const [editar, setEditar] = useState<boolean>(false)
@@ -29,13 +29,10 @@ export const ContentProvider: React.FC = ({children}) => {
     })
 
     setData(result.data)
-    setError(result.error)
     setLoading(result.loading)
   }
 
   const createUpdate = async (data?: any, estado?: number) => {
-    setLoading(true)
-    setError(null)
     console.log('selectedItemPrincipal', selectedItemPrincipal)
     try {
       const result = await fetchData<Sintoma>({
@@ -52,23 +49,25 @@ export const ContentProvider: React.FC = ({children}) => {
         },
       })
 
-      if (result.error) {
-        throw new Error(result.error)
+      if (result.status && result.status >= 200 && result.status < 300) {
+        showNotification(3, 'Proceso Realizado con Éxito', '', undefined, 'top')
+      } else {
+        showNotification(
+          4,
+          'Error',
+          result?.code || 'Código de error desconocido',
+          undefined,
+          'top'
+        )
       }
+      setLoading(result.loading)
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'An error occurred while creating the department.'
-      )
     } finally {
       await fetchSintomas()
-      setLoading(false)
     }
   }
 
   const Status = async (id?: number, estado?: number) => {
-    setLoading(true)
-    setError(null)
-
     try {
       const result = await fetchData<Sintoma>({
         url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}${`?id=eq.${id}`}`,
@@ -80,16 +79,21 @@ export const ContentProvider: React.FC = ({children}) => {
         },
       })
 
-      if (result.error) {
-        throw new Error(result.error)
+      if (result.status && result.status >= 200 && result.status < 300) {
+        showNotification(3, 'Proceso Realizado con Éxito', '', undefined, 'top')
+      } else {
+        showNotification(
+          4,
+          'Error',
+          result?.code || 'Código de error desconocido',
+          undefined,
+          'top'
+        )
       }
+      setLoading(result.loading)
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'An error occurred while creating the department.'
-      )
     } finally {
       await fetchSintomas()
-      setLoading(false)
     }
   }
 
@@ -118,7 +122,6 @@ export const ContentProvider: React.FC = ({children}) => {
     toggleModal,
     show,
     data,
-    error,
     loading,
     selectedItem,
     setSelectedItem,

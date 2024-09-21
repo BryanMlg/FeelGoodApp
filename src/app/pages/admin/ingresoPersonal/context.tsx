@@ -2,7 +2,7 @@ import React, {createContext, useState, useEffect} from 'react'
 import {fetchData} from '../../../services/useRequest'
 import {signUp} from '../../../modules/auth/redux/AuthCRUD'
 import {useAuthHeaders} from '../../../modules/utility/hooks/useAuthHeathers'
-import {showErrorAlert, showSuccessAlert} from '../../../services/alertServices'
+import {showNotification, closeToast} from '../../../services/alertServices'
 import {
   Persona,
   ContentContextType,
@@ -10,15 +10,12 @@ import {
   labelMunicipio,
   labelRol,
 } from './models/models'
-
 export const ContentContext = createContext<ContentContextType>({} as ContentContextType)
-
 export const ContentProvider: React.FC = ({children}) => {
   const {Authorization, apikey} = useAuthHeaders()
   const [show, setShow] = useState<boolean>(false)
   const [opcion, setOpcion] = useState<number>(0)
   const [data, setData] = useState<Persona[] | null>(null)
-  const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [selectedItem, setSelectedItem] = useState<any>(null)
   const [labelDepartamento, setLabelDepartamento] = useState<labelDepartamento[] | null>(null)
@@ -39,46 +36,50 @@ export const ContentProvider: React.FC = ({children}) => {
     })
 
     setData(result.data)
-    setError(result.error)
     setLoading(result.loading)
   }
 
   const createUpdate = async (data?: any, estado?: number) => {
-    setLoading(true)
-    setError(null)
-
     try {
-      const result = await fetchData({
-        url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}${
-          opcion === 1 ? `?id=eq.${data?.id}` : ''
-        }`,
-        method: opcion === 1 ? 'PATCH' : 'POST',
-        body:
-          opcion === 1
-            ? {...data, actualizadoPor: 1, actualizado: new Date()} //Update
-            : {...data, estado: estado || 1}, //Create
-        headers: {
-          Authorization: Authorization,
-          apikey: apikey,
-        },
-      })
-      opcion === 0 && signUp(data?.email, 'Predeterminada123')
-      if (result.status !== null && result.status >= 200 && result.status < 300) {
-        showSuccessAlert('Proceso Realizado con Éxito', '')
-        toggleModal(0)
-      } else {
-        showErrorAlert('Error', '')
+      let userCreated = false
+
+      // Si la opción es 0, crear el usuario primero
+      if (opcion === 0) {
+        userCreated = await signUp(data?.email, 'Predeterminada123') // Esperar a que el usuario sea creado
       }
+
+      if (userCreated || opcion === 1) {
+        // Continuar solo si el usuario fue creado correctamente
+        const result = await fetchData({
+          url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}${
+            opcion === 1 ? `?id=eq.${data?.id}` : ''
+          }`,
+          method: opcion === 1 ? 'PATCH' : 'POST',
+          body:
+            opcion === 1
+              ? {...data, actualizadoPor: 1, actualizado: new Date()} // Update
+              : {...data, estado: estado || 1}, // Create
+          headers: {
+            Authorization: Authorization,
+            apikey: apikey,
+          },
+        })
+
+        if (result.status && result.status >= 200 && result.status < 300) {
+          showNotification(1, 'Proceso Realizado con Éxito', '')
+          toggleModal(0)
+        } else {
+          showNotification(0, 'Error', result?.code || 'Código de error desconocido')
+        }
+        setLoading(result.loading)
+      }
+    } catch (error) {
     } finally {
       await fetchPersonas()
-      setLoading(false)
     }
   }
 
   const Status = async (id?: number, estado?: number) => {
-    setLoading(true)
-    setError(null)
-
     try {
       const result = await fetchData({
         url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}${`?id=eq.${id}`}`,
@@ -90,15 +91,14 @@ export const ContentProvider: React.FC = ({children}) => {
         },
       })
 
-      if (result.status !== null && result.status >= 200 && result.status < 300) {
-        showSuccessAlert('Proceso Realizado con Éxito', '')
+      if (result.status && result.status >= 200 && result.status < 300) {
+        showNotification(3, 'Proceso Realizado con Éxito', '', undefined, 'bottom-end')
       } else {
-        showErrorAlert('Error', '')
+        showNotification(4, 'Error', result?.code || 'Código de error desconocido')
       }
+      setLoading(result.loading)
     } finally {
       await fetchPersonas()
-
-      setLoading(false)
     }
   }
 
@@ -124,16 +124,24 @@ export const ContentProvider: React.FC = ({children}) => {
         apikey: apikey,
       },
     })
-    if (
-      result.status !== null &&
-      result.status >= 200 &&
-      result.status < 300 &&
-      opcion === 0 &&
-      result?.data?.length
-    ) {
-      showSuccessAlert('Proceso Realizado con Éxito', '')
-    } else if (idDepartamento && opcion === 0 && !result?.data?.length) {
-      showErrorAlert('Error', `${!result?.data?.length && 'No Se Encontraron Municipios'}`, 5000)
+    if (result.status && result.status >= 200 && result.status < 300 && result?.data?.length) {
+      closeToast()
+      showNotification(
+        3,
+        'Proceso Realizado con Éxito',
+        'Se Encontraron Municipos',
+        undefined,
+        'top'
+      )
+    } else if (idDepartamento && !result?.data?.length) {
+      closeToast()
+      showNotification(
+        4,
+        'Error',
+        `${!result?.data?.length && 'No Se Encontraron Municipios'}`,
+        5000,
+        'top'
+      )
     }
     setLabelMunicipio(result?.data)
   }
@@ -163,7 +171,6 @@ export const ContentProvider: React.FC = ({children}) => {
     toggleModal,
     show,
     data,
-    error,
     loading,
     createUpdate,
     selectedItem,

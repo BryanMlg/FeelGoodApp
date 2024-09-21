@@ -51,7 +51,6 @@ export const Formulario = () => {
             onSubmit={(values, { resetForm }) => {
               createUpdate(selectedOption?.id || selectedOption, values?.municipio, selectedItem?.id)
               resetForm();
-              toggleModal && toggleModal(0);
             }}
           >
             {({ errors, touched, setFieldValue }) => (

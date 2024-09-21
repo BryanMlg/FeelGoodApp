@@ -16,7 +16,6 @@ export interface ContentContextType {
   toggleModal: (data?: number) => void
   show: boolean
   data: Sintoma[] | null
-  error: string | null
   loading: boolean
   selectedItem: any
   setSelectedItem: React.Dispatch<React.SetStateAction<any>>

@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {KTSVG} from '../../../helpers'
 import {toAbsoluteUrl} from '../../../helpers'
 import '../../../../app/css/loader.css'
-
+import NoData from '../listExtras/noData'
 type ActionButton<T> = {
   iconPath: string
   onClick: (item: T) => void
@@ -28,6 +28,7 @@ type Props<T> = {
   showEditButton?: boolean
   showStatusButton?: boolean
   loading?: boolean // Prop para el estado de carga
+  editIcon?: string
 }
 
 const TableList = <T extends {}>({
@@ -42,6 +43,7 @@ const TableList = <T extends {}>({
   showEditButton = true,
   showStatusButton = true,
   loading = false, // Valor predeterminado
+  editIcon = '/media/icons/duotune/art/art005.svg',
 }: Props<T>) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [currentItemsPerPage, setCurrentItemsPerPage] = useState(itemsPerPage)
@@ -63,7 +65,7 @@ const TableList = <T extends {}>({
 
   if (showEditButton) {
     defaultButtons.push({
-      iconPath: toAbsoluteUrl('/media/icons/duotune/art/art005.svg'),
+      iconPath: toAbsoluteUrl(editIcon),
       onClick: (item) => onEdit?.(item),
       className: 'me-1',
     })
@@ -84,6 +86,10 @@ const TableList = <T extends {}>({
         {loading ? ( // Usar el loader personalizado
           <div className='text-center'>
             <div className='loader'></div>
+          </div>
+        ) : currentData.length === 0 ? ( // Verificar si currentData está vacío
+          <div className='text-center'>
+            <span>No hay datos</span>
           </div>
         ) : (
           <>

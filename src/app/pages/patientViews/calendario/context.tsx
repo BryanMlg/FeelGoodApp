@@ -2,6 +2,7 @@ import React, {createContext, useState, useEffect} from 'react'
 import {fetchData} from '../../../services/useRequest'
 import {Calendario, ContentContextType} from './models/models'
 import {useAuthHeaders} from '../../../modules/utility/hooks/useAuthHeathers'
+import {showNotification} from '../../../services/alertServices'
 export const ContentContext = createContext<ContentContextType>({} as ContentContextType)
 
 export const ContentProvider: React.FC = ({children}) => {
@@ -49,8 +50,11 @@ export const ContentProvider: React.FC = ({children}) => {
         },
       })
 
-      if (result.error) {
-        throw new Error(result.error)
+      if (result.status && result.status >= 200 && result.status < 300) {
+        showNotification(1, 'Proceso Realizado con Éxito', '')
+        toggleModal(0)
+      } else {
+        showNotification(0, 'Error', result?.code || 'Código de error desconocido')
       }
     } catch (err) {
       setError(

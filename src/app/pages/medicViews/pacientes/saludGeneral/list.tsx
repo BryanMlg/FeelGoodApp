@@ -10,7 +10,7 @@ type ColumnConfig<T> = {
 }
 
 export default function List() {
-  const {data, Status, setSelectedItem, setEditar} = useContext(ContentContext)
+  const {data, Status, setSelectedItem, setEditar, loading} = useContext(ContentContext)
   const handleEdit = (item: any) => {
     setSelectedItem(item)
     setEditar(true)
@@ -60,6 +60,7 @@ export default function List() {
         columns={columns}
         onEdit={handleEdit}
         onEstatus={handleStatus}
+        loading={loading}
       />
     </>
   )

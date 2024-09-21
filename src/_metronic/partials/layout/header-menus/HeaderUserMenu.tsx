@@ -12,7 +12,7 @@ const HeaderUserMenu: FC = () => {
   ) as UserModel
   return (
     <div
-      className='menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px'
+      className='menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-350px'
       data-kt-menu='true'
     >
       <div className='menu-item px-3'>
@@ -26,7 +26,7 @@ const HeaderUserMenu: FC = () => {
 
           <div className='d-flex flex-column'>
             <div className='fw-bolder d-flex align-items-center fs-5'>
-              {user.primerNombres} {user.segundoNombre} {user.primerApellido}
+              {user.primerNombres} {user.primerApellido}
               <span className='badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2'>
                 {user?.rolId === 1 ? 'Administrador' : user?.rolId === 2 ? 'Paciente' : 'Medico'}
               </span>

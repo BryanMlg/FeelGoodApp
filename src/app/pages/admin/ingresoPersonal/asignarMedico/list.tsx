@@ -19,7 +19,7 @@ export default function List() {
   }
 
   // Filtrar si ya existe algún registro con estado 1
-  const hasActiveRecord = allData?.some((item: Medico) => item.estado === 1)
+  // const hasActiveRecord = allData?.some((item: Medico) => item.estado === 1)
 
   const columns: ColumnConfig<Medico>[] = [
     {header: 'Nombre', accessor: 'medico_nombre', width: '125px'},
@@ -40,7 +40,8 @@ export default function List() {
   return (
     <>
       {/* Mostrar el formulario solo si no existe un registro activo */}
-      {!hasActiveRecord && <Formulario />}
+      {/* {!hasActiveRecord && <Formulario />} */}
+      <Formulario />
       <TableList
         className='mb-5 mb-xl-6'
         data={allData ?? []}

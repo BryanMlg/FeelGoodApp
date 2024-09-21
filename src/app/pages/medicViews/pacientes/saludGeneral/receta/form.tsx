@@ -5,29 +5,28 @@ import {Formik, Field, Form as FormikForm} from 'formik'
 import * as Yup from 'yup'
 
 const validationSchema = Yup.object().shape({
-  sintoma: Yup.string().required('Este campo es obligatorio'),
   descripcion: Yup.string().required('Este campo es obligatorio'),
 })
 
 export const Formulario = () => {
-  const {createUpdate, selectedItem, editar, setEditar, setSelectedItem, labelSintomas} =
+  const {createUpdate, selectedItem, editar, setEditar, setSelectedItem} =
     useContext(ContentContext)
+
   const handleReset = () => {
     setSelectedItem(null)
     setEditar(false)
   }
+
   return (
     <>
       <Formik
         initialValues={{
-          sintoma: selectedItem?.idSintoma || '',
           descripcion: selectedItem?.descripcion || '',
         }}
         validationSchema={validationSchema}
         enableReinitialize={true}
         onSubmit={(values, {resetForm}) => {
           createUpdate({
-            idSintoma: values?.sintoma,
             descripcion: values?.descripcion,
             id: selectedItem?.id,
           })
@@ -40,31 +39,16 @@ export const Formulario = () => {
           <FormikForm>
             <Row className='mt-4'>
               <Col xs={12} md={12} lg={12} className='mt-4'>
-                <Form.Group controlId='sintoma'>
-                  <Form.Label>
-                    Sintoma <span className='text-danger'>*</span>
-                  </Form.Label>
-                  <Field as='select' name='sintoma' className='form-control'>
-                    <option value=''>Seleccione un Sintoma</option>
-                    {labelSintomas?.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.nombre}
-                      </option>
-                    ))}
-                  </Field>
-                  {errors.sintoma && touched.sintoma ? (
-                    <div className='text-danger'>{errors.sintoma}</div>
-                  ) : null}
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={12} md={12} lg={12} className='mb-4 mt-4'>
-                <Form.Group>
+                <Form.Group controlId='descripcion'>
                   <Form.Label>
                     Descripción <span className='text-danger'>*</span>
                   </Form.Label>
-                  <Field name='descripcion' className='form-control' />
+                  <Field
+                    as='textarea'
+                    name='descripcion'
+                    className='form-control'
+                    rows={4} // Puedes ajustar la cantidad de filas según tus necesidades
+                  />
                   {errors.descripcion && touched.descripcion ? (
                     <div className='text-danger'>{errors.descripcion}</div>
                   ) : null}
@@ -79,12 +63,7 @@ export const Formulario = () => {
                     <Button type='submit' variant='warning'>
                       Actualizar
                     </Button>
-                    <Button
-                      type='button'
-                      onClick={handleReset} // Utilizar el nuevo manejador de reset
-                      variant='danger'
-                      className='ms-4'
-                    >
+                    <Button type='button' onClick={handleReset} variant='danger' className='ms-4'>
                       X
                     </Button>
                   </>

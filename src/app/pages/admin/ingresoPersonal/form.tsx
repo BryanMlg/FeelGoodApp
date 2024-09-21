@@ -6,6 +6,7 @@ import * as Yup from 'yup'
 import CustomCloseButton from '../../../modules/utility/modal/customCloseButton'
 import SaludGeneral from './saludGeneral/index'
 import AsignarMedico from './asignarMedico/index'
+import {showLoadingToast} from '../../../services/alertServices'
 const validationSchema = Yup.object().shape({
   departamento: Yup.string().required('Este campo es obligatorio'),
   municipio: Yup.string().required('Este campo es obligatorio'),
@@ -44,6 +45,7 @@ export const Formulario = () => {
     setFieldValue('departamento', departamentoId)
     if (departamentoId) {
       try {
+        showLoadingToast('Buscando Municipios', 'top-right')
         await getMunicipios(event?.target?.value)
       } catch (error) {
         console.error('Error al obtener municipios:', error)
@@ -52,7 +54,10 @@ export const Formulario = () => {
   }
 
   useEffect(() => {
-    getMunicipios(selectedItem?.departamentoId)
+    if (opcion === 1) {
+      showLoadingToast('Buscando Municipios', 'top-right')
+      getMunicipios(selectedItem?.departamentoId)
+    }
   }, [selectedItem])
 
   return (

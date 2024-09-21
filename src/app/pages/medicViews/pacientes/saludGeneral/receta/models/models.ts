@@ -1,10 +1,8 @@
 // models/models.ts
-export interface Sintoma {
-  idSintoma: number,
-  idRegistro: number,
+export interface Receta {
   descripcion: string
   estado: number
-  sintoma_nombre: string
+  id: number
 }
 
 export interface labelSintomas {
@@ -16,7 +14,7 @@ export interface labelSintomas {
 export interface ContentContextType {
   toggleModal: (data?: number) => void
   show: boolean
-  data: Sintoma[] | null
+  data: Receta[] | null
   loading: boolean
   selectedItem: any
   setSelectedItem: React.Dispatch<React.SetStateAction<any>>
@@ -27,5 +25,4 @@ export interface ContentContextType {
   editar?: boolean
   setEditar: React.Dispatch<React.SetStateAction<boolean>>;
   selectedItemPrincipal: any
-  labelSintomas: labelSintomas[] | null
 }

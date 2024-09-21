@@ -3,7 +3,7 @@ import {AuthModel} from '../models/AuthModel'
 import {UserModel} from '../models/UserModel'
 import {createClient} from '@supabase/supabase-js'
 import {fetchData} from '../../../services/useRequest'
-
+import {showNotification} from '../../../services/alertServices'
 const API_URL = process.env.REACT_APP_API_URL || 'api'
 
 export const GET_USER_BY_ACCESSTOKEN_URL = `${API_URL}/auth/get-user`
@@ -43,31 +43,36 @@ export async function loginWithSupabase(email: string, password: string) {
   }
 }
 
-export async function signUp(email: string, password: string) {
-  const {data, error} = await supabase.auth.signUp({
-    email,
-    password,
-  })
+export async function signUp(email: string, password: string): Promise<boolean> {
+  try {
+    const {data, error} = await supabase.auth.signUp({
+      email,
+      password,
+    })
 
-  if (error) {
-    console.error('Error creating user:', error.message)
-  } else {
-    console.log('User created:', data)
+    if (error) {
+      console.error('Error creating user:', error.message)
+      showNotification(4, 'Error al crear usuario', error.message)
+      return false
+    } else {
+      return true
+    }
+  } catch (error) {
+    return false
   }
 }
 
 export const sendPasswordResetEmail = async (email: string) => {
-  const { error } = await supabase.auth.resetPasswordForEmail(email);
+  const {error} = await supabase.auth.resetPasswordForEmail(email)
 
   if (error) {
-    localStorage.setItem('passwordResetError', 'true');
-    window.location.href = '/reset/email-error';
+    localStorage.setItem('passwordResetError', 'true')
+    window.location.href = '/reset/email-error'
   } else {
-    localStorage.removeItem('passwordResetError');
-    window.location.href = '/reset/email';
+    localStorage.removeItem('passwordResetError')
+    window.location.href = '/reset/email'
   }
 }
-
 
 // Server should return AuthModel - Local
 // export function login(email: string, password: string) {

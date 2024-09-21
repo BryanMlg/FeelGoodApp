@@ -9,7 +9,6 @@ export interface ContentContextType {
   toggleModal: (data?: number) => void
   show: boolean
   data: Rol[] | null
-  error: string | null
   loading: boolean
   createUpdate: (nombre: string, id?: number, estado?: number) => Promise<void>
   selectedItem: any

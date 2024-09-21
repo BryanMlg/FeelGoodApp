@@ -19,7 +19,7 @@ export const Formulario = () => {
     <>
       <Formik
         initialValues={{
-          sintoma: selectedItem?.idsintoma || '',
+          sintoma: selectedItem?.sintoma_id || '',
           descripcion: selectedItem?.descripcion || '',
         }}
         validationSchema={validationSchema}
@@ -28,7 +28,7 @@ export const Formulario = () => {
           createUpdate({
             idSintoma: values?.sintoma,
             descripcion: values?.descripcion,
-            id: selectedItem?.id,
+            id: selectedItem?.sintoma_paciente_id,
           })
           setSelectedItem(null)
           setEditar(false)

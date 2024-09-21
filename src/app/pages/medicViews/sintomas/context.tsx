@@ -2,6 +2,7 @@ import React, {createContext, useState, useEffect} from 'react'
 import {fetchData} from '../../../services/useRequest'
 import {Enfermedad, ContentContextType} from './models/models'
 import {useAuthHeaders} from '../../../modules/utility/hooks/useAuthHeathers'
+import {showNotification} from '../../../services/alertServices'
 export const ContentContext = createContext<ContentContextType>({} as ContentContextType)
 
 export const ContentProvider: React.FC = ({children}) => {
@@ -9,7 +10,6 @@ export const ContentProvider: React.FC = ({children}) => {
   const [show, setShow] = useState<boolean>(false)
   const [opcion, setOpcion] = useState<number>(0)
   const [data, setData] = useState<Enfermedad[] | null>(null)
-  const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [selectedItem, setSelectedItem] = useState<any>(null)
   const endPoint = 'sintomas'
@@ -24,14 +24,10 @@ export const ContentProvider: React.FC = ({children}) => {
     })
 
     setData(result.data)
-    setError(result.error)
     setLoading(result.loading)
   }
 
   const createUpdate = async (nombre?: string, id?: number, estado?: number) => {
-    setLoading(true)
-    setError(null)
-
     try {
       const result = await fetchData<Enfermedad>({
         url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}${
@@ -48,23 +44,20 @@ export const ContentProvider: React.FC = ({children}) => {
         },
       })
 
-      if (result.error) {
-        throw new Error(result.error)
+      if (result.status && result.status >= 200 && result.status < 300) {
+        showNotification(1, 'Proceso Realizado con Éxito', '')
+        toggleModal(0)
+      } else {
+        showNotification(0, 'Error', result?.code || 'Código de error desconocido')
       }
+      setLoading(result.loading)
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'An error occurred while creating the department.'
-      )
     } finally {
       await fetchDepartments()
-      setLoading(false)
     }
   }
 
   const Status = async (id?: number, estado?: number) => {
-    setLoading(true)
-    setError(null)
-
     try {
       const result = await fetchData<Enfermedad>({
         url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}${`?id=eq.${id}`}`,
@@ -80,12 +73,8 @@ export const ContentProvider: React.FC = ({children}) => {
         throw new Error(result.error)
       }
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'An error occurred while creating the department.'
-      )
     } finally {
       await fetchDepartments()
-      setLoading(false)
     }
   }
 
@@ -101,7 +90,6 @@ export const ContentProvider: React.FC = ({children}) => {
     toggleModal,
     show,
     data,
-    error,
     loading,
     createUpdate,
     selectedItem,

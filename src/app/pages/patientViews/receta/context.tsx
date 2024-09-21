@@ -1,25 +1,24 @@
-import React, {createContext, useState, useEffect} from 'react'
+import React, {createContext, useState, useEffect, useContext} from 'react'
 import {fetchData} from '../../../services/useRequest'
+import {Receta, ContentContextType} from './models/models'
+import {ContentContext as ContextPrincipal} from './context'
 import {useAuthHeaders} from '../../../modules/utility/hooks/useAuthHeathers'
 import {showNotification} from '../../../services/alertServices'
-import {Persona, ContentContextType} from './models/models'
-
 export const ContentContext = createContext<ContentContextType>({} as ContentContextType)
 
 export const ContentProvider: React.FC = ({children}) => {
   const {Authorization, apikey, dataUser} = useAuthHeaders()
   const [show, setShow] = useState<boolean>(false)
   const [opcion, setOpcion] = useState<number>(0)
-  const [data, setData] = useState<Persona[] | null>(null)
+  const [data, setData] = useState<Receta[] | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [selectedItem, setSelectedItem] = useState<any>(null)
-
-  const endPoint = 'persona'
-  const fetchPersonas = async () => {
-    const result = await fetchData<Persona[]>({
-      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/rpc/obtener_personas_por_medico`,
-      method: 'POST',
-      body: {medicoid: dataUser?.id},
+  const [editar, setEditar] = useState<boolean>(false)
+  const endPoint = 'recetas'
+  const fetchSintomas = async () => {
+    const result = await fetchData<Receta[]>({
+      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/recetas?idPersona=eq.${dataUser?.id}`,
+      method: 'GET',
       headers: {
         Authorization: Authorization,
         apikey: apikey,
@@ -32,7 +31,7 @@ export const ContentProvider: React.FC = ({children}) => {
 
   const Status = async (id?: number, estado?: number) => {
     try {
-      const result = await fetchData({
+      const result = await fetchData<Receta>({
         url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}${`?id=eq.${id}`}`,
         method: 'PATCH',
         body: {estado: estado === 1 ? 0 : 1},
@@ -43,19 +42,20 @@ export const ContentProvider: React.FC = ({children}) => {
       })
 
       if (result.status && result.status >= 200 && result.status < 300) {
-        showNotification(3, 'Proceso Realizado con Éxito', '', undefined, 'bottom-end')
+        showNotification(3, 'Proceso Realizado con Éxito', '', undefined, 'top')
       } else {
         showNotification(
           4,
           'Error',
           result?.code || 'Código de error desconocido',
           undefined,
-          'bottom-end'
+          'top'
         )
       }
       setLoading(result.loading)
+    } catch (err) {
     } finally {
-      await fetchPersonas()
+      await fetchSintomas()
     }
   }
 
@@ -77,10 +77,12 @@ export const ContentProvider: React.FC = ({children}) => {
     opcion,
     setOpcion,
     Status,
+    setEditar,
+    editar,
   }
 
   useEffect(() => {
-    fetchPersonas()
+    fetchSintomas()
   }, [])
 
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>

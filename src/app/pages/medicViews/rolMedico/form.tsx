@@ -40,9 +40,7 @@ export const Formulario = () => {
             validationSchema={validationSchema}
             onSubmit={(values, {resetForm}) => {
               createUpdate(values?.rol, selectedItem?.id)
-
               resetForm()
-              toggleModal && toggleModal(0)
             }}
           >
             {({errors, touched}) => (
