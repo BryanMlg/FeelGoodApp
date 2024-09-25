@@ -1,7 +1,7 @@
 import {Suspense, lazy} from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import {FallbackView} from '../../_metronic/partials'
-import {DashboardWrapper} from '../pages/dashboard/DashboardWrapper'
+import Dashboard from '../pages/dashboard'
 import {RoutesPatient} from './private/routesPatient'
 import { RoutesMedic } from './private/routesMedic'
 import { RoutesAdmin } from './private/routesAdmin'
@@ -12,7 +12,7 @@ export function PrivateRoutes() {
   return (
     <Suspense fallback={<FallbackView />}>
       <Switch>
-        <Route path='/dashboard' component={DashboardWrapper} />
+        <Route path='/dashboard' component={Dashboard} />
         <Route path='/paciente' component={RoutesPatient} />
         <Route path='/medico' component={RoutesMedic} />
         <Route path='/admin' component={RoutesAdmin} />
