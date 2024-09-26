@@ -1,16 +1,18 @@
 /* eslint-disable react/jsx-no-target-blank */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, {FC} from 'react'
+import {FC} from 'react'
 import {Link} from 'react-router-dom'
 import clsx from 'clsx'
 import {useLayout} from '../../core'
 import {KTSVG, toAbsoluteUrl} from '../../../helpers'
 import {AsideMenu} from './AsideMenu'
-
+import {useSelector} from 'react-redux'
+import {RootState} from '../../../../setup'
 const AsideDefault: FC = () => {
   const {config, classes} = useLayout()
   const {aside} = config
-
+  const user = useSelector((state: RootState) => state.auth.dataUser)
+  const isPatient = [2].includes(user?.rolId)
   return (
     <div
       id='kt_aside'
@@ -27,7 +29,7 @@ const AsideDefault: FC = () => {
       <div className='aside-logo flex-column-auto' id='kt_aside_logo'>
         {/* begin::Logo */}
         {aside.theme === 'dark' && (
-          <Link to='/dashboard'>
+          <Link to={isPatient ? '/paciente/calendario' : '/dashboard'}>
             <img
               alt='Logo'
               className='h-65px logo'

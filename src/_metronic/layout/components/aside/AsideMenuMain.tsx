@@ -10,13 +10,12 @@ import {MenuAdmin} from './menuVertical/menuAdmin'
 export function AsideMenuMain() {
   const intl = useIntl()
   const user = useSelector((state: RootState) => state.auth.dataUser)
-  console.log('aside', user?.rolId)
   const isMedic = [3].includes(user?.rolId)
   const isPatient = [2].includes(user?.rolId)
   const isAdmin = [1].includes(user?.rolId)
   return (
     <>
-      {isAdmin || isMedic && (
+      {(isAdmin || isMedic) && (
         <AsideMenuItem
           to='/dashboard'
           icon='/media/icons/duotune/art/art002.svg'

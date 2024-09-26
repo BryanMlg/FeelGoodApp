@@ -6,9 +6,12 @@ import {RoutesPatient} from './private/routesPatient'
 import { RoutesMedic } from './private/routesMedic'
 import { RoutesAdmin } from './private/routesAdmin'
 import { RoutesProcess } from './private/profile'
+import {useSelector} from 'react-redux'
+import {RootState} from '../../setup'
 export function PrivateRoutes() {
   const AccountPage = lazy(() => import('../modules/accounts/AccountPage'))
-
+  const user = useSelector((state: RootState) => state.auth.dataUser)
+  const isPatient = [2].includes(user?.rolId)
   return (
     <Suspense fallback={<FallbackView />}>
       <Switch>
@@ -18,8 +21,8 @@ export function PrivateRoutes() {
         <Route path='/admin' component={RoutesAdmin} />
         <Route path='/crafted/account' component={AccountPage} />
         <Route path='/reset' component={RoutesProcess} />
-        <Redirect from='/auth' to='/dashboard' />
-        <Redirect exact from='/' to='/dashboard' />
+        <Redirect from='/auth' to={isPatient ? '/paciente/calendario' : '/dashboard'} />
+        <Redirect exact from='/' to={isPatient ? '/paciente/calendario' : '/dashboard'} />
         <Redirect to='/error/404' />
       </Switch>
     </Suspense>
