@@ -8,7 +8,6 @@ import {Link} from 'react-router-dom'
 //   TablesWidget5,
 // } from '../../../../_metronic/partials/widgets'
 import {useAuthHeaders} from '../../utility/hooks/useAuthHeathers'
-import {sendPasswordResetEmail} from '../../auth/redux/AuthCRUD'
 export function Overview() {
   const {dataUser} = useAuthHeaders()
   return (
@@ -20,7 +19,9 @@ export function Overview() {
           </div>
 
           <p
-            onClick={() => sendPasswordResetEmail(dataUser?.email)}
+            onClick={() => {
+              window.location.href = '/reset/email'
+            }} // Redirige a la ruta deseada
             className='btn btn-primary align-self-center'
           >
             Cambiar Contraseña

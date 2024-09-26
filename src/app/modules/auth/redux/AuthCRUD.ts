@@ -62,15 +62,12 @@ export async function signUp(email: string, password: string): Promise<boolean> 
   }
 }
 
-export const sendPasswordResetEmail = async (email: string) => {
-  const {error} = await supabase.auth.resetPasswordForEmail(email)
-
+export const updatePassword = async (newPassword: string) => {
+  const {error} = await supabase.auth.updateUser({password: newPassword})
   if (error) {
-    localStorage.setItem('passwordResetError', 'true')
-    window.location.href = '/reset/email-error'
+    showNotification(4, 'Error al actualizar contraseña')
   } else {
-    localStorage.removeItem('passwordResetError')
-    window.location.href = '/reset/email'
+    showNotification(3, 'Proceso Realizado con Exito')
   }
 }
 
