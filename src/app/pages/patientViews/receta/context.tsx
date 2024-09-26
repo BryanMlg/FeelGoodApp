@@ -1,19 +1,14 @@
 import React, {createContext, useState, useEffect, useContext} from 'react'
 import {fetchData} from '../../../services/useRequest'
 import {Receta, ContentContextType} from './models/models'
-import {ContentContext as ContextPrincipal} from './context'
 import {useAuthHeaders} from '../../../modules/utility/hooks/useAuthHeathers'
 import {showNotification} from '../../../services/alertServices'
 export const ContentContext = createContext<ContentContextType>({} as ContentContextType)
 
 export const ContentProvider: React.FC = ({children}) => {
   const {Authorization, apikey, dataUser} = useAuthHeaders()
-  const [show, setShow] = useState<boolean>(false)
-  const [opcion, setOpcion] = useState<number>(0)
   const [data, setData] = useState<Receta[] | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
-  const [selectedItem, setSelectedItem] = useState<any>(null)
-  const [editar, setEditar] = useState<boolean>(false)
   const endPoint = 'recetas'
   const fetchSintomas = async () => {
     const result = await fetchData<Receta[]>({
@@ -59,26 +54,9 @@ export const ContentProvider: React.FC = ({children}) => {
     }
   }
 
-  const toggleModal = (opcion?: number) => {
-    setOpcion(opcion ?? 0)
-    if (opcion === 0) {
-      setSelectedItem(null)
-    }
-    setShow((prevShow) => !prevShow)
-  }
-
   const value: ContentContextType = {
-    toggleModal,
-    show,
     data,
     loading,
-    selectedItem,
-    setSelectedItem,
-    opcion,
-    setOpcion,
-    Status,
-    setEditar,
-    editar,
   }
 
   useEffect(() => {
