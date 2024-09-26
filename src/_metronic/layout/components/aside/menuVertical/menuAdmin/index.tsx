@@ -20,6 +20,9 @@ export function MenuAdmin() {
         icon='/media/icons/duotune/general/gen022.svg'
       >
         <AsideMenuItem to='/admin/ingreso-persona' title='Registro Usuarios' hasBullet={true} />
+        <AsideMenuItem to='/admin/departamentos' title='Registro Departamentos' hasBullet={true} />
+        <AsideMenuItem to='/admin/municipios' title='Registro Municipios' hasBullet={true} />
+        <AsideMenuItem to='/admin/roles' title='Registro Roles' hasBullet={true} />
       </AsideMenuItemWithSub>
 
       <div className='menu-item'>
