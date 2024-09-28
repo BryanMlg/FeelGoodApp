@@ -5,6 +5,7 @@ import Formulario from './form'
 import Sintomas from './sintomas'
 import Menopausia from './menopausia'
 import Receta from './receta'
+import Enfermedad from './enfermedad'
 import {ContentProvider} from './context'
 
 const UsuarioPage: React.FC = () => {
@@ -48,6 +49,13 @@ const UsuarioPage: React.FC = () => {
           <Row className='mt-4'>
             <Col>
               <Receta />
+            </Col>
+          </Row>
+        </Tab>
+        <Tab eventKey='enfermedad' title='Enfermedad'>
+          <Row className='mt-4'>
+            <Col>
+              <Enfermedad />
             </Col>
           </Row>
         </Tab>

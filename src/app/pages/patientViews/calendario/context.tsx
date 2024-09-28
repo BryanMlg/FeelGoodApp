@@ -6,7 +6,7 @@ import {showNotification} from '../../../services/alertServices'
 export const ContentContext = createContext<ContentContextType>({} as ContentContextType)
 
 export const ContentProvider: React.FC = ({children}) => {
-  const {Authorization, apikey} = useAuthHeaders()
+  const {Authorization, apikey, dataUser} = useAuthHeaders()
   const [show, setShow] = useState<boolean>(false)
   const [opcion, setOpcion] = useState<number>(0)
   const [data, setData] = useState<Calendario[] | null>(null)
@@ -17,7 +17,7 @@ export const ContentProvider: React.FC = ({children}) => {
   const endPoint = 'registroDiarioPaciente'
   const fetchCalendario = async () => {
     const result = await fetchData<Calendario[]>({
-      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}?select=*`,
+      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/${endPoint}?select=*&idPersona=eq.${dataUser?.id}`,
       method: 'GET',
       headers: {
         Authorization: Authorization,

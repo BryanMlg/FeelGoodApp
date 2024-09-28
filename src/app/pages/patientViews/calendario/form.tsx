@@ -6,6 +6,7 @@ import * as Yup from 'yup'
 import CustomCloseButton from '../../../modules/utility/modal/customCloseButton'
 import FormularioSintomas from './sintomas/index'
 import {showNotification} from '../../../services/alertServices'
+import {useAuthHeaders} from '../../../modules/utility/hooks/useAuthHeathers'
 const formatDate = (date: any) => {
   if (!date) return ''
   const d = new Date(date)
@@ -25,6 +26,7 @@ const validationSchema = Yup.object().shape({
 })
 
 export const Formulario = () => {
+  const {dataUser} = useAuthHeaders()
   const {toggleModal, show, selectedItem, opcion, createUpdate, selectedFecha, data} =
     useContext(ContentContext)
   const [key, setKey] = useState('form1')
@@ -79,7 +81,7 @@ export const Formulario = () => {
                     horasActividadFisica: values?.horasActividadFisica,
                     consumeAlcohol: values?.consumeAlcohol,
                     consumeTabaco: values?.consumeTabaco,
-                    idPersona: 3,
+                    idPersona: dataUser.id,
                     id: selectedItem?.id,
                   })
 

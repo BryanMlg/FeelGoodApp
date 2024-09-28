@@ -93,7 +93,7 @@ export const ContentProvider: React.FC = ({children}) => {
 
   const getSintomas = async () => {
     const result = await fetchData<any>({
-      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/sintomas?select=id,nombre`,
+      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/sintomas?select=id,nombre&estado=eq.1`,
       method: 'GET',
       headers: {
         Authorization: Authorization,

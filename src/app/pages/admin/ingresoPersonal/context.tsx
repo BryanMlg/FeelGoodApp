@@ -148,7 +148,7 @@ export const ContentProvider: React.FC = ({children}) => {
 
   const getRol = async () => {
     const result = await fetchData<labelRol[]>({
-      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/rol?select=id,nombre`,
+      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/rol?select=id,nombre&estado=eq.1`,
       method: 'GET',
       headers: {
         Authorization: Authorization,

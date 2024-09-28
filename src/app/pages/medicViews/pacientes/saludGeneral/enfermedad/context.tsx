@@ -7,7 +7,7 @@ import {showNotification} from '../../../../../services/alertServices'
 export const ContentContext = createContext<ContentContextType>({} as ContentContextType)
 
 export const ContentProvider: React.FC = ({children}) => {
-  const {Authorization, apikey} = useAuthHeaders()
+  const {Authorization, apikey,dataUser} = useAuthHeaders()
   const {selectedItemPrincipal} = useContext(ContextPrincipal)
   const [show, setShow] = useState<boolean>(false)
   const [opcion, setOpcion] = useState<number>(0)
@@ -16,12 +16,12 @@ export const ContentProvider: React.FC = ({children}) => {
   const [selectedItem, setSelectedItem] = useState<any>(null)
   const [editar, setEditar] = useState<boolean>(false)
   const [labelSintomas, setLabelSintomas] = useState<labelSintomas[] | null>(null)
-  const endPoint = 'parametrosPaciente'
+  const endPoint = 'personaEnfermedad'
   const fetchSintomas = async () => {
     const result = await fetchData<Sintoma[]>({
-      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/rpc/obtener_nivel_menopausia_por_persona`,
+      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/rpc/obtener_enfermedades_por_persona`,
       method: 'POST',
-      body: {idpersona: selectedItemPrincipal?.id},
+      body: {personaid: selectedItemPrincipal?.id},
       headers: {
         Authorization: Authorization,
         apikey: apikey,
@@ -99,7 +99,7 @@ export const ContentProvider: React.FC = ({children}) => {
 
   const getSintomas = async () => {
     const result = await fetchData<any>({
-      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/nivelMenopausia?select=id,nombre&estado=eq.1`,
+      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/enfermedades?select=id,nombre&estado=eq.1`,
       method: 'GET',
       headers: {
         Authorization: Authorization,
