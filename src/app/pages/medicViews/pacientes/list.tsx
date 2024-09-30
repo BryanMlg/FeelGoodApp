@@ -3,6 +3,7 @@ import {TableList} from '../../../../_metronic/partials/widgets'
 import {Persona} from './models/models'
 import {ContentContext} from './context'
 import {toAbsoluteUrl} from '../../../../_metronic/helpers'
+
 type ColumnConfig<T> = {
   header: string
   accessor: keyof T | ((item: T) => React.ReactNode)
