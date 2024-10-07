@@ -34,6 +34,7 @@ export function ResetPassword() {
         setLoading(false)
         return
       }
+      console.log('token', accessToken)
 
       const error = await updateUserPassword(values.password)
 
@@ -54,7 +55,7 @@ export function ResetPassword() {
       <form
         className='form w-100 fv-plugins-bootstrap5 fv-plugins-framework'
         noValidate
-        id='kt_login_password_reset_form'
+        id='kt_reset_password'
         onSubmit={formik.handleSubmit}
       >
         <div className='text-center mb-10'>
@@ -68,7 +69,7 @@ export function ResetPassword() {
         {errorMessage && (
           <div className='mb-lg-15 alert alert-danger'>
             <div className='alert-text font-weight-bold'>
-              Ups... Parece hubo un error.
+              {errorMessage}
             </div>
           </div>
         )}
@@ -100,7 +101,7 @@ export function ResetPassword() {
         <div className='d-flex flex-wrap justify-content-center pb-lg-0'>
           <button
             type='submit'
-            id='kt_password_reset_submit'
+            id='kt_reset_password_submit'
             className='btn btn-lg btn-primary fw-bolder me-4'
           >
             <span className='indicator-label'>Enviar</span>
@@ -114,7 +115,7 @@ export function ResetPassword() {
           <Link to='/auth/login'>
             <button
               type='button'
-              id='kt_login_password_reset_form_cancel_button'
+              id='kt_reset_password_form_cancel_button'
               className='btn btn-lg btn-light-primary fw-bolder'
               disabled={formik.isSubmitting || !formik.isValid}
             >
