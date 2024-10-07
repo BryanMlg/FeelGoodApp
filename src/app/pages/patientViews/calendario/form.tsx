@@ -220,9 +220,11 @@ export const Formulario = () => {
                 )}
               </Formik>
             </Tab>
-            <Tab eventKey='form2' title='Sintomas'>
-              <FormularioSintomas />
-            </Tab>
+            {selectedItem && (
+              <Tab eventKey='form2' title='Sintomas'>
+                <FormularioSintomas />
+              </Tab>
+            )}
           </Tabs>
         </Modal.Body>
       </Modal>
