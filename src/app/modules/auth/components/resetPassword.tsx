@@ -27,14 +27,14 @@ export function ResetPassword() {
     validationSchema: resetPasswordSchema,
     onSubmit: async (values) => {
       setLoading(true)
-      const accessToken = query.get('token')
+      const token = query.get('token')
 
-      if (!accessToken) {
+      if (!token) {
         setErrorMessage('Token de acceso no encontrado')
         setLoading(false)
         return
       }
-      console.log('token', accessToken)
+      console.log('token', token)
 
       const error = await updateUserPassword(values.password)
 
