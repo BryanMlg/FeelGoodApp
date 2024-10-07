@@ -87,7 +87,7 @@ export const updateUserPassword = async (password: string): Promise<void | strin
 
 export const requestPassword = async (email: string) => {
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: 'http://localhost:3011/auth/reset-password', // URL for reset page
+    redirectTo: 'https://feel-good-app.vercel.app/reset-password', // URL for reset page
   })
 
   if (error) {
