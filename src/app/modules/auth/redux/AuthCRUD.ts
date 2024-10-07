@@ -71,19 +71,6 @@ export const updatePassword = async (newPassword: string) => {
   }
 }
 
-export const updateUserPassword = async (password: string): Promise<void | string> => {
-  try {
-    const { error } = await supabase.auth.updateUser({
-      password: password,
-    })
-
-    if (error) {
-      return error.message
-    }
-  } catch (error) {
-    return 'Ocurrió un error inesperado al actualizar la contraseña.'
-  }
-}
 
 export const requestPassword = async (email: string) => {
   const { error } = await supabase.auth.resetPasswordForEmail(email, {

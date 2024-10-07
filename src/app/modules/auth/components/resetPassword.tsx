@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import {useFormik} from 'formik'
 import * as Yup from 'yup'
-import {updateUserPassword} from '../redux/AuthCRUD'
+import {updatePassword} from '../redux/AuthCRUD'
 import {useLocation, useHistory, Link} from 'react-router-dom'
 import clsx from 'clsx'
 const resetPasswordSchema = Yup.object().shape({
@@ -15,10 +15,8 @@ function useQuery() {
 }
 
 export function ResetPassword() {
-  const query = useQuery()
   const history = useHistory()
   const [loading, setLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const formik = useFormik({
     initialValues: {
@@ -27,26 +25,13 @@ export function ResetPassword() {
     validationSchema: resetPasswordSchema,
     onSubmit: async (values) => {
       setLoading(true)
-      const token = query.get('token')
 
-      if (!token) {
-        setErrorMessage('Token de acceso no encontrado')
-        setLoading(false)
-        return
-      }
-      console.log('token', token)
+      updatePassword(values.password)
 
-      const error = await updateUserPassword(values.password)
-
-      if (error) {
-        setErrorMessage(error)
-        setLoading(false)
-      } else {
-        setLoading(false)
-        setTimeout(() => {
-          history.push('/auth/login') // Redirigir después de 2 segundos
-        }, 2000)
-      }
+      setTimeout(() => {
+        history.push('/auth/login') // Redirigir después de 2 segundos
+      }, 2000)
+      setLoading(false)
     },
   })
 
@@ -61,18 +46,8 @@ export function ResetPassword() {
         <div className='text-center mb-10'>
           <h1 className='text-dark mb-3'>Reestablecer contraseña</h1>
 
-          <div className='text-gray-400 fw-bold fs-4'>
-            Ingrese su nueva contraseña.
-          </div>
+          <div className='text-gray-400 fw-bold fs-4'>Ingrese su nueva contraseña.</div>
         </div>
-
-        {errorMessage && (
-          <div className='mb-lg-15 alert alert-danger'>
-            <div className='alert-text font-weight-bold'>
-              {errorMessage}
-            </div>
-          </div>
-        )}
 
         <div className='fv-row mb-10'>
           <label className='form-label fw-bolder text-gray-900 fs-6'>Contraseña</label>
