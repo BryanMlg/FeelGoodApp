@@ -47,24 +47,17 @@ export function Login() {
     validationSchema: loginSchema,
     onSubmit: async (values, {setStatus, setSubmitting}) => {
       setLoading(true)
-
       try {
         const data = await loginWithSupabase(values.email, values.password)
-
         if (data) {
           const {session, dataUser} = data
-
-          // Verificar si existe el token de acceso en la sesión
           if (session?.access_token) {
             setLoading(false)
-            
-
-            // Despachar la acción de login con el token de acceso
             dispatch(auth.actions.login(session.access_token))
             console.log('login', dataUser)
-            dispatch(auth.actions.setUser(dataUser)) 
+            dispatch(auth.actions.setUser(dataUser))
           } else {
-            throw new Error('No se encontró el token de acceso')
+            throw new Error('Las credenciales de inicio de sesión son incorrectos')
           }
         } else {
           throw new Error('Los detalles de inicio de sesión son incorrectos')
@@ -111,17 +104,9 @@ export function Login() {
       noValidate
       id='kt_login_signin_form'
     >
-      {/* begin::Heading */}
       <div className='text-center mb-10'>
         <h1 className='text-dark mb-3'>Iniciar Sesión</h1>
-        {/* <div className='text-gray-400 fw-bold fs-4'>
-          Nuevo Aquí?{' '}
-          <Link to='/auth/registration' className='link-primary fw-bolder'>
-            Crear Cuenta
-          </Link>
-        </div> */}
       </div>
-      {/* begin::Heading */}
 
       {formik.status ? (
         <div className='mb-lg-15 alert alert-danger'>
@@ -135,8 +120,6 @@ export function Login() {
           </div>
         </div>
       )}
-
-      {/* begin::Form group */}
       <div className='fv-row mb-10'>
         <label className='form-label fs-6 fw-bolder text-dark'>Email</label>
         <input
@@ -159,16 +142,10 @@ export function Login() {
           </div>
         )}
       </div>
-      {/* end::Form group */}
-
-      {/* begin::Form group */}
       <div className='fv-row mb-10'>
         <div className='d-flex justify-content-between mt-n5'>
           <div className='d-flex flex-stack mb-2'>
-            {/* begin::Label */}
             <label className='form-label fw-bolder text-dark fs-6 mb-0'>Contraseña</label>
-            {/* end::Label */}
-            {/* begin::Link */}
             <Link
               to='/auth/forgot-password'
               className='link-primary fs-6 fw-bolder'
@@ -176,7 +153,6 @@ export function Login() {
             >
               ¿Olvidaste tu contraseña?
             </Link>
-            {/* end::Link */}
           </div>
         </div>
         <input
@@ -201,9 +177,6 @@ export function Login() {
           </div>
         )}
       </div>
-      {/* end::Form group */}
-
-      {/* begin::Action */}
       <div className='text-center'>
         <button
           type='submit'
@@ -249,7 +222,6 @@ export function Login() {
           Continue with Apple
         </a> */}
       </div>
-      {/* end::Action */}
     </form>
   )
 }

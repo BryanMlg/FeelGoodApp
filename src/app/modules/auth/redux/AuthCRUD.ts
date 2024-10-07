@@ -71,6 +71,30 @@ export const updatePassword = async (newPassword: string) => {
   }
 }
 
+export const updateUserPassword = async (password: string): Promise<void | string> => {
+  try {
+    const { error } = await supabase.auth.updateUser({
+      password: password,
+    })
+
+    if (error) {
+      return error.message
+    }
+  } catch (error) {
+    return 'Ocurrió un error inesperado al actualizar la contraseña.'
+  }
+}
+
+export const requestPassword = async (email: string) => {
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: 'http://localhost:3011/auth/reset-password', // URL for reset page
+  })
+
+  if (error) {
+    throw new Error(error.message)
+  }
+}
+
 // Server should return AuthModel - Local
 // export function login(email: string, password: string) {
 //   return axios.post(LOGIN_URL, {email, password})
@@ -87,9 +111,9 @@ export function register(email: string, firstname: string, lastname: string, pas
 }
 
 // Server should return object => { result: boolean } (Is Email in DB)
-export function requestPassword(email: string) {
-  return axios.post<{result: boolean}>(REQUEST_PASSWORD_URL, {email})
-}
+// export function requestPassword(email: string) {
+//   return axios.post<{result: boolean}>(REQUEST_PASSWORD_URL, {email})
+// }
 
 export function getUserByToken() {
   // Authorization head should be fulfilled in interceptor.
