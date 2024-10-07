@@ -27,7 +27,7 @@ export function ResetPassword() {
     validationSchema: resetPasswordSchema,
     onSubmit: async (values) => {
       setLoading(true)
-      const accessToken = query.get('access_token')
+      const accessToken = query.get('token')
 
       if (!accessToken) {
         setErrorMessage('Token de acceso no encontrado')
