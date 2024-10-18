@@ -16,6 +16,19 @@ export default function List() {
     {header: 'Síntoma', accessor: 'sintoma_nombre', width: '150px'},
     {header: 'Descripción', accessor: 'descripcion', width: '300px'},
     {
+      header: 'Fecha',
+      accessor: (item: Sintoma) => {
+        const date = new Date(item.fecha_creacion)
+        const formattedDate = date.toLocaleDateString('es-ES', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+        })
+        return formattedDate
+      },
+      width: '300px',
+    },
+    {
       header: 'Estado',
       accessor: (item: Sintoma) => (
         <span

@@ -32,7 +32,7 @@ export const Formulario = () => {
         keyboard={false}
       >
         <Modal.Header>
-          <Modal.Title className='text-uppercase h1'>Registro Departamentos</Modal.Title>
+          <Modal.Title className='text-uppercase h1'>Registro Sintomas</Modal.Title>
           <CustomCloseButton onClick={() => toggleModal && toggleModal(0)} />
         </Modal.Header>
         <Modal.Body>
