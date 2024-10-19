@@ -13,11 +13,11 @@ const loginSchema = Yup.object().shape({
     .email('Wrong email format')
     .min(3, 'Minimum 3 symbols')
     .max(50, 'Maximum 50 symbols')
-    .required('Email is required'),
+    .required('Correo electronico requerido.'),
   password: Yup.string()
     .min(3, 'Minimum 3 symbols')
     .max(50, 'Maximum 50 symbols')
-    .required('Password is required'),
+    .required('Contraseña requerida.'),
 })
 
 const initialValues = {
@@ -123,7 +123,7 @@ export function Login() {
         </>
       )}
       <div className='fv-row mb-10'>
-        <label className='form-label fs-6 fw-bolder text-dark'>Email</label>
+        <label className='form-label fs-6 fw-bolder text-dark'>Correo Electronico</label>
         <input
           placeholder='Email'
           {...formik.getFieldProps('email')}
