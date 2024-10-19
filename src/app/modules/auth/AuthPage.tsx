@@ -19,7 +19,7 @@ export function AuthPage() {
     <div
       className='d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed'
       style={{
-        backgroundImage: `url(${toAbsoluteUrl('/media/illustrations/sketchy-1/14.png')})`,
+        // backgroundImage: `url(${toAbsoluteUrl('/media/illustrations/sketchy-1/14.png')})`,
       }}
     >
       {/* begin::Content */}
@@ -34,7 +34,7 @@ export function AuthPage() {
         </a>
         {/* end::Logo */}
         {/* begin::Wrapper */}
-        <div className='w-lg-500px bg-white rounded shadow-sm p-10 p-lg-15 mx-auto'>
+        <div className='w-lg-500px rounded shadow-sm p-10 p-lg-15 mx-auto' style={{background: '#fcd5ce'}}>
           <Switch>
             <Route path='/auth/login' component={Login} />
             {/* <Route path='/auth/registration' component={Registration} /> */}

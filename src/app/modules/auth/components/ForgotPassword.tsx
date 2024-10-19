@@ -127,7 +127,8 @@ export default function UpdatePasswordForm() {
               <button
                 type='submit'
                 id='kt_password_update_submit'
-                className='btn btn-lg btn-primary fw-bolder me-4'
+                className='btn btn-lg fw-bolder me-4'
+                style={{background: '#ba7b7c'}}
               >
                 <span className='indicator-label'>Actualizar Contraseña</span>
                 {loading && (

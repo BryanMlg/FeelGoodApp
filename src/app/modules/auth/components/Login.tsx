@@ -21,8 +21,8 @@ const loginSchema = Yup.object().shape({
 })
 
 const initialValues = {
-  email: 'cparedesm2@miumg.edu.gt',
-  password: 'secreto123+',
+  email: '',
+  password: '',
 }
 
 //Local
@@ -113,12 +113,14 @@ export function Login() {
           <div className='alert-text font-weight-bold'>{formik.status}</div>
         </div>
       ) : (
-        <div className='mb-10 bg-light-info p-8 rounded'>
-          <div className='text-info'>
-            Utiliza la cuenta <strong>medico@demo.com o paciente@demo.com</strong> y la contraseña{' '}
-            <strong>demo</strong> para continuar.
-          </div>
-        </div>
+        <>
+          {/* <div className='mb-10 bg-light-info p-8 rounded'>
+            <div className='text-info'>
+              Utiliza la cuenta <strong>medico@demo.com o paciente@demo.com</strong> y la contraseña{' '}
+          <strong>demo</strong> para continuar.
+            </div>
+          </div> */}
+        </>
       )}
       <div className='fv-row mb-10'>
         <label className='form-label fs-6 fw-bolder text-dark'>Email</label>
@@ -181,7 +183,8 @@ export function Login() {
         <button
           type='submit'
           id='kt_sign_in_submit'
-          className='btn btn-lg btn-primary w-100 mb-5'
+          className='btn btn-lg w-100 mb-5'
+          style={{background: '#ba7b7c'}}
           disabled={formik.isSubmitting || !formik.isValid}
         >
           {!loading && <span className='indicator-label'>Continuar</span>}

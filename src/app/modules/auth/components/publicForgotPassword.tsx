@@ -98,7 +98,8 @@ export function PublicForgotPassword() {
           <button
             type='submit'
             id='kt_password_reset_submit'
-            className='btn btn-lg btn-primary fw-bolder me-4'
+            className='btn btn-lg fw-bolder me-4'
+            style={{background: '#ba7b7c'}}
           >
             <span className='indicator-label'>Enviar</span>
             {loading && (
@@ -112,7 +113,7 @@ export function PublicForgotPassword() {
             <button
               type='button'
               id='kt_login_password_reset_form_cancel_button'
-              className='btn btn-lg btn-light-primary fw-bolder'
+              className='btn btn-lg btn-light fw-bolder'
               disabled={formik.isSubmitting || !formik.isValid}
             >
               Cancelar
