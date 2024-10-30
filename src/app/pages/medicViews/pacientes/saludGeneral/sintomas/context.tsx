@@ -12,7 +12,7 @@ export const ContentProvider: React.FC = ({children}) => {
   const [loading, setLoading] = useState<boolean>(true)
   const fetchSintomas = async () => {
     const result = await fetchData<Sintoma[]>({
-      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/rpc/obtener_sintomas_por_persona`,
+      url: `https://vfjrliqltrpedrplukmk.supabase.co/rest/v1/rpc/obtener_sintomas_por_personas`,
       method: 'POST',
       body: {idpersona: selectedItemPrincipal?.id},
       headers: {

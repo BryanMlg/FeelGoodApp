@@ -1,12 +1,13 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import {DateSelectArg, EventClickArg} from '@fullcalendar/core'
-import {ContentContext} from './context'
+import { DateSelectArg, EventClickArg } from '@fullcalendar/core'
+import { ContentContext } from './context'
 import { showNotification } from '../../../services/alertServices'
+
 const MyCalendar: React.FC = () => {
-  const {data, toggleModal, setSelectedItem, setSelectedFecha} = useContext(ContentContext)
+  const { data, toggleModal, setSelectedItem, setSelectedFecha } = useContext(ContentContext)
 
   // Mapea los datos al formato que FullCalendar espera
   const events = data?.map((item) => ({
@@ -25,7 +26,7 @@ const MyCalendar: React.FC = () => {
 
   // Función para comparar solo la fecha (sin la hora)
   const formatDate = (date: Date) => {
-    return date.toISOString().split('T')[0] // Obtiene la fecha en formato YYYY-MM-DD
+    return date.toISOString().split('T')[0]
   }
 
   // Función para verificar si ya existe un evento en la fecha seleccionada
@@ -45,7 +46,7 @@ const MyCalendar: React.FC = () => {
   }
 
   const handleEventClick = (clickInfo: EventClickArg) => {
-    const {extendedProps} = clickInfo.event
+    const { extendedProps } = clickInfo.event
     setSelectedItem(extendedProps)
     toggleModal(1)
   }
@@ -54,9 +55,12 @@ const MyCalendar: React.FC = () => {
     <div className='card shadow-sm'>
       <div className='card-body p-0 py-5 px-5'>
         <FullCalendar
+          locale="es"
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView='dayGridMonth'
           selectable={true}
+          selectMirror={true}
+          longPressDelay={1} // Reconoce un toque prolongado en dispositivos móviles
           events={events}
           select={handleDateSelect}
           eventClick={handleEventClick}

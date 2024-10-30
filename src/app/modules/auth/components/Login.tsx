@@ -123,9 +123,9 @@ export function Login() {
         </>
       )}
       <div className='fv-row mb-10'>
-        <label className='form-label fs-6 fw-bolder text-dark'>Correo Electronico</label>
+        <label className='form-label fs-6 fw-bolder text-dark'>Correo Electrónico</label>
         <input
-          placeholder='Email'
+          placeholder='correo@mail.com'
           {...formik.getFieldProps('email')}
           className={clsx(
             'form-control form-control-lg form-control-solid',
